@@ -5,9 +5,13 @@
    archivo.
 
    Flujo al enviar (califique o no):
-     1. Lead completo a Google Sheets (sendBeacon; respaldo fetch keepalive).
-        No bloquea ni demora nada.
-     2. Eventos de GA4 (+ Lead de Meta solo si califica).
+     1. Lead completo a Google Sheets: fetch text/plain + keepalive (sin
+        preflight de CORS). No bloquea ni demora nada. Antes de mandarlo se
+        guarda en una cola en localStorage; si el envío falla, se reintenta
+        en la próxima carga de la página. El script descarta duplicados por
+        lead_id.
+     2. Eventos de GA4 (+ Lead de Meta solo si califica, con eventID =
+        lead_id para deduplicar con la API de Conversiones).
      3. Califica → WhatsApp con el mensaje prellenado.
         No califica → pantalla final con el Instagram.
    ========================================================================== */
@@ -16,7 +20,7 @@
 
   var F = window.BLACK_FORM;
   var CFG = window.BLACK || {};
-  var APP = window.BLACK_APP || { track: function () {}, pixel: function () {}, getAtribucion: function () { return {}; }, getCta: function () { return "directo"; } };
+  var APP = window.BLACK_APP || { track: function () {}, pixel: function () {}, getAtribucion: function () { return {}; }, getCta: function () { return "directo"; }, getCtasSesion: function () { return ""; } };
   var modal = document.getElementById("modal");
   if (!F || !modal) return;
 
@@ -130,10 +134,56 @@
     return /^(11\d{8}|[23]\d{9})$/.test(d) ? "549" + d : null;
   }
 
+  /** UUID v4. Es el ID del lead en Sheets y el eventID del Píxel. */
   function nuevoLeadId() {
-    var t = Date.now().toString(36).toUpperCase().slice(-5);
-    var r = Math.random().toString(36).toUpperCase().slice(2, 5);
-    return "BLK-" + t + r;
+    try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) { /* contexto no seguro */ }
+    var b = new Uint8Array(16);
+    if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(b);
+    else for (var i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256);
+    b[6] = (b[6] & 0x0f) | 0x40;
+    b[8] = (b[8] & 0x3f) | 0x80;
+    var h = Array.prototype.map.call(b, function (x) { return (x + 256).toString(16).slice(1); }).join("");
+    return h.slice(0, 8) + "-" + h.slice(8, 12) + "-" + h.slice(12, 16) + "-" + h.slice(16, 20) + "-" + h.slice(20);
+  }
+
+  /** Referencia corta para el mensaje de WhatsApp (el UUID entero es largo
+      para un chat). Es el comienzo del lead_id: se busca igual en la hoja. */
+  function refCorta(leadId) {
+    return "BLK-" + leadId.replace(/-/g, "").slice(0, 8).toUpperCase();
+  }
+
+  /* --------------------------------------------- cola de envíos a Sheets */
+
+  var COLA = "black:sheets_cola";
+
+  function leerCola() {
+    try { return JSON.parse(localStorage.getItem(COLA) || "[]") || []; } catch (e) { return []; }
+  }
+  function guardarCola(c) {
+    try { localStorage.setItem(COLA, JSON.stringify(c.slice(-20))); } catch (e) { /* sin storage */ }
+  }
+  function sacarDeCola(id) {
+    guardarCola(leerCola().filter(function (x) { return x.id !== id; }));
+  }
+
+  /** Manda un payload. Si la red falla, queda en la cola para la próxima carga. */
+  function mandarASheets(url, item) {
+    if (!url || !window.fetch) return;
+    try {
+      fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        keepalive: true,
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: item.body,
+      }).then(function () { sacarDeCola(item.id); }, function () { /* queda en la cola */ });
+    } catch (e) { /* queda en la cola */ }
+  }
+
+  function reintentarCola() {
+    var url = (CFG.sheets || {}).url;
+    if (!url) return;
+    leerCola().forEach(function (item) { mandarASheets(url, item); });
   }
 
   function plantilla(txt, datos) {
@@ -448,61 +498,45 @@
     var nombre = (S.d.nombre || "").trim();
     var tel = telefonoAR(S.d.whatsapp);
 
-    // Columnas de la hoja "Leads", por nombre de encabezado.
-    var fields = {
-      "Lead ID": leadId,
-      "Ruta": (F.rutas && F.rutas[rt]) || rt || "",
-      "Califica": cal.ok ? "Sí" : "No",
-      "Motivo de descalificación": cal.motivo,
-      "CTA clickeado": APP.getCta(),
-      "Campaña": attr.utm_campaign || "",
-      "Conjunto": attr.utm_term || "",
-      "Anuncio": attr.utm_content || "",
-      "Campaign ID": attr.campaign_id || "",
-      "Adset ID": attr.adset_id || "",
-      "Ad ID": attr.ad_id || "",
-      "Ubicación": attr.placement || "",
-      "utm_source": attr.utm_source || "",
-      "utm_medium": attr.utm_medium || "",
-      "fbclid": attr.fbclid || "",
-      "Dispositivo": attr.dispositivo || "",
-      "Landing URL": attr.landing_url || location.href.split("#")[0],
-      "Referrer": attr.referrer || "",
-    };
-    var porClave = { nombre: nombre, lead_id: leadId };
+    // Columnas de la hoja "Leads", por nombre de encabezado. Las respuestas
+    // usan la `columna` de cada pregunta (form-config.js).
+    var fields = { lead_id: leadId, ref_whatsapp: refCorta(leadId) };
+    var porClave = { nombre: nombre, lead_id: refCorta(leadId) };
     lista.forEach(function (p) {
-      if (p.tipo === "datos") {
-        (p.campos || []).forEach(function (c) {
-          var v = (S.d[c.id] || "").trim();
-          if (c.validar === "telefonoAR") v = "+" + tel;
-          if (c.columna) fields[c.columna] = v;
-          porClave[c.id] = v;
-        });
-        return;
-      }
+      if (p.tipo === "datos") return;
       var txt = valorTexto(p);
       if (p.columna) fields[p.columna] = txt;
       porClave[clave(p)] = txt;
     });
+    fields.ruta = (F.rutas && F.rutas[rt]) || rt || "";
+    fields.califica = cal.ok ? "Sí" : "No";
+    fields.motivo_descalificacion = cal.motivo;
+    lista.forEach(function (p) {
+      if (p.tipo !== "datos") return;
+      (p.campos || []).forEach(function (c) {
+        var v = (S.d[c.id] || "").trim();
+        if (c.validar === "telefonoAR") v = "+" + tel;
+        fields[c.id] = v;
+        porClave[c.id] = v;
+      });
+    });
+    fields.cta_origen = APP.getCta();
+    fields.ctas_sesion = APP.getCtasSesion ? APP.getCtasSesion() : "";
+    ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+      "campaign_id", "adset_id", "ad_id", "placement", "fbclid",
+      "ft_campaign", "ft_adset", "ft_ad", "ft_fecha", "dispositivo", "url", "referrer"].forEach(function (k) {
+      fields[k] = attr[k] || "";
+    });
+    if (!fields.url) fields.url = location.href.split("#")[0];
 
     // 1. Sheets. Fuego y olvido: nunca demora el paso a WhatsApp.
     var sh = CFG.sheets || {};
     if (sh.url) {
-      var body = JSON.stringify({ token: sh.token || "", hp: honeypot || "", fields: fields });
-      var ok = false;
-      try {
-        if (navigator.sendBeacon) {
-          ok = navigator.sendBeacon(sh.url, new Blob([body], { type: "text/plain;charset=UTF-8" }));
-        }
-      } catch (e) { ok = false; }
-      if (!ok) {
-        try {
-          fetch(sh.url, {
-            method: "POST", mode: "no-cors", keepalive: true,
-            headers: { "Content-Type": "text/plain;charset=utf-8" }, body: body,
-          }).catch(function () {});
-        } catch (e) { /* sin red: el lead igual sigue a WhatsApp */ }
-      }
+      var item = { id: leadId, body: JSON.stringify({ token: sh.token || "", hp: honeypot || "", fields: fields }) };
+      var cola = leerCola();
+      cola.push(item);
+      guardarCola(cola);
+      mandarASheets(sh.url, item);
     }
 
     // 2. Eventos.
@@ -519,7 +553,7 @@
 
     // 3. Destino.
     if (cal.ok) {
-      APP.pixel("Lead", { content_name: "Diagnóstico Black" });
+      APP.pixel("Lead", { content_name: "Diagnóstico Black" }, { eventID: leadId });
       var msg = plantilla((F.whatsapp && F.whatsapp.mensaje) || "", porClave);
       var url = "https://wa.me/" + (CFG.whatsapp || "") + "?text=" + encodeURIComponent(msg);
       pantallaFinal("califica", url, nombre);
@@ -623,6 +657,9 @@
   });
 
   window.BlackForm = { abrir: abrir, cerrar: cerrarUI };
+
+  // Envíos que quedaron pendientes en una visita anterior (red cortada).
+  setTimeout(reintentarCola, 1500);
 
   // Entrada directa: blackarquitectura.com/#diagnostico abre el formulario.
   if (location.hash === "#diagnostico") {

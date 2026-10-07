@@ -1,0 +1,128 @@
+{
+  "_instrucciones": "Reseñas reales copiadas del perfil de Google, texto literal (no corregir). Para publicar una entrada: completar autor, texto y, si se quiere, fecha (ej. 'hace 2 meses'), avatar (URL de la foto) y link (URL de la reseña), y cambiar estado a 'OK'. Las entradas con estado 'PENDIENTE' no se muestran en el sitio (se ven agregando ?preview=1 a la URL). El orden de la lista es el orden en pantalla. rating y total se muestran en el encabezado.",
+  "rating": 5.0,
+  "total": 41,
+  "url": "https://maps.google.com/?cid=7365464068826002467",
+  "items": [
+    {
+      "estado": "OK",
+      "autor": "Diego Rodriguez",
+      "inicial": "D",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "Muy Buena Atención de ambos!! Esteban con el asesoramiento para hacer tareas de refacciones y realizarlas con mucho detalle (un 10), como Carla para la venta de la propiedad y la búsqueda de la futura casa, Una dupla extraordinaria!!! parecen Marido y Mujer.",
+      "fecha": "",
+      "link": ""
+    },
+    {
+      "estado": "OK",
+      "autor": "Anthony Cremona",
+      "inicial": "A",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "Excelente asesoramiento por parte del dueño, se supieron adaptar a nuestras necesidades y presupuesto. 100% recomendado",
+      "fecha": "",
+      "link": ""
+    },
+    {
+      "estado": "OK",
+      "autor": "Julio Roma",
+      "inicial": "J",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "Muy bueno el servicio ! Super responsables con toda la información y la manera de explicarla. Muy profesional en lo que hacen. Los recomiendo",
+      "fecha": "",
+      "link": ""
+    },
+    {
+      "estado": "OK",
+      "autor": "Ayelén Bramajo",
+      "inicial": "A",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "Son excelentes, la calidad de su trabajo y profesionalismo es impecable. Esteban es súper profesional y humano, desde el primer momento se ocupó de todo, incluso de cada preocupación o duda que tuvimos. Recomiendo %100!!",
+      "fecha": "",
+      "link": ""
+    },
+    {
+      "estado": "OK",
+      "autor": "Lucas Cabrera",
+      "inicial": "L",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "Destaco la calidad humana y el profesionalismo con el que trabajan. Realmente eso de \"agregamos valor en la obras\", es asi, tal cual! Felicitaciones.",
+      "fecha": "",
+      "link": ""
+    },
+    {
+      "estado": "PENDIENTE",
+      "autor": "PENDIENTE — reseña 6",
+      "inicial": "?",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "PENDIENTE: copiar el texto literal de una reseña del perfil de Google.",
+      "fecha": "",
+      "link": ""
+    },
+    {
+      "estado": "PENDIENTE",
+      "autor": "PENDIENTE — reseña 7",
+      "inicial": "?",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "PENDIENTE: copiar el texto literal de una reseña del perfil de Google.",
+      "fecha": "",
+      "link": ""
+    },
+    {
+      "estado": "PENDIENTE",
+      "autor": "PENDIENTE — reseña 8",
+      "inicial": "?",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "PENDIENTE: copiar el texto literal de una reseña del perfil de Google.",
+      "fecha": "",
+      "link": ""
+    },
+    {
+      "estado": "PENDIENTE",
+      "autor": "PENDIENTE — reseña 9",
+      "inicial": "?",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "PENDIENTE: copiar el texto literal de una reseña del perfil de Google.",
+      "fecha": "",
+      "link": ""
+    },
+    {
+      "estado": "PENDIENTE",
+      "autor": "PENDIENTE — reseña 10",
+      "inicial": "?",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "PENDIENTE: copiar el texto literal de una reseña del perfil de Google.",
+      "fecha": "",
+      "link": ""
+    },
+    {
+      "estado": "PENDIENTE",
+      "autor": "PENDIENTE — reseña 11",
+      "inicial": "?",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "PENDIENTE: copiar el texto literal de una reseña del perfil de Google.",
+      "fecha": "",
+      "link": ""
+    },
+    {
+      "estado": "PENDIENTE",
+      "autor": "PENDIENTE — reseña 12",
+      "inicial": "?",
+      "avatar": "",
+      "estrellas": 5,
+      "texto": "PENDIENTE: copiar el texto literal de una reseña del perfil de Google.",
+      "fecha": "",
+      "link": ""
+    }
+  ]
+}

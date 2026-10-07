@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Diagnóstico Black — Antes de invertir en una propiedad, diagnosticala</title>
-<meta name="description" content="Visita técnica en 72 h, análisis de mercado, inversión estimada por etapas e informe de decisión a los 7 días. Un arquitecto y Maestro Mayor de Obra junto a una asesora inmobiliaria.">
+<title>Diagnóstico Black — Sabé cuánto vale, cuánto cuesta y si la cuenta cierra</title>
+<meta name="description" content="Un arquitecto y Maestro Mayor de Obra y una asesora inmobiliaria analizan la propiedad con vos. Visita técnica en 72 h e informe de decisión en 7 días. Honorarios fijos, no un porcentaje de la operación.">
 <meta name="theme-color" content="#0A0A0A">
 <link rel="canonical" href="https://blackarquitectura.com/">
 
-<!-- Saca `no-js` antes del primer paint. Si el JS está deshabilitado nunca
-     corre, la clase queda, y el CSS deja todo visible y en su estado final. -->
+<!-- Saca `no-js` antes del primer paint. Sin JS la página se lee completa. -->
 <script>document.documentElement.className='js'</script>
 
 <!-- GA4. En localhost no carga gtag (no ensucia los datos reales), pero el
@@ -27,49 +26,48 @@ gtag('js',new Date());var c={};if(/[?&]ga_debug=1/.test(location.search))c.debug
 <meta property="og:locale" content="es_AR">
 <meta property="og:site_name" content="Black Arquitectura">
 <meta property="og:url" content="https://blackarquitectura.com/">
-<meta property="og:title" content="Antes de invertir en una propiedad, diagnosticala.">
-<meta property="og:description" content="Diagnóstico Black: visita técnica en 72 h, análisis de mercado, inversión estimada por etapas e informe de decisión a los 7 días.">
+<meta property="og:title" content="Antes de poner un peso en una propiedad, sabé si la cuenta cierra.">
+<meta property="og:description" content="Diagnóstico Black: visita técnica en 72 h, análisis de mercado e informe de decisión a los 7 días.">
 <meta property="og:image" content="https://blackarquitectura.com/assets/brand/og.png">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="assets/brand/icon-512.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/brand/apple-icon.png">
 
-<!-- Fuentes: la de títulos (Antonio, variable: un solo archivo para 600 y
-     700) va precargada porque el H1 es el elemento de LCP. La hoja de
-     Google no bloquea el render: entra con media=print y se activa al
-     cargar. Mientras tanto se ve la fuente de sistema (font-display: swap). -->
+<!-- Fondo del hero en mobile: se pide antes que nada. -->
+<link rel="preload" as="image" type="image/avif" media="(max-width: 899px)" imagesrcset="assets/img/hero-m-480.avif 480w, assets/img/hero-m-720.avif 720w" imagesizes="100vw" fetchpriority="high">
+
+<!-- Fuentes: Antonio precargada (el H1). La hoja de Google no bloquea el
+     render: entra con media=print y se activa al cargar. -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/antonio/v22/gNMEW3NwSYq_9WD3yHQiFQ.woff2" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Antonio:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap"></noscript>
-<link rel="stylesheet" href="assets/css/site.css?v=20261004">
+<link rel="stylesheet" href="assets/css/site.css?v=20261007">
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://blackarquitectura.com/#business","name":"Black Arquitectura","description":"Estudio de arquitectura, obra y desarrollo inmobiliario en Buenos Aires. Diagnóstico técnico e inmobiliario de propiedades antes y después de la compra.","url":"https://blackarquitectura.com/","telephone":"+54 9 11 6480-3777","image":"https://blackarquitectura.com/assets/brand/og.png","logo":"https://blackarquitectura.com/assets/brand/logo-white.png","sameAs":["https://www.instagram.com/black_arq/","https://maps.google.com/?cid=7365464068826002467"],"areaServed":[{"@type":"AdministrativeArea","name":"CABA"},{"@type":"AdministrativeArea","name":"Zona Norte"},{"@type":"AdministrativeArea","name":"Zona Oeste"}],"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"41"}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"¿Por qué se paga? Otros hacen la primera visita gratis.","acceptedAnswer":{"@type":"Answer","text":"Porque una visita gratis no es un diagnóstico: es una visita comercial. El que no te cobra por ir tiene que ganar la plata en otro lado, y ese otro lado siempre es que vos avances. Nosotros cobramos honorarios por el análisis, y por eso podemos decirte que no compres."}},
-{"@type":"Question","name":"Tengo un arquitecto conocido que puede ir a verla. ¿Para qué esto?","acceptedAnswer":{"@type":"Answer","text":"Un arquitecto te va a decir qué se puede hacer, y probablemente tenga razón. Lo que no te va a decir es si el precio que piden se sostiene en esa zona, ni cuánto de tu inversión vuelve al valor de la propiedad. Esa es la mitad que falta."}},
-{"@type":"Question","name":"¿Y si me dicen que no la compre? ¿Perdí lo que pagué?","acceptedAnswer":{"@type":"Answer","text":"Al contrario: ahí es donde más valor tuvo. El Diagnóstico existe para que la decisión sea correcta, no para que sea positiva. Evitar una mala compra es el mejor resultado posible."}},
 {"@type":"Question","name":"¿Cuánto cuesta?","acceptedAnswer":{"@type":"Answer","text":"Depende de la propiedad y del alcance. Completás el formulario y te pasamos el valor por WhatsApp. Si avanzás con el proyecto, se descuenta entero de los honorarios."}},
-{"@type":"Question","name":"¿Sirve para departamentos o solo para casas?","acceptedAnswer":{"@type":"Answer","text":"Para las dos cosas. Cambia el alcance de lo que se puede intervenir, no la lógica del análisis."}},
-{"@type":"Question","name":"¿Sirve para una propiedad a estrenar o en pozo?","acceptedAnswer":{"@type":"Answer","text":"Sí. En obra nueva el foco se corre hacia la calidad constructiva, la documentación y el valor de la zona respecto de lo que se está pidiendo."}},
-{"@type":"Question","name":"Ya compré la propiedad. ¿Me sirve igual?","acceptedAnswer":{"@type":"Answer","text":"Sí, y es la mitad de nuestros clientes. Cambia la pregunta: ya no es si conviene comprarla, sino qué conviene hacerle, en qué orden y qué parte de esa inversión vuelve."}},
-{"@type":"Question","name":"¿Cuánto tardan desde que reservo?","acceptedAnswer":{"@type":"Answer","text":"La visita la hacemos dentro de las 72 h. El informe de decisión está a los 7 días."}},
-{"@type":"Question","name":"¿Me dan el presupuesto exacto de la obra?","acceptedAnswer":{"@type":"Answer","text":"Damos rangos de costo por etapa, no un presupuesto cerrado. Un presupuesto exacto requiere un proyecto, y el proyecto es la etapa siguiente. Con los rangos ya podés decidir y pedir cotizaciones comparables."}},
-{"@type":"Question","name":"¿Estoy obligado a contratarlos después?","acceptedAnswer":{"@type":"Answer","text":"No. El informe es tuyo y podés usarlo con quien quieras. Si decidís avanzar con nosotros, el Diagnóstico se descuenta de los honorarios."}},
-{"@type":"Question","name":"¿Trabajan en mi zona?","acceptedAnswer":{"@type":"Answer","text":"CABA, Zona Norte y Zona Oeste. Fuera de esa área lo evaluamos según el proyecto."}}]}
+{"@type":"Question","name":"¿Por qué se paga? Otros hacen la primera visita gratis.","acceptedAnswer":{"@type":"Answer","text":"Porque una visita gratis no es un diagnóstico: es una visita comercial. El que no te cobra por ir tiene que ganar la plata en otro lado, y ese otro lado siempre es que vos avances. Nosotros cobramos por el análisis, y por eso podemos decirte que no."}},
+{"@type":"Question","name":"Ya tengo inmobiliaria. ¿Para qué esto?","acceptedAnswer":{"@type":"Answer","text":"No la reemplazamos. Te damos lo que ella no te puede dar: una mirada que no depende de que la operación se cierre, y la cuenta de obra que no es su rubro."}},
+{"@type":"Question","name":"Tengo un arquitecto conocido. ¿Para qué esto?","acceptedAnswer":{"@type":"Answer","text":"Te va a decir qué se puede hacer, y probablemente tenga razón. Lo que no te va a decir es si el precio se sostiene en esa zona ni cuánto de tu inversión vuelve al valor de la propiedad. Esa es la mitad que falta."}},
+{"@type":"Question","name":"¿Y si me dicen que no la compre? ¿Perdí lo que pagué?","acceptedAnswer":{"@type":"Answer","text":"Al contrario: ahí es donde más valor tuvo. El Diagnóstico existe para que la decisión sea correcta, no para que sea positiva."}},
+{"@type":"Question","name":"Ya compré la propiedad. ¿Me sirve igual?","acceptedAnswer":{"@type":"Answer","text":"Sí, y es la mitad de nuestros clientes. Cambia la pregunta: ya no es si conviene comprarla, sino qué conviene hacerle, en qué orden y qué parte de esa inversión vuelve al valor."}},
+{"@type":"Question","name":"¿Estoy obligado a contratarlos después?","acceptedAnswer":{"@type":"Answer","text":"No. El informe es tuyo y podés usarlo con quien quieras."}},
+{"@type":"Question","name":"¿Me dan el presupuesto exacto de la obra?","acceptedAnswer":{"@type":"Answer","text":"Damos rangos de costo por etapa. Un presupuesto exacto requiere un proyecto, que es la etapa siguiente. Con los rangos ya podés decidir y pedir cotizaciones comparables."}},
+{"@type":"Question","name":"¿Qué no incluye el Diagnóstico?","acceptedAnswer":{"@type":"Answer","text":"Es la etapa anterior al proyecto: responde si conviene y qué conviene hacer. No incluye diseño, anteproyecto, planos ni renders. Tampoco cateos, cálculo estructural, certificación de instalaciones, presupuesto definitivo de obra ni estudio de títulos. Lo que sí hacemos es decirte qué conviene verificar, con quién y en qué orden."}},
+{"@type":"Question","name":"¿Sirve para departamentos, casas y obra nueva?","acceptedAnswer":{"@type":"Answer","text":"Sí. En obra nueva o en pozo el foco se corre hacia la calidad constructiva, la documentación y el valor de la zona respecto de lo que piden."}},
+{"@type":"Question","name":"¿Trabajan en mi zona?","acceptedAnswer":{"@type":"Answer","text":"CABA: Belgrano, Núñez, Villa Devoto, Villa del Parque, Monte Castro, Villa Santa Rita, Caballito, Palermo, Recoleta y zonas similares. Zona Norte: Vicente López, San Isidro, Acassuso, Martínez, Olivos, La Lucila, Tigre y barrios cerrados. Zona Oeste: Ramos Mejía, Haedo, Castelar, Ituzaingó, Morón y alrededores. Si tu propiedad está fuera de esta área, escribinos igual y lo evaluamos."}}]}
 </script>
 </head>
 
 <body>
 <a href="#contenido" class="skip">Ir al contenido</a>
 
-<!-- Íconos de interfaz. Los dibujos técnicos van inline en cada bloque
-     porque se trazan con animación. -->
+<!-- Íconos de interfaz. Las ilustraciones van inline en cada sección. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
 <symbol id="i-wa" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.13-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.19-.54.06-.25-.12-1.05-.38-1.99-1.23-.74-.65-1.23-1.46-1.38-1.71-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.84-.2-.49-.4-.42-.55-.43h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.17 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></symbol>
 <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor"><path d="m12 17.27 5.18 3.13c.38.23.85-.11.75-.54l-1.37-5.89 4.57-3.96c.34-.29.16-.85-.29-.89l-6.02-.51-2.35-5.55c-.17-.41-.75-.41-.92 0L9.2 8.61l-6.02.51c-.45.04-.63.6-.29.89l4.57 3.96-1.37 5.89c-.1.43.37.77.75.54L12 17.27Z"/></symbol>
@@ -79,797 +77,619 @@ gtag('js',new Date());var c={};if(/[?&]ga_debug=1/.test(location.search))c.debug
 <symbol id="i-arrastrar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6-5 6 5 6M15 6l5 6-5 6"/></symbol>
 <symbol id="i-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></symbol>
 <symbol id="i-google" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.87c2.26-2.09 3.56-5.17 3.56-8.87Z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.08 7.94-2.91l-3.87-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.28v3.09A11.99 11.99 0 0 0 12 24Z"/><path fill="#FBBC05" d="M5.27 14.29a7.2 7.2 0 0 1 0-4.58V6.62H1.28a12 12 0 0 0 0 10.76l3.99-3.09Z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.28 6.62l3.99 3.09C6.22 6.86 8.87 4.75 12 4.75Z"/></symbol>
+<!-- Rayados de material, compartidos por todas las ilustraciones. -->
+<pattern id="p-ladrillo" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V10" stroke="#2E4D6B" stroke-width="1.2"/></pattern>
+<pattern id="p-oculto" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="8" height="8" fill="#FFE500"/><path d="M0 0V8" stroke="#0A0A0A" stroke-width="1.1"/></pattern>
+<pattern id="p-hormigon" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="4" cy="5" r="1.1" fill="#2E4D6B"/><circle cx="15" cy="12" r=".8" fill="#2E4D6B"/><path d="M8 17l3-4 2 4z" fill="none" stroke="#2E4D6B" stroke-width=".9"/></pattern>
+<pattern id="p-trama" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V7" stroke="#2E4D6B" stroke-width="1"/></pattern>
+<pattern id="p-agua" width="18" height="9" patternUnits="userSpaceOnUse"><path d="M0 5q4.5-4 9 0t9 0" fill="none" stroke="#2E4D6B" stroke-width=".8" opacity=".55"/></pattern>
+<pattern id="p-ladrillos" width="48" height="22" patternUnits="userSpaceOnUse"><path d="M0 .5H48M0 11.5H48M.5 0V11M24.5 11V22" fill="none" stroke="#2E4D6B" stroke-width=".9" opacity=".55"/></pattern>
 </defs></svg>
 
-<!-- ================================================ BARRA SUPERIOR ===== -->
-<!-- Las credenciales giran. Las cifras con data-stat salen de config.js
-     (cifras BORRADOR); el valor escrito acá es el que se ve sin JS. -->
+<!-- ================================================ BARRA DE CONFIANZA === -->
+<!-- Las cifras con data-stat salen de config.js; el valor escrito acá es el
+     que se ve sin JS. La segunda tanda es copia para que el loop no salte. -->
 <div class="barra">
   <ul class="barra-pista">
-    <li class="barra-logo"><img src="assets/brand/black-solo-blanco.png" width="824" height="316" alt="Black"></li>
+    <li class="barra-logo"><img src="assets/brand/black-solo-blanco-80.png" width="80" height="31" alt="Black"></li>
     <li><svg aria-hidden="true"><use href="#i-star"/></svg><b>5,0</b> en Google · 41 reseñas</li>
     <li><span class="sep" aria-hidden="true"></span>Visita técnica en <b>72 h</b></li>
     <li><span class="sep" aria-hidden="true"></span>Informe de decisión en <b>7 días</b></li>
-    <li><span class="sep" aria-hidden="true"></span><b data-stat="anos">15</b> años de trayectoria</li>
-    <li><span class="sep" aria-hidden="true"></span><b data-stat="obras">120</b> obras ejecutadas</li>
-    <li><span class="sep" aria-hidden="true"></span><b data-stat="m2">18.000</b> m² intervenidos</li>
-    <li><span class="sep" aria-hidden="true"></span>Arquitecto y Maestro Mayor de Obra <b>matriculado</b></li>
-    <li><span class="sep" aria-hidden="true"></span>Asesora <b>inmobiliaria</b></li>
+    <li><span class="sep" aria-hidden="true"></span><b data-stat="anos">15</b> años · <b data-stat="obras">120</b> obras · <b data-stat="m2">18.000</b> m²</li>
+    <li><span class="sep" aria-hidden="true"></span>Arquitecto y Maestro Mayor de Obra <b>matriculado</b> + asesora inmobiliaria</li>
     <li><span class="sep" aria-hidden="true"></span>CABA · Zona Norte · Zona Oeste</li>
-    <!-- Copia para que el loop cierre sin salto. Oculta a lectores de pantalla. -->
-    <li class="barra-logo" aria-hidden="true"><img src="assets/brand/black-solo-blanco.png" width="824" height="316" alt=""></li>
+    <li class="barra-logo" aria-hidden="true"><img src="assets/brand/black-solo-blanco-80.png" width="80" height="31" alt=""></li>
     <li aria-hidden="true"><svg><use href="#i-star"/></svg><b>5,0</b> en Google · 41 reseñas</li>
     <li aria-hidden="true"><span class="sep"></span>Visita técnica en <b>72 h</b></li>
     <li aria-hidden="true"><span class="sep"></span>Informe de decisión en <b>7 días</b></li>
-    <li aria-hidden="true"><span class="sep"></span><b data-stat="anos">15</b> años de trayectoria</li>
-    <li aria-hidden="true"><span class="sep"></span><b data-stat="obras">120</b> obras ejecutadas</li>
-    <li aria-hidden="true"><span class="sep"></span><b data-stat="m2">18.000</b> m² intervenidos</li>
-    <li aria-hidden="true"><span class="sep"></span>Arquitecto y Maestro Mayor de Obra <b>matriculado</b></li>
-    <li aria-hidden="true"><span class="sep"></span>Asesora <b>inmobiliaria</b></li>
+    <li aria-hidden="true"><span class="sep"></span><b data-stat="anos">15</b> años · <b data-stat="obras">120</b> obras · <b data-stat="m2">18.000</b> m²</li>
+    <li aria-hidden="true"><span class="sep"></span>Arquitecto y Maestro Mayor de Obra <b>matriculado</b> + asesora inmobiliaria</li>
     <li aria-hidden="true"><span class="sep"></span>CABA · Zona Norte · Zona Oeste</li>
   </ul>
 </div>
 
 <main id="contenido">
 
-<!-- ======================================================= 01 · HERO ==== -->
-<!-- Tipográfico. El fondo es una planta dibujada en línea que se traza al
-     cargar: ningún archivo de imagen compite con el H1 por el LCP. -->
-<section class="hero grilla">
-  <svg class="plano" viewBox="0 0 1000 720" aria-hidden="true" focusable="false">
-    <!-- Ejes (punto y raya): entran por opacidad, no se trazan. -->
-    <g class="plano-ejes">
-      <path d="M80 30V700M480 30V700M920 30V700M40 120H960M40 380H960M40 640H960"/>
-    </g>
-    <!-- Muros perimetrales -->
-    <g class="t" style="--d:.05s">
-      <path pathLength="1" d="M80 120H920V640H80Z"/>
-      <path pathLength="1" d="M96 136H904V624H96Z"/>
-    </g>
-    <!-- Ventanas -->
-    <g class="t t-fino" style="--d:.35s">
-      <path pathLength="1" d="M220 120V136M340 120V136M220 128H340"/>
-      <path pathLength="1" d="M600 120V136M780 120V136M600 128H780"/>
-      <path pathLength="1" d="M180 624V640M330 624V640M180 632H330"/>
-      <path pathLength="1" d="M904 430V560M920 430V560M912 430V560"/>
-    </g>
-    <!-- Tabiques -->
-    <g class="t" style="--d:.45s">
-      <path pathLength="1" d="M480 136V380"/>
-      <path pathLength="1" d="M480 460V624"/>
-      <path pathLength="1" d="M96 380H330"/>
-      <path pathLength="1" d="M410 380H480"/>
-      <path pathLength="1" d="M480 330H700"/>
-      <path pathLength="1" d="M780 330H904"/>
-    </g>
-    <!-- Puertas: hoja + barrido -->
-    <g class="t t-fino" style="--d:.8s">
-      <path pathLength="1" d="M330 380V300"/>
-      <path pathLength="1" d="M330 300A80 80 0 0 1 410 380"/>
-      <path pathLength="1" d="M480 460H560"/>
-      <path pathLength="1" d="M560 460A80 80 0 0 1 480 380"/>
-      <path pathLength="1" d="M700 330V250"/>
-      <path pathLength="1" d="M700 250A80 80 0 0 1 780 330"/>
-    </g>
-    <!-- Escalera -->
-    <g class="t t-fino" style="--d:1s">
-      <path pathLength="1" d="M560 430H780V600H560Z"/>
-      <path pathLength="1" d="M587.5 430V600M615 430V600M642.5 430V600M670 430V600M697.5 430V600M725 430V600M752.5 430V600"/>
-      <path pathLength="1" d="M572 515H766M752 506L766 515L752 524"/>
-    </g>
-    <!-- Mesada -->
-    <g class="t t-fino" style="--d:1.1s">
-      <path pathLength="1" d="M96 540H230V624"/>
-    </g>
-    <!-- Cotas -->
-    <g class="t t-cota" style="--d:1.25s">
-      <path pathLength="1" d="M80 84H920"/>
-      <path pathLength="1" d="M80 74V110M480 74V110M920 74V110"/>
-      <path pathLength="1" d="M72 92L88 76M472 92L488 76M912 92L928 76"/>
-      <path pathLength="1" d="M44 120V640"/>
-      <path pathLength="1" d="M34 120H70M34 380H70M34 640H70"/>
-      <path pathLength="1" d="M36 128L52 112M36 388L52 372M36 648L52 632"/>
-    </g>
-    <!-- Burbujas de ejes -->
-    <g class="t t-fino" style="--d:1.45s">
-      <path pathLength="1" d="M64 30a16 16 0 1 0 32 0a16 16 0 1 0-32 0"/>
-      <path pathLength="1" d="M464 30a16 16 0 1 0 32 0a16 16 0 1 0-32 0"/>
-      <path pathLength="1" d="M904 30a16 16 0 1 0 32 0a16 16 0 1 0-32 0"/>
-    </g>
-    <g class="plano-txt">
-      <text x="80" y="35">A</text><text x="480" y="35">B</text><text x="920" y="35">C</text>
-      <text class="cota-txt" x="280" y="72">4,80</text>
-      <text class="cota-txt" x="700" y="72">5,20</text>
-      <text class="cota-txt" x="28" y="250" transform="rotate(-90 28 250)">3,10</text>
-      <text class="cota-txt" x="28" y="510" transform="rotate(-90 28 510)">3,10</text>
-      <text x="290" y="260">ESTAR</text>
-      <text x="690" y="230">DORMITORIO</text>
-      <text x="300" y="520">COCINA</text>
-    </g>
-  </svg>
+<!-- ======================================================= 1 · HERO ===== -->
+<!-- Fondo: el render de la casa de hormigón visto (versión anterior del
+     hero), con velo. Las fotos de Esteban y Carla van por separado.
+     PLACEHOLDER: cuando llegue una foto de los dos juntos, reemplaza el
+     par de .hero-foto por un solo <picture> dentro de .hero-duo. -->
+<section class="hero f-negro">
+  <picture class="hero-fondo" aria-hidden="true">
+    <source media="(min-width: 900px)" type="image/avif" srcset="assets/img/hero-d-1080.avif">
+    <source media="(min-width: 900px)" type="image/webp" srcset="assets/img/hero-d-1080.webp">
+    <source type="image/avif" srcset="assets/img/hero-m-480.avif 480w, assets/img/hero-m-720.avif 720w" sizes="100vw">
+    <img src="assets/img/hero-m-720.webp" srcset="assets/img/hero-m-480.webp 480w, assets/img/hero-m-720.webp 720w" sizes="100vw" width="720" height="1110" alt="" fetchpriority="high" decoding="async">
+  </picture>
 
-  <div class="wrap hero-in">
-    <h1 class="hero-t">
-      <span class="hero-t-a">Antes de invertir en una propiedad,</span>
-      <span class="subraya">diagnosticala</span>, sabé cuánto vale y cuánto cuesta dejarla como querés.
-    </h1>
-
-    <p class="hero-sub" data-hero style="--d:.15s">Diagnóstico Black, hecho por un arquitecto y Maestro Mayor de Obra junto a una asesora inmobiliaria.</p>
-
-    <ul class="hero-lista" data-hero style="--d:.25s">
-      <li><span class="flecha" aria-hidden="true">→</span><span><b>Visita técnica en 72 h</b> para ver el estado real de la propiedad.</span></li>
-      <li><span class="flecha" aria-hidden="true">→</span><span><b>Análisis de mercado:</b> cuánto valen propiedades similares en la zona.</span></li>
-      <li><span class="flecha" aria-hidden="true">→</span><span><b>Inversión estimada por etapas</b> para dejarla como querés.</span></li>
-      <li class="hero-lista-4"><span class="flecha" aria-hidden="true">→</span><span><b>Informe de decisión</b> a los 7 días.</span></li>
-    </ul>
-
-    <p class="hero-cierre" data-hero style="--d:.35s">Para que inviertas en la propiedad correcta, sin pagar de más y sin sorpresas después.</p>
-
-    <div class="hero-cta" data-hero style="--d:.4s">
-      <a class="btn btn-1 btn-lg" href="https://wa.me/5491164803777" data-cta="hero">
-        <span>Quiero mi Diagnóstico</span>
-        <svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg>
-      </a>
-      <p class="hero-micro">Se descuenta de honorarios si avanzás con el proyecto.</p>
-    </div>
-  </div>
-</section>
-
-
-<!-- =============================================== 02 · DOS MOMENTOS ==== -->
-<section class="sit-sec grilla">
-  <div class="wrap sit-head">
-    <h2 class="t-medio mask-grupo">
-      <span class="mask"><span>Hay <span class="subraya">dos</span> momentos para</span></span>
-      <span class="mask"><span>analizar una propiedad.</span></span>
-    </h2>
-    <p class="lead medida" data-reveal>El Diagnóstico sirve en los dos. Lo que cambia es la pregunta que respondemos.</p>
-  </div>
-  <div class="situaciones">
-    <div class="sit-panel sit-a" data-reveal="izq">
-      <p class="sit-n">Momento 01</p>
-      <h3>Todavía no la compraste</h3>
-      <p>Estás por tomar una decisión irreversible con la información que te dio la persona que cobra por vendértela. Necesitás saber si el precio se sostiene, qué problemas tiene la propiedad y cuánto vas a tener que invertir después de la escritura.</p>
-    </div>
-    <div class="sit-panel sit-b" data-reveal="der" style="--i:2">
-      <p class="sit-n">Momento 02</p>
-      <h3>Ya es tuya</h3>
-      <p>Sabés lo que querés hacer, pero no si se puede, en qué orden conviene hacerlo ni cuánto cuesta en serio. Y sobre todo: no sabés qué parte de esa inversión vuelve al valor de la propiedad y qué parte no vuelve nunca.</p>
-    </div>
-  </div>
-  <p class="sit-cierre" data-reveal>Es el mismo trabajo. Cambia el momento en el que llegás.</p>
-</section>
-
-
-<!-- ========================================= 03 · CONFLICTO DE INTERÉS ==== -->
-<!-- Fusión de "el auto" + "la compres o no". Editorial: columna angosta y
-     entrada grande. El argumento del arquitecto conocido va plegado. -->
-<section class="bloque m-negro s-editorial">
-  <div class="wrap">
-    <div class="medida">
-      <p class="entrada mask-grupo">
-        <span class="mask"><span>Es como preguntarle al que</span></span>
-        <span class="mask"><span>te vende el auto si el auto</span></span>
-        <span class="mask"><span>está bien.</span></span>
-      </p>
-      <p class="texto" data-reveal>La inmobiliaria cobra cuando la operación se cierra. El vendedor quiere vender. No significa que te estén mintiendo: significa que ninguno de los dos está ahí para decirte que no.</p>
-
-      <details class="mas" data-reveal>
-        <summary><span class="mas-txt"><b>¿Y un arquitecto conocido?</b><small class="abrir">Tocá para leer</small><small class="cerrar">Tocá para cerrar</small></span><span class="mas-ico" aria-hidden="true"></span></summary>
-        <div class="mas-cuerpo">
-          <p class="texto">Un arquitecto te va a decir qué se puede hacer, y probablemente tenga razón. Lo que no te va a decir es si el precio que piden se sostiene en esa zona, ni cuánto de tu inversión vuelve al valor de la propiedad.</p>
+  <div class="wrap g12 hero-in">
+    <div class="hero-txt">
+      <p class="hero-pre">Para quien está por comprar, reformar o invertir en CABA, Zona Norte y Zona Oeste.</p>
+      <h1>Antes de poner un peso en una propiedad, sabé cuánto vale, cuánto cuesta dejarla como querés y si la cuenta cierra.</h1>
+      <div class="hero-sub">
+        <div class="hero-mini" aria-hidden="true">
+          <img src="assets/img/esteban-mini.webp" width="96" height="120" alt="" decoding="async">
+          <img src="assets/img/carla-mini.webp" width="96" height="120" alt="" decoding="async">
         </div>
-      </details>
+        <p>Un arquitecto y Maestro Mayor de Obra y una asesora inmobiliaria analizan la propiedad con vos. Cobramos honorarios fijos, no un porcentaje de la operación: cobramos lo mismo si comprás o si no.</p>
+      </div>
+      <a class="btn btn-1 btn-lg" href="#diagnostico" data-cta="cta_hero"><span>Quiero mi Diagnóstico</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
+      <p class="hero-micro">Visita en 72 h · Informe de decisión en 7 días · Se descuenta de honorarios si avanzás con el proyecto.</p>
+    </div>
 
-      <p class="entrada entrada-chica" data-reveal>Una compra tiene dos partes.</p>
+    <figure class="hero-duo">
+      <div class="hero-foto hero-foto-e">
+        <picture>
+          <source type="image/avif" srcset="assets/img/esteban-400.avif 400w, assets/img/esteban-560.avif 560w" sizes="(min-width: 900px) 22vw, 1px">
+          <img src="assets/img/esteban-560.webp" srcset="assets/img/esteban-400.webp 400w, assets/img/esteban-560.webp 560w" sizes="(min-width: 900px) 22vw, 1px" width="560" height="700" alt="Esteban Crimi, arquitecto y Maestro Mayor de Obra" loading="lazy" decoding="async">
+        </picture>
+      </div>
+      <div class="hero-foto hero-foto-c">
+        <picture>
+          <source type="image/avif" srcset="assets/img/carla-400.avif 400w, assets/img/carla-596.avif 596w" sizes="(min-width: 900px) 20vw, 1px">
+          <img src="assets/img/carla-596.webp" srcset="assets/img/carla-400.webp 400w, assets/img/carla-596.webp 596w" sizes="(min-width: 900px) 20vw, 1px" width="596" height="745" alt="Carla La Porta, asesora inmobiliaria" loading="lazy" decoding="async">
+        </picture>
+      </div>
+      <figcaption class="cota-txt"><span class="cota-linea" aria-hidden="true"></span>Esteban Crimi · Carla La Porta</figcaption>
+    </figure>
+  </div>
+</section>
 
-      <div class="diagrama" data-reveal>
-        <p class="diagrama-raiz">Comprar una propiedad</p>
-        <svg class="diagrama-brazos" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-          <path pathLength="1" d="M100 0V16H50V40M100 16H150V40"/>
+<div class="corte" aria-hidden="true"></div>
+
+
+<!-- ===================================================== 2 · PROBLEMA ==== -->
+<section class="sec f-hormigon" id="problema">
+  <div class="wrap g12">
+    <div class="c-5">
+      <h2>Todos los que te asesoran ganan si firmás.</h2>
+      <div class="texto">
+        <p>La inmobiliaria cobra cuando se cierra la operación. El vendedor quiere vender. El constructor que te pasa el presupuesto quiere hacer la obra. No es que te estén mintiendo: es que ninguno está ahí para decirte que no.</p>
+        <p>Y el que podría decírtelo, el arquitecto, casi siempre llega tarde. Lo llamás cuando ya escrituraste o cuando la obra ya arrancó. En ese momento no puede evitarte el error: solo puede presupuestarlo.</p>
+      </div>
+      <p class="destacado">Nosotros entramos antes. Y cobramos lo mismo si comprás o si no.</p>
+    </div>
+
+    <figure class="c-7 ilus ilus-problema">
+      <svg viewBox="0 0 620 470" role="img" aria-labelledby="il1-t">
+        <title id="il1-t">La inmobiliaria, el vendedor y el constructor cobran si firmás. Black cobra un honorario fijo, firmes o no.</title>
+        <!-- Límite de la operación -->
+        <rect class="l-cota" x="4" y="4" width="430" height="462" stroke-dasharray="7 6"/>
+        <text class="t-chico" x="18" y="456">Si firmás</text>
+        <!-- Actores -->
+        <g class="actor">
+          <rect class="l-azul" x="18" y="22" width="180" height="48"/><text class="t-et" x="108" y="54" text-anchor="middle">Inmobiliaria</text>
+          <rect class="r-oculto" x="18" y="76" width="132" height="32"/><text class="t-tag" x="84" y="98" text-anchor="middle">$ si firmás</text>
+        </g>
+        <g class="actor">
+          <rect class="l-azul" x="250" y="22" width="166" height="48"/><text class="t-et" x="333" y="54" text-anchor="middle">Vendedor</text>
+          <rect class="r-oculto" x="284" y="76" width="132" height="32"/><text class="t-tag" x="350" y="98" text-anchor="middle">$ si firmás</text>
+        </g>
+        <g class="actor">
+          <rect class="r-oculto" x="132" y="340" width="132" height="32"/><text class="t-tag" x="198" y="362" text-anchor="middle">$ si firmás</text>
+          <rect class="l-azul" x="108" y="378" width="180" height="48"/><text class="t-et" x="198" y="410" text-anchor="middle">Constructor</text>
+        </g>
+        <!-- La propiedad en planta -->
+        <g class="planta">
+          <rect class="l-azul l-grueso" x="128" y="170" width="140" height="120"/>
+          <rect class="l-azul" x="134" y="176" width="128" height="108"/>
+          <path class="l-azul" d="M200 176V236M134 236H176M200 252V284M220 236H262"/>
+          <path class="l-fino" d="M176 236A24 24 0 0 1 200 212M200 252A20 20 0 0 1 220 236"/>
+          <text class="t-chico" x="120" y="236" text-anchor="end">La</text><text class="t-chico" x="120" y="256" text-anchor="end">propiedad</text>
+        </g>
+        <!-- Flechas: el dinero va hacia ellos si se firma -->
+        <path class="l-flecha" d="M160 168L96 114M236 168L326 114M198 298V334" marker-end="url(#m-flecha)"/>
+        <!-- Black, afuera -->
+        <rect class="r-negro" x="466" y="190" width="144" height="56"/>
+        <text class="t-black" x="538" y="228" text-anchor="middle">Black</text>
+        <text class="t-et t-azul" x="538" y="280" text-anchor="middle">$ fijo,</text>
+        <text class="t-et t-azul" x="538" y="306" text-anchor="middle">firmes o no</text>
+        <path class="l-azul" d="M462 218H280" stroke-dasharray="3 5" marker-end="url(#m-flecha-a)"/>
+        <defs>
+          <marker id="m-flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0A0A0A"/></marker>
+          <marker id="m-flecha-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2E4D6B"/></marker>
+        </defs>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<div class="cota-sep wrap" aria-hidden="true"></div>
+
+
+<!-- ================================================ 3 · TRES CUENTAS ==== -->
+<section class="sec f-papel" id="tres-cuentas">
+  <div class="wrap g12">
+    <figure class="c-7 ilus ecuacion" data-ecuacion aria-label="Cuánto vale hoy, más cuánto cuesta la obra, igual a cuánto vale refaccionada: ¿cierra la cuenta?">
+      <div class="ec-item">
+        <svg viewBox="0 0 160 140" aria-hidden="true">
+          <path class="l-azul" d="M8 128H152"/>
+          <path class="l-azul l-grueso" d="M30 128V66L80 30L130 66V128"/>
+          <path class="l-azul" d="M70 128V94H90V128M42 76H62V96H42ZM98 76H118V96H98Z"/>
         </svg>
-        <div class="diagrama-ramas">
-          <div class="diagrama-rama">
-            <p class="diagrama-et">Lo constructivo</p>
-            <p class="diagrama-txt">Qué se puede hacer y cuánto cuesta en serio dejarla como querés.</p>
-          </div>
-          <div class="diagrama-rama">
-            <p class="diagrama-et">Lo inmobiliario</p>
-            <p class="diagrama-txt">Cuánto se paga en esa zona, si el precio se sostiene y cuánto vale refaccionada.</p>
-          </div>
-        </div>
-        <p class="diagrama-pie">Lo que define si es un buen negocio son <span class="resalta">las dos juntas.</span></p>
+        <p><b>01</b>Cuánto vale</p>
       </div>
-    </div>
-
-    <div class="declara">
-      <img class="marca" src="assets/brand/black-solo-blanco.png" width="824" height="316" alt="" aria-hidden="true" loading="lazy" decoding="async">
-      <h2 class="mask-grupo">
-        <span class="mask"><span>Nuestro trabajo es asesorarte,</span></span>
-        <span class="mask"><span>la compres o no.</span></span>
-      </h2>
-      <p class="texto declara-txt" data-reveal>Cobramos honorarios fijos por el diagnóstico, <strong>no un porcentaje de la operación.</strong></p>
-      <div class="cta-bloque" data-reveal>
-        <a class="btn btn-1 btn-lg" href="https://wa.me/5491164803777" data-cta="conflicto">
-          <span>Quiero mi Diagnóstico</span>
-          <svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg>
-        </a>
+      <span class="ec-op" aria-hidden="true">+</span>
+      <div class="ec-item">
+        <svg viewBox="0 0 160 140" aria-hidden="true">
+          <path class="l-azul" d="M8 128H152"/>
+          <path d="M30 128V66L80 30L130 66V128H122V70L80 40L38 70V128Z" fill="url(#p-ladrillo)" stroke="#2E4D6B" stroke-width="1.4"/>
+          <rect x="44" y="96" width="34" height="26" fill="url(#p-oculto)" stroke="#0A0A0A" stroke-width="1.2"/>
+          <path d="M92 74V122M92 74H112" fill="none" stroke="#0A0A0A" stroke-width="3.2"/>
+          <path d="M92 74V122M92 74H112" fill="none" stroke="#FFE500" stroke-width="1.8"/>
+        </svg>
+        <p><b>02</b>Cuánto sale</p>
       </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ============================================= 04 · LOS TRES NÚMEROS ==== -->
-<!-- Cada número es una cota. Abajo, las tres cotas se arman como una cuenta:
-     lo que vale + lo que sale dejarla, contra lo que vale refaccionada. -->
-<section class="bloque m-carbon s-tres grilla">
-  <div class="wrap">
-    <h2 class="t-medio mask-grupo">
-      <span class="mask"><span>Una propiedad no se evalúa</span></span>
-      <span class="mask"><span>con un número. Se evalúa con <span class="subraya">tres</span>.</span></span>
-    </h2>
-
-    <div class="tres">
-      <article class="tres-item" data-reveal style="--i:0">
-        <div class="cota cota-n" aria-hidden="true"><span class="cota-et">01</span><i></i><i></i></div>
-        <h3>Cuánto vale de verdad.</h3>
-        <p>El precio de publicación no es el valor. Cruzamos lo que piden contra lo que efectivamente se pagó por propiedades comparables en esa zona.</p>
-      </article>
-      <article class="tres-item" data-reveal style="--i:1">
-        <div class="cota cota-n" aria-hidden="true"><span class="cota-et">02</span><i></i><i></i></div>
-        <h3>Cuánto sale dejarla como querés.</h3>
-        <p>Qué se puede hacer, en qué orden y con qué rango de costo por etapa. Con criterio de obra, no de escritorio.</p>
-      </article>
-      <article class="tres-item" data-reveal style="--i:2">
-        <div class="cota cota-n" aria-hidden="true"><span class="cota-et">03</span><i></i><i></i></div>
-        <h3>Cuánto vale refaccionada.</h3>
-        <p>A cuánto puede aspirar esa propiedad una vez intervenida. Es el número que define si la operación fue un gasto o una inversión.</p>
-      </article>
-    </div>
-
-    <p class="tres-inversor medida" data-reveal>Un inversor no compra una propiedad sin hacer estas tres cuentas. <strong>Vos vas a vivir ahí: con más razón.</strong></p>
-
-    <!-- La cuenta. Sin JS se ve completa. -->
-    <figure class="cuenta" data-reveal aria-label="La cuenta: lo que vale más lo que cuesta dejarla, contra lo que vale refaccionada">
-      <div class="cuenta-fila">
-        <div class="cota" style="--w:56%"><span class="cota-et">01 · Cuánto vale</span><i></i><i></i></div>
-        <div class="cota" style="--w:26%"><span class="cota-et">02 · Obra</span><i></i><i></i></div>
-        <div class="cota cota-dif" style="--w:18%"><span class="cota-et">¿Margen?</span><i></i><i></i></div>
+      <span class="ec-op" aria-hidden="true">=</span>
+      <div class="ec-item">
+        <svg viewBox="0 0 160 140" aria-hidden="true">
+          <path class="l-azul" d="M8 128H152"/>
+          <path class="l-azul l-grueso" d="M30 128V66L80 30L130 66V128"/>
+          <path class="l-azul" d="M40 128V84H76V128M40 106H76M58 84V128M96 74H120V128H96Z"/>
+          <path class="l-fino" d="M130 128V96H150V128M140 96V128"/>
+          <circle class="l-azul" cx="20" cy="104" r="12"/><path class="l-azul" d="M20 116V128"/>
+        </svg>
+        <p><b>03</b>Cuánto vale refaccionada</p>
       </div>
-      <div class="cuenta-fila">
-        <div class="cota cota-total" style="--w:100%"><span class="cota-et">03 · Cuánto vale refaccionada</span><i></i><i></i></div>
-      </div>
+      <p class="ec-res"><span class="ec-q" aria-hidden="true">?</span><span class="ec-a">¿Cierra la cuenta?</span></p>
     </figure>
 
-    <div class="converge" data-reveal>
-      <p class="converge-caja">¿Es negocio, sí o no?</p>
-      <p class="converge-pie">Con los tres números tenés la respuesta. Con uno solo, estás adivinando.</p>
+    <div class="c-5">
+      <h2>Una propiedad no se evalúa con un número. Se evalúa con tres.</h2>
+    </div>
+
+    <ol class="c-12 tres">
+      <li><span class="n">01</span><h3>Cuánto vale de verdad.</h3><p>El precio de publicación no es el valor. Cruzamos lo que piden contra lo que efectivamente se pagó por propiedades comparables en esa zona.</p></li>
+      <li><span class="n">02</span><h3>Cuánto sale dejarla como querés.</h3><p>Qué se puede hacer, en qué orden y con qué rango de costo por etapa. Con criterio de obra, no de escritorio.</p></li>
+      <li><span class="n">03</span><h3>Cuánto vale refaccionada.</h3><p>A cuánto puede aspirar la propiedad una vez intervenida. Es el número que define si fue un gasto o una inversión.</p></li>
+    </ol>
+
+    <div class="c-7 texto">
+      <p>La inmobiliaria, con suerte, te da la primera. El constructor, la segunda. La tercera no te la da nadie, porque para hacerla hay que saber de obra y de mercado al mismo tiempo. Eso es el Diagnóstico Black.</p>
+      <p class="destacado">Un inversor no compra sin hacer estas tres cuentas. Vos vas a vivir ahí: con más razón.</p>
+      <a class="btn btn-1 btn-lg" href="#diagnostico" data-cta="cta_tres_cuentas"><span>Quiero mi Diagnóstico</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
     </div>
   </div>
 </section>
 
+<div class="cota-sep wrap" aria-hidden="true"></div>
 
-<!-- ========================================= 05 · QUÉ ES DIAGNOSTICAR ==== -->
-<!-- Papel de plano: la grilla acá significa algo. Cada ítem tiene su ícono
-     de línea, todos del mismo sistema: 48 × 48, trazo 1,5, puntas redondas,
-     grilla de 4. -->
-<section class="bloque m-negro grilla grilla-fuerte s-analizar">
+
+<!-- ============================================== 4 · CASOS + RESEÑAS ==== -->
+<section class="sec f-hormigon" id="casos">
   <div class="wrap">
-    <h2 class="t-grande mask-grupo">
-      <span class="mask"><span>No vamos solo a mirar.</span></span>
-      <span class="mask"><span>Vamos a <span class="acento">analizar.</span></span></span>
-    </h2>
-    <p class="lead medida" data-reveal>Los problemas que rompen un presupuesto casi nunca están a la vista. Están detrás de un revoque nuevo, debajo de un piso recién puesto o dentro de una pared.</p>
+    <h2 class="medida">Dos propiedades, dos cuentas que cambiaron la decisión.</h2>
 
-    <div class="analisis">
-      <div class="an-item" data-reveal style="--i:0">
-        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-          <path pathLength="1" d="M4 40H44"/>
-          <path pathLength="1" d="M10 40V8H22V40"/>
-          <path pathLength="1" d="M12 36c1.3-1.4 2.7-1.4 4 0s2.7 1.4 4 0"/>
-          <path pathLength="1" d="M12 30c1.3-1.4 2.7-1.4 4 0s2.7 1.4 4 0"/>
-          <path pathLength="1" d="M34 14c-3.6 4.6-5.6 8-5.6 10.6a5.6 5.6 0 0 0 11.2 0c0-2.6-2-6-5.6-10.6Z"/>
-        </svg>
-        <div>
-          <h3>Análisis de humedades.</h3>
-          <p>Qué se ve, qué indica y qué conviene verificar antes de decidir.</p>
+    <article class="caso g12">
+      <div class="c-5 caso-txt">
+        <p class="caso-et">Caso 01 — Pre-compra · Villa Devoto</p>
+        <h3>USD 40.000 que no pagó de más.</h3>
+        <div class="barras" aria-hidden="true">
+          <div class="barra-fila"><p class="barra-et"><span>Lo que pedían</span><b>USD 460.000</b></p><div class="barra-c"><span class="b-ok" style="--w:100%"></span></div></div>
+          <div class="barra-fila"><p class="barra-et"><span>Lo que se sostenía</span><b>USD 420.000</b></p><div class="barra-c"><span class="b-ok" style="--w:91.3%"></span><span class="b-oculto" style="--w:8.7%"></span></div></div>
+          <p class="barras-pie">USD 40.000 de sobreprecio</p>
+        </div>
+        <div class="texto">
+          <p>Lorena estaba por ofertar por una casa de 180 m² en Devoto. Pedían USD 460.000 y en los papeles era una oportunidad. Antes de hacer la oferta nos llamó. Analizamos la casa, la documentación, cuánto iba a tener que invertir después y cuánto se estaba pagando realmente en la zona.</p>
+          <p>Lo que encontramos no estaba en las fotos: la propiedad estaba publicada por encima de su valor de mercado. El número que se sostenía era USD 420.000. Con la oferta que tenía pensada, pagaba <strong>USD 40.000 de más</strong>.</p>
         </div>
       </div>
-      <div class="an-item" data-reveal style="--i:1">
-        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-          <path pathLength="1" d="M6 8H42V40H6Z"/>
-          <path pathLength="1" d="M6 32H16a4 4 0 0 0 4-4V8"/>
-          <path pathLength="1" d="M6 24H12"/>
-          <path pathLength="1" d="M30 16H38V24H30Z"/>
-          <path pathLength="1" d="M34 24V40"/>
-          <path pathLength="1" d="M34 8V16"/>
-        </svg>
-        <div>
-          <h3>Análisis de instalaciones.</h3>
-          <p>El estado aparente de lo accesible y qué conviene revisar con un especialista.</p>
-        </div>
-      </div>
-      <div class="an-item" data-reveal style="--i:2">
-        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-          <path pathLength="1" d="M4 8H32V40H4Z"/>
-          <path pathLength="1" d="M4 20H32M4 32H32M12 8V20M24 20V32M12 32V40"/>
-          <path pathLength="1" d="M19 8l-2.5 5 3.5 4-3 5 2.5 4-2 5 1.5 4-1.5 5"/>
-          <path pathLength="1" d="M30 30a7 7 0 1 0 14 0a7 7 0 1 0-14 0"/>
-          <path pathLength="1" d="M42 35L46 39"/>
-        </svg>
-        <div>
-          <h3>Estado general.</h3>
-          <p>Fisuras, deterioros, cielorrasos, carpinterías y posibles condicionantes estructurales.</p>
-        </div>
-      </div>
-      <div class="an-item" data-reveal style="--i:3">
-        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-          <path pathLength="1" d="M6 8H42V40H6Z"/>
-          <path pathLength="1" d="M22 8V18"/>
-          <path pathLength="1" d="M22 22V25M22 29V32M22 36V40"/>
-          <path pathLength="1" d="M6 28H10"/>
-          <path pathLength="1" d="M10 28A8 8 0 0 1 18 36"/>
-          <path pathLength="1" d="M28 24H38M34 20L38 24L34 28"/>
-        </svg>
-        <div>
-          <h3>Potencial de reforma.</h3>
-          <p>Qué se puede, qué no se puede y qué se puede pero sale caro.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="doc">
-      <svg class="ico ico-doc" viewBox="0 0 48 48" aria-hidden="true" focusable="false" data-reveal>
-        <path pathLength="1" d="M10 4H32L38 10V44H10Z"/>
-        <path pathLength="1" d="M32 4V10H38"/>
-        <path pathLength="1" d="M15 14H27M15 19H32M15 24H24"/>
-        <path pathLength="1" d="M10 34H38M24 34V44"/>
-        <path pathLength="1" d="M28 39H34"/>
-        <path pathLength="1" d="M14 39l2 2 4-4"/>
-      </svg>
-      <div>
-        <h3 class="t-chico mask-grupo">
-          <span class="mask"><span>La propiedad no son solo las paredes.</span></span>
-          <span class="mask"><span>También es lo que dice el papel.</span></span>
-        </h3>
-        <p class="doc-destacado" data-reveal>Revisión preliminar de planos y documentación con <b>abogados especializados en el rubro inmobiliario.</b></p>
-        <p class="texto" data-reveal>Lo definitivo lo certifica el escribano: nosotros te decimos qué pedirle.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ========================================= 06 · ANTES Y DESPUÉS ======== -->
-<section class="bloque m-papel s-tabla grilla">
-  <div class="wrap">
-    <h2 class="t-medio mask-grupo">
-      <span class="mask"><span>La diferencia entre suponer y saber.</span></span>
-    </h2>
-    <div class="tabla">
-      <div class="tabla-cab" aria-hidden="true"><span class="c1">Antes del Diagnóstico</span><span class="c2">Después del Diagnóstico</span></div>
-      <div class="tabla-fila" data-reveal style="--i:0">
-        <div class="tabla-c tabla-antes"><span class="tabla-et">Antes</span>Te gusta la propiedad pero no sabés si el precio se sostiene</div>
-        <div class="tabla-c tabla-despues"><span class="tabla-et">Después</span>Sabés cuánto se está pidiendo por propiedades comparables en esa zona y hasta dónde tiene sentido negociar</div>
-      </div>
-      <div class="tabla-fila" data-reveal style="--i:1">
-        <div class="tabla-c tabla-antes"><span class="tabla-et">Antes</span>Imaginás una reforma y suponés que se puede hacer</div>
-        <div class="tabla-c tabla-despues"><span class="tabla-et">Después</span>Sabés qué se puede, qué no se puede, y qué se puede pero sale caro</div>
-      </div>
-      <div class="tabla-fila" data-reveal style="--i:2">
-        <div class="tabla-c tabla-antes"><span class="tabla-et">Antes</span>Calculaste la obra a ojo o con un número que te tiró un conocido</div>
-        <div class="tabla-c tabla-despues"><span class="tabla-et">Después</span>Tenés rangos de costo por etapa, ordenados por prioridad</div>
-      </div>
-      <div class="tabla-fila" data-reveal style="--i:3">
-        <div class="tabla-c tabla-antes"><span class="tabla-et">Antes</span>No tenés idea de lo que hay detrás de las paredes</div>
-        <div class="tabla-c tabla-despues"><span class="tabla-et">Después</span>La propiedad fue analizada por un arquitecto y Maestro Mayor de Obra: humedades, instalaciones y estado general.</div>
-      </div>
-      <div class="tabla-fila" data-reveal style="--i:4">
-        <div class="tabla-c tabla-antes"><span class="tabla-et">Antes</span>Confiás en que los papeles están en orden</div>
-        <div class="tabla-c tabla-despues"><span class="tabla-et">Después</span>Sabés si los planos acompañan lo construido y qué tiene que verificar el escribano antes de firmar.</div>
-      </div>
-      <div class="tabla-fila" data-reveal style="--i:5">
-        <div class="tabla-c tabla-antes"><span class="tabla-et">Antes</span>No sabés si es un buen negocio</div>
-        <div class="tabla-c tabla-despues"><span class="tabla-et">Después</span>Sabés cuánto puede llegar a valer refaccionada y si la cuenta cierra</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- =============================================== 07 · QUÉ TE LLEVÁS ==== -->
-<!-- El bloque más importante después del hero. Se diseña como una lámina
-     impresa: hoja de papel con rótulo, ítems numerados y plazos en columna. -->
-<section class="bloque m-carbon s-oferta" id="que-te-llevas">
-  <div class="wrap">
-    <h2 class="t-medio mask-grupo">
-      <span class="mask"><span>No te llevás una opinión.</span></span>
-      <span class="mask"><span>Te llevás un diagnóstico <span class="subraya">completo</span>.</span></span>
-    </h2>
-
-    <div class="lamina" data-reveal>
-      <div class="lamina-rotulo">
-        <p class="lamina-marca"><img src="assets/brand/black-solo-negro.png" width="824" height="316" alt="Black" loading="lazy" decoding="async"></p>
-        <p class="lamina-tit">Diagnóstico Black<span>Ficha técnica del servicio</span></p>
-        <p class="lamina-hoja">Lámina<b>01</b></p>
-      </div>
-
-      <ol class="lamina-items">
-        <li class="li-item">
-          <span class="li-n">01</span>
-          <div class="li-txt"><h3>Visita técnica dentro de las 72 h.</h3><p>Entre 45 y 75 minutos de recorrido con Esteban, como arquitecto y como Maestro Mayor de Obra.</p></div>
-          <span class="li-plazo">72 h</span>
-        </li>
-        <li class="li-item">
-          <span class="li-n">02</span>
-          <div class="li-txt"><h3>Ficha Black de la propiedad + minuta de visita.</h3><p>Todo lo que se analizó y se conversó, documentado en PDF.</p></div>
-          <span class="li-plazo">PDF</span>
-        </li>
-        <li class="li-item">
-          <span class="li-n">03</span>
-          <div class="li-txt"><h3>Análisis comparativo de mercado.</h3><p>Precios publicados contra precios realmente vendidos, posición frente a la competencia y rango de negociación.</p></div>
-        </li>
-        <li class="li-item">
-          <span class="li-n">04</span>
-          <div class="li-txt"><h3>Inversión estimada por etapas.</h3><p>Qué hacer, en qué orden y con qué rango de costo.</p></div>
-        </li>
-        <li class="li-item">
-          <span class="li-n">05</span>
-          <div class="li-txt"><h3>Revisión documental preliminar</h3><p>con el equipo legal.</p></div>
-        </li>
-        <li class="li-item li-informe">
-          <span class="li-n">06</span>
-          <div class="li-txt">
-            <h3>Informe de decisión, a los 7 días.</h3>
-            <p>Un informe, siete miradas:</p>
-            <ol class="miradas">
-              <li><b>01</b>Diagnóstico arquitectónico</li>
-              <li><b>02</b>Potencial de reforma</li>
-              <li><b>03</b>Inversión preliminar</li>
-              <li><b>04</b>Análisis comparativo de mercado</li>
-              <li><b>05</b>Análisis económico de compra</li>
-              <li><b>06</b>Estrategia de negociación</li>
-              <li><b>07</b>Puntos a verificar</li>
-            </ol>
-          </div>
-          <span class="li-plazo li-plazo-fuerte">7 días</span>
-        </li>
-        <li class="li-item">
-          <span class="li-n">07</span>
-          <div class="li-txt"><h3>Reunión de devolución online</h3><p>para repasar todo y responder lo que quieras.</p></div>
-          <span class="li-plazo">Online</span>
-        </li>
-      </ol>
-
-      <div class="lamina-extra">
-        <p class="lamina-sub">Incluido sin costo extra</p>
-        <ul>
-          <li><b>Estrategia de negociación:</b> argumentos objetivos para respaldar tu oferta.</li>
-          <li><b>Puntos a verificar antes de escriturar:</b> qué revisar, con quién y en qué orden.</li>
-        </ul>
-      </div>
-
-      <div class="lamina-riesgo">
-        <p><b>Sin riesgo:</b> el Diagnóstico se descuenta entero de los honorarios si avanzás con el proyecto. Y si te decimos que no la compres, cumplió su mejor función.</p>
-      </div>
-    </div>
-
-    <p class="packs medida" data-reveal><b>¿Estás comparando varias propiedades?</b> Las analizamos con el mismo criterio y te entregamos una matriz comparativa. Tenemos packs para eso.</p>
-
-    <div class="cta-bloque" data-reveal>
-      <a class="btn btn-1 btn-lg" href="https://wa.me/5491164803777" data-cta="oferta">
-        <span>Quiero mi Diagnóstico</span>
-        <svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ======================================================= 08 · CASOS ==== -->
-<!-- Las cifras finales están escritas en el HTML. El contador solo anima
-     cuando entra en pantalla; si el JS falla, se ve el número final. -->
-<section class="bloque m-negro s-casos grilla">
-  <div class="wrap">
-    <h2 class="t-medio mask-grupo">
-      <span class="mask"><span>Ejemplos de clientes que ahorraron</span></span>
-      <span class="mask"><span>miles de dólares con el Diagnóstico.</span></span>
-    </h2>
-
-    <article class="caso">
-      <p class="kicker kicker-acento" data-reveal>Caso 01 — Pre-compra · Villa Devoto</p>
-      <div class="caso-grid">
-        <div>
-          <p class="cifra-xl acento tabular"><span data-contador="40000" data-prefijo="USD ">USD 40.000</span></p>
-          <p class="caso-cifra-label">lo que dejó de pagar de más</p>
-          <div class="ba" data-caso="villa-devoto" style="--pos:50%">
+      <div class="c-7 caso-img">
+        <div class="ba" data-caso="villa-devoto" style="--pos:50%">
+          <picture>
+            <source type="image/avif" srcset="assets/img/caso-despues-640.avif 640w, assets/img/caso-despues-1000.avif 1000w" sizes="(min-width: 900px) 52vw, 92vw">
+            <img src="assets/img/caso-despues-1000.webp" srcset="assets/img/caso-despues-640.webp 640w, assets/img/caso-despues-1000.webp 1000w" sizes="(min-width: 900px) 52vw, 92vw" width="1000" height="1111" alt="Propuesta de intervención" loading="lazy" decoding="async">
+          </picture>
+          <div class="ba-top">
             <picture>
-                <source type="image/avif" srcset="assets/img/caso-despues-640.avif 640w, assets/img/caso-despues-1000.avif 1000w" sizes="(min-width: 760px) 40vw, 92vw">
-                <img src="assets/img/caso-despues-1000.webp" srcset="assets/img/caso-despues-640.webp 640w, assets/img/caso-despues-1000.webp 1000w" sizes="(min-width: 760px) 40vw, 92vw" width="1000" height="1111" alt="Propuesta de intervención" loading="lazy" decoding="async">
-              </picture>
-            <div class="ba-top">
-              <picture>
-              <source type="image/avif" srcset="assets/img/caso-antes-640.avif 640w, assets/img/caso-antes-1000.avif 1000w" sizes="(min-width: 760px) 40vw, 92vw">
-              <img src="assets/img/caso-antes-1000.webp" srcset="assets/img/caso-antes-640.webp 640w, assets/img/caso-antes-1000.webp 1000w" sizes="(min-width: 760px) 40vw, 92vw" width="1000" height="1111" alt="Propiedad de Villa Devoto antes de la intervención" loading="lazy" decoding="async">
+              <source type="image/avif" srcset="assets/img/caso-antes-640.avif 640w, assets/img/caso-antes-1000.avif 1000w" sizes="(min-width: 900px) 52vw, 92vw">
+              <img src="assets/img/caso-antes-1000.webp" srcset="assets/img/caso-antes-640.webp 640w, assets/img/caso-antes-1000.webp 1000w" sizes="(min-width: 900px) 52vw, 92vw" width="1000" height="1111" alt="Propiedad de Villa Devoto antes de la intervención" loading="lazy" decoding="async">
             </picture>
-            </div>
-            <span class="ba-tag a">Antes</span><span class="ba-tag b">Después</span>
-            <div class="ba-div"><span class="ba-knob"><svg width="18" height="18" aria-hidden="true"><use href="#i-arrastrar"/></svg></span></div>
-            <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes y después de la propiedad de Villa Devoto">
           </div>
-          <p class="ba-hint">Arrastrá para comparar</p>
+          <span class="ba-tag a">Antes</span><span class="ba-tag b">Después</span>
+          <div class="ba-div"><span class="ba-knob"><svg width="18" height="18" aria-hidden="true"><use href="#i-arrastrar"/></svg></span></div>
+          <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes y después de la propiedad de Villa Devoto">
         </div>
-        <div class="caso-cuerpo">
-          <p data-reveal style="--i:0">Lorena estaba por comprar una casa de 180 m² en Devoto. En los papeles era una gran oportunidad: características de casa de barrio privado en plena Capital. Pedían <strong>USD 460.000</strong>.</p>
-          <p data-reveal style="--i:1">Antes de hacer la oferta nos llamó. Analizamos la casa, la documentación, cuánto necesitaría invertir después y cuánto se estaba pagando realmente por propiedades comparables en esa zona.</p>
-          <p data-reveal style="--i:2">Lo que encontramos no estaba en las fotos: la propiedad estaba publicada por encima del valor de mercado de su zona. El número que se sostenía era <strong>USD 420.000</strong>.</p>
-          <p data-reveal style="--i:3">Si hacía la oferta que tenía pensada, pagaba <strong>USD 40.000 de más</strong>.</p>
+        <p class="ba-hint">Arrastrá para comparar</p>
+      </div>
+    </article>
+
+    <article class="caso g12 caso-inv">
+      <div class="c-7 caso-img">
+        <div class="ba" data-caso="amenabar" style="--pos:50%">
+          <picture>
+            <source type="image/avif" srcset="assets/img/caso2-despues-640.avif 640w, assets/img/caso2-despues-1000.avif 1000w" sizes="(min-width: 900px) 52vw, 92vw">
+            <img src="assets/img/caso2-despues-1000.webp" srcset="assets/img/caso2-despues-640.webp 640w, assets/img/caso2-despues-1000.webp 1000w" sizes="(min-width: 900px) 52vw, 92vw" width="1000" height="1111" alt="Departamento de Amenábar refaccionado" loading="lazy" decoding="async">
+          </picture>
+          <div class="ba-top">
+            <picture>
+              <source type="image/avif" srcset="assets/img/caso2-antes-640.avif 640w, assets/img/caso2-antes-1000.avif 1000w" sizes="(min-width: 900px) 52vw, 92vw">
+              <img src="assets/img/caso2-antes-1000.webp" srcset="assets/img/caso2-antes-640.webp 640w, assets/img/caso2-antes-1000.webp 1000w" sizes="(min-width: 900px) 52vw, 92vw" width="1000" height="1111" alt="Departamento de Amenábar antes de la reforma" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <span class="ba-tag a">Antes</span><span class="ba-tag b">Después</span>
+          <div class="ba-div"><span class="ba-knob"><svg width="18" height="18" aria-hidden="true"><use href="#i-arrastrar"/></svg></span></div>
+          <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes y después del departamento de Amenábar">
+        </div>
+        <p class="ba-hint">Arrastrá para comparar</p>
+      </div>
+      <div class="c-5 caso-txt">
+        <p class="caso-et">Caso 02 — Reforma · Amenábar</p>
+        <h3>USD 250.000 invertidos, USD 300.000 de valor.</h3>
+        <div class="barras" aria-hidden="true">
+          <div class="barra-fila"><p class="barra-et"><span>Compra + obra</span><b>USD 250.000</b></p><div class="barra-c"><span class="b-ok" style="--w:66.7%"></span><span class="b-obra" style="--w:16.7%"></span></div></div>
+          <div class="barra-fila"><p class="barra-et"><span>Valor refaccionada</span><b>USD 300.000</b></p><div class="barra-c"><span class="b-ok" style="--w:83.3%"></span><span class="b-margen" style="--w:16.7%"></span></div></div>
+          <p class="barras-pie">+20% sobre lo invertido</p>
+        </div>
+        <div class="texto">
+          <p>USD 200.000 de compra + USD 50.000 de obra = USD 300.000 de valor refaccionada. <strong>+20% sobre lo invertido.</strong></p>
+          <p>Lo más caro de esta reforma fue lo que no se ve: redistribución completa de la instalación sanitaria y reorganización eléctrica. Es lo que define la durabilidad de todo lo que va encima, y lo que casi nadie contempla cuando calcula una reforma a ojo.</p>
+          <p>Esa es la diferencia entre reformar y revalorizar.</p>
         </div>
       </div>
     </article>
 
-    <article class="caso">
-      <p class="kicker kicker-acento" data-reveal>Caso 02 — Reforma · Amenábar</p>
-      <div class="flujo tabular">
-        <div class="flujo-item"><span class="v"><span data-contador="200000" data-prefijo="USD ">USD 200.000</span></span><span class="l">compra</span></div>
-        <span class="flujo-op" aria-hidden="true">+</span>
-        <div class="flujo-item"><span class="v"><span data-contador="50000" data-prefijo="USD ">USD 50.000</span></span><span class="l">obra</span></div>
-        <span class="flujo-op" aria-hidden="true">=</span>
-        <div class="flujo-item destacado"><span class="v"><span data-contador="300000" data-prefijo="USD ">USD 300.000</span></span><span class="l">valor refaccionada</span></div>
-      </div>
-      <p class="flujo-resultado" data-reveal><b>+20%</b> sobre lo invertido. USD 250.000 puestos, USD 300.000 de valor.</p>
-
-      <div class="caso-grid">
-        <div>
-          <div class="ba" data-caso="amenabar" style="--pos:50%">
-            <picture>
-                <source type="image/avif" srcset="assets/img/caso2-despues-640.avif 640w, assets/img/caso2-despues-1000.avif 1000w" sizes="(min-width: 760px) 40vw, 92vw">
-                <img src="assets/img/caso2-despues-1000.webp" srcset="assets/img/caso2-despues-640.webp 640w, assets/img/caso2-despues-1000.webp 1000w" sizes="(min-width: 760px) 40vw, 92vw" width="1000" height="1111" alt="Departamento de Amenábar refaccionado" loading="lazy" decoding="async">
-              </picture>
-            <div class="ba-top">
-              <picture>
-              <source type="image/avif" srcset="assets/img/caso2-antes-640.avif 640w, assets/img/caso2-antes-1000.avif 1000w" sizes="(min-width: 760px) 40vw, 92vw">
-              <img src="assets/img/caso2-antes-1000.webp" srcset="assets/img/caso2-antes-640.webp 640w, assets/img/caso2-antes-1000.webp 1000w" sizes="(min-width: 760px) 40vw, 92vw" width="1000" height="1111" alt="Departamento de Amenábar antes de la reforma" loading="lazy" decoding="async">
-            </picture>
-            </div>
-            <span class="ba-tag a">Antes</span><span class="ba-tag b">Después</span>
-            <div class="ba-div"><span class="ba-knob"><svg width="18" height="18" aria-hidden="true"><use href="#i-arrastrar"/></svg></span></div>
-            <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes y después del departamento de Amenábar">
-          </div>
-          <p class="ba-hint">Arrastrá para comparar</p>
-        </div>
-        <div class="caso-cuerpo">
-          <p data-reveal style="--i:0">El trabajo más caro de esta reforma fue el que no se ve: redistribución completa de la instalación sanitaria y reorganización eléctrica. Es la parte que define la durabilidad de todo lo que va encima y la que casi nadie contempla cuando calcula una reforma a ojo.</p>
-          <p data-reveal style="--i:1">Esa es la diferencia entre reformar y revalorizar.</p>
-        </div>
-      </div>
-    </article>
-  </div>
-</section>
-
-
-<!-- ============================================== 09 · CÓMO FUNCIONA ===== -->
-<!-- El riel es un SVG que se traza con el scroll. Sin JS queda completo. -->
-<section class="bloque m-carbon">
-  <div class="wrap">
-    <h2 class="t-medio mask-grupo">
-      <span class="mask"><span>Cómo funciona, paso por paso</span></span>
-    </h2>
-    <div class="tl">
-      <svg class="tl-riel" viewBox="0 0 2 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-        <path class="tl-base" d="M1 0V100"/>
-        <path class="tl-trazo" pathLength="1" d="M1 0V100"/>
-      </svg>
-      <ol>
-        <li class="paso"><span class="paso-n">01</span><h3>Completás el formulario y seguimos por WhatsApp.</h3></li>
-        <li class="paso"><span class="paso-n">02</span><h3>Nos mandás todo lo que tengas:</h3><p>la publicación, fotos, videos, planos, el precio que piden y la documentación disponible. También qué querés hacer con la propiedad.</p></li>
-        <li class="paso"><span class="paso-n">03</span><h3>Analizamos antes de ir.</h3><p>Llegamos con el análisis previo hecho, no a improvisar.</p></li>
-        <li class="paso"><span class="paso-n">04</span><h3>Visita técnica dentro de las 72 h.</h3><p>Recorrido completo con criterio de arquitecto y de Maestro Mayor de Obra.</p><span class="paso-plazo">72 h</span></li>
-        <li class="paso"><span class="paso-n">05</span><h3>Minuta de la visita.</h3><p>Lo que encontramos, documentado.</p></li>
-        <li class="paso"><span class="paso-n">06</span><h3>Informe de decisión y reunión de devolución, a los 7 días.</h3><p>En PDF, tuyo, para usarlo como quieras.</p><span class="paso-plazo">7 días</span></li>
-      </ol>
-    </div>
-  </div>
-</section>
-
-
-<!-- ====================================================== 10 · EQUIPO ===== -->
-<section class="bloque m-negro s-equipo">
-  <div class="wrap">
-    <h2 class="t-medio mask-grupo">
-      <span class="mask"><span>Un arquitecto y una asesora</span></span>
-      <span class="mask"><span>inmobiliaria. Casados.</span></span>
-    </h2>
-    <div class="equipo-grid">
-      <article class="persona">
-        <div class="persona-foto">
-          <picture>
-            <source type="image/avif" srcset="assets/img/esteban-400.avif 400w, assets/img/esteban-560.avif 560w" sizes="(min-width: 760px) 240px, 168px">
-            <img src="assets/img/esteban-560.webp" srcset="assets/img/esteban-400.webp 400w, assets/img/esteban-560.webp 560w" sizes="(min-width: 760px) 240px, 168px" width="560" height="700" alt="Retrato de Esteban Crimi" loading="lazy" decoding="async">
-          </picture>
-        </div>
-        <div class="persona-txt">
-          <h3>Esteban Crimi</h3>
-          <p class="rol">Arquitecto y Maestro Mayor de Obra, matriculado.</p>
-          <p class="bio">La diferencia entre las dos matrículas importa más de lo que parece. Un arquitecto proyecta. Un Maestro Mayor de Obra conoce la obra desde adentro: sabe cuánto cuesta en serio cada decisión, cuánto tarda y qué aparece cuando se abre una pared.</p>
-        </div>
-      </article>
-      <article class="persona">
-        <div class="persona-foto">
-          <picture>
-            <source type="image/avif" srcset="assets/img/carla-400.avif 400w, assets/img/carla-596.avif 596w" sizes="(min-width: 760px) 240px, 168px">
-            <img src="assets/img/carla-596.webp" srcset="assets/img/carla-400.webp 400w, assets/img/carla-596.webp 596w" sizes="(min-width: 760px) 240px, 168px" width="596" height="745" alt="Retrato de Carla La Porta" loading="lazy" decoding="async">
-          </picture>
-        </div>
-        <div class="persona-txt">
-          <h3>Carla La Porta</h3>
-          <p class="rol">Asesora inmobiliaria.</p>
-          <p class="bio">Zona, valores reales de venta, cómo se construyó ese precio y hasta dónde se puede negociar. No lo que dice la publicación: lo que efectivamente se está pagando.</p>
-        </div>
-      </article>
+    <div class="cta-fila">
+      <a class="btn btn-1 btn-lg" href="#diagnostico" data-cta="cta_casos"><span>Quiero mi Diagnóstico</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
     </div>
 
-    <div class="legal" data-reveal>
-      <svg class="ico" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-        <path pathLength="1" d="M24 6V40"/>
-        <path pathLength="1" d="M14 40H34"/>
-        <path pathLength="1" d="M8 12H40"/>
-        <path pathLength="1" d="M12 12L6 26H18Z"/>
-        <path pathLength="1" d="M36 12L30 26H42Z"/>
-      </svg>
-      <p><b>Con respaldo legal.</b> Un equipo de abogados especializados en el rubro inmobiliario revisa la documentación.</p>
-    </div>
-
-    <p class="equipo-cierre" data-reveal>Profesionales que trabajan en conjunto, no agentes por separado que no se comunican entre sí.</p>
-  </div>
-</section>
-
-
-<!-- ============================================== 11 · QUÉ NO INCLUYE ===== -->
-<section class="bloque m-papel s-noincluye">
-  <div class="wrap noincluye-grid">
-    <h2 class="t-medio mask-grupo">
-      <span class="mask"><span>Preferimos decirte esto</span></span>
-      <span class="mask"><span>antes y no después.</span></span>
-    </h2>
-    <div class="medida">
-      <p class="noincluye-lead" data-reveal>El Diagnóstico es la etapa anterior al proyecto: responde si conviene y qué conviene hacer.</p>
-      <p data-reveal>Por eso <span class="tacha">no incluye</span> diseño, anteproyecto, planos ni renders. Tampoco cateos, cálculo estructural, certificación de instalaciones (por ejemplo, la prueba de hermeticidad de gas la hace un gasista matriculado), presupuesto definitivo de obra ni estudio de títulos.</p>
-      <p class="noincluye-si" data-reveal>Lo que sí hacemos es decirte qué conviene verificar, con quién y en qué orden.</p>
-    </div>
-  </div>
-</section>
-
-
-<!-- ===================================================== 12 · RESEÑAS ==== -->
-<!-- Se arma desde config.js (reviews). Si no hay reseñas, el bloque se
-     elimina. Arranca oculto para que nunca se vea un carrusel vacío. -->
-<section class="bloque m-carbon s-resenas" id="resenas" hidden>
-  <div class="wrap">
-    <h2 class="t-medio mask-grupo">
-      <span class="mask"><span>No hace falta que nos creas a nosotros.</span></span>
-    </h2>
-    <div class="res-head">
-      <p class="res-nota" data-res-rating>5,0</p>
-      <div class="res-meta">
+    <!-- Reseñas: se arman desde data/reviews.json. Las entradas PENDIENTE
+         no se muestran (se ven con ?preview=1 en la URL). -->
+    <div class="resenas" id="resenas">
+      <div class="res-head">
+        <svg class="res-g" aria-hidden="true"><use href="#i-google"/></svg>
+        <p class="res-nota"><b data-res-rating>5,0</b> en Google · <span data-res-total>41</span> reseñas</p>
         <div class="estrellas" aria-hidden="true"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div>
-        <p class="res-cant"><span data-res-total>41</span> reseñas en Google</p>
       </div>
-      <svg class="res-glogo" aria-label="Google" role="img"><use href="#i-google"/></svg>
-    </div>
-    <figure class="res-destacada" data-res-featured hidden></figure>
-  </div>
-
-  <div class="res-carrusel">
-    <ul class="res-pista" data-res-pista aria-label="Reseñas de Google"></ul>
-  </div>
-
-  <div class="wrap res-pie">
-    <div class="res-flechas">
-      <button type="button" class="res-flecha" data-res-prev aria-label="Reseña anterior"><svg aria-hidden="true" style="transform:scaleX(-1)"><use href="#i-flecha"/></svg></button>
-      <button type="button" class="res-flecha" data-res-next aria-label="Reseña siguiente"><svg aria-hidden="true"><use href="#i-flecha"/></svg></button>
-    </div>
-    <a class="btn btn-2" data-res-url href="https://maps.google.com/?cid=7365464068826002467" target="_blank" rel="noopener noreferrer">
-      <svg width="18" height="18" aria-hidden="true"><use href="#i-google"/></svg>
-      <span>Ver todas en Google</span>
-    </a>
-  </div>
-</section>
-
-
-<!-- ========================================================= 13 · FAQ ==== -->
-<section class="bloque m-negro">
-  <div class="wrap">
-    <h2 class="t-medio mask-grupo">
-      <span class="mask"><span>Preguntas que nos hacen siempre</span></span>
-    </h2>
-    <div class="faq">
-      <div class="faq-item" data-open="0"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Por qué se paga? Otros hacen la primera visita gratis.<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Porque una visita gratis no es un diagnóstico: es una visita comercial. El que no te cobra por ir tiene que ganar la plata en otro lado, y ese otro lado siempre es que vos avances. Nosotros cobramos honorarios por el análisis, y por eso podemos decirte que no compres.</p></div></div></div>
-      <div class="faq-item" data-open="0"><h3><button class="faq-btn" type="button" aria-expanded="false">Tengo un arquitecto conocido que puede ir a verla. ¿Para qué esto?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Un arquitecto te va a decir qué se puede hacer, y probablemente tenga razón. Lo que no te va a decir es si el precio que piden se sostiene en esa zona, ni cuánto de tu inversión vuelve al valor de la propiedad. Esa es la mitad que falta.</p></div></div></div>
-      <div class="faq-item" data-open="0"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Y si me dicen que no la compre? ¿Perdí lo que pagué?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Al contrario: ahí es donde más valor tuvo. El Diagnóstico existe para que la decisión sea correcta, no para que sea positiva. Evitar una mala compra es el mejor resultado posible.</p></div></div></div>
-      <div class="faq-item" data-open="0"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Cuánto cuesta?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Depende de la propiedad y del alcance. Completás el formulario y te pasamos el valor por WhatsApp. Si avanzás con el proyecto, se descuenta entero de los honorarios.</p></div></div></div>
-      <div class="faq-item" data-open="0"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Sirve para departamentos o solo para casas?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Para las dos cosas. Cambia el alcance de lo que se puede intervenir, no la lógica del análisis.</p></div></div></div>
-      <div class="faq-item" data-open="0"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Sirve para una propiedad a estrenar o en pozo?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Sí. En obra nueva el foco se corre hacia la calidad constructiva, la documentación y el valor de la zona respecto de lo que se está pidiendo.</p></div></div></div>
-      <div class="faq-item" data-open="0"><h3><button class="faq-btn" type="button" aria-expanded="false">Ya compré la propiedad. ¿Me sirve igual?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Sí, y es la mitad de nuestros clientes. Cambia la pregunta: ya no es si conviene comprarla, sino qué conviene hacerle, en qué orden y qué parte de esa inversión vuelve.</p></div></div></div>
-      <div class="faq-item" data-open="0"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Cuánto tardan desde que reservo?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>La visita la hacemos dentro de las 72 h. El informe de decisión está a los 7 días.</p></div></div></div>
-      <div class="faq-item" data-open="0"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Me dan el presupuesto exacto de la obra?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Damos rangos de costo por etapa, no un presupuesto cerrado. Un presupuesto exacto requiere un proyecto, y el proyecto es la etapa siguiente. Con los rangos ya podés decidir y pedir cotizaciones comparables.</p></div></div></div>
-      <div class="faq-item" data-open="0"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Estoy obligado a contratarlos después?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>No. El informe es tuyo y podés usarlo con quien quieras. Si decidís avanzar con nosotros, el Diagnóstico se descuenta de los honorarios.</p></div></div></div>
-      <div class="faq-item" data-open="0"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Trabajan en mi zona?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>CABA, Zona Norte y Zona Oeste. Fuera de esa área lo evaluamos según el proyecto.</p></div></div></div>
+      <ul class="res-lista" data-res-lista aria-label="Reseñas de Google"></ul>
+      <div class="res-pie">
+        <button type="button" class="btn btn-2" data-res-mas hidden><span>Ver más reseñas</span></button>
+        <a class="link" data-res-url href="https://maps.google.com/?cid=7365464068826002467" target="_blank" rel="noopener noreferrer"><span>Ver las <span data-res-total>41</span> reseñas en Google</span><svg width="18" height="18" aria-hidden="true"><use href="#i-flecha"/></svg></a>
+      </div>
     </div>
   </div>
 </section>
 
+<div class="cota-sep wrap" aria-hidden="true"></div>
 
-<!-- ======================================= 14 · TRAYECTORIA Y ZONAS ===== -->
-<section class="bloque m-carbon">
+
+<!-- ===================================== 5 · QUÉ ANALIZAMOS / TE LLEVÁS ==== -->
+<!-- El corte de muro es el único momento de animación orquestada: al
+     scrollear, el revoque se abre y deja ver lo oculto. Sin JS o con
+     reduced-motion, el muro aparece abierto. -->
+<section class="sec f-papel" id="analisis">
   <div class="wrap">
-    <!-- Cifras BORRADOR: salen de config.js (stats). El número escrito acá
-         es el valor final que se ve aunque no corra el JS. -->
-    <div class="contadores tabular">
-      <div class="contador"><p class="n"><span data-stat="anos" data-contador="15">15</span></p><p class="l">años de trayectoria</p></div>
-      <div class="contador"><p class="n"><span data-stat="obras" data-contador="120">120</span></p><p class="l">obras ejecutadas</p></div>
-      <div class="contador"><p class="n"><span data-stat="m2" data-contador="18000">18.000</span></p><p class="l">m² intervenidos</p></div>
+    <div class="g12">
+      <div class="c-6">
+        <h2>No vamos a mirar. Vamos a analizar.</h2>
+        <p class="texto lead">Lo que rompe un presupuesto casi nunca está a la vista. Está detrás de un revoque nuevo, debajo de un piso recién puesto o dentro de una pared.</p>
+      </div>
     </div>
 
-    <div class="zonas">
-      <div class="zona" data-reveal style="--i:0"><h3>CABA</h3><p>Belgrano, Núñez, Villa Devoto, Villa del Parque, Monte Castro, Villa Santa Rita, Caballito, Palermo, Recoleta y zonas similares.</p></div>
-      <div class="zona" data-reveal style="--i:1"><h3>Zona Norte</h3><p>Vicente López, San Isidro, Acassuso, Martínez, Olivos, La Lucila, Tigre y barrios cerrados.</p></div>
-      <div class="zona" data-reveal style="--i:2"><h3>Zona Oeste</h3><p>Ramos Mejía, Haedo, Castelar, Ituzaingó, Morón y alrededores.</p></div>
+    <div class="muro-bloque g12" data-muro>
+      <div class="c-7 muro-col">
+        <div class="muro">
+          <svg viewBox="0 0 640 560" role="img" aria-labelledby="muro-t">
+            <title id="muro-t">Corte de muro: detrás del revoque aparecen humedad, cañería, cableado y una fisura. Al costado, el plano con sello.</title>
+            <defs>
+              <clipPath id="muro-clip"><rect data-muro-clip x="520" y="50" width="0" height="450"/></clipPath>
+            </defs>
+            <!-- Losas -->
+            <rect x="40" y="20" width="490" height="30" fill="url(#p-hormigon)" stroke="#2E4D6B" stroke-width="1.4"/>
+            <rect x="40" y="500" width="490" height="34" fill="url(#p-hormigon)" stroke="#2E4D6B" stroke-width="1.4"/>
+            <!-- Corte del muro (espesor) -->
+            <rect x="66" y="50" width="34" height="450" fill="url(#p-ladrillo)" stroke="#2E4D6B" stroke-width="1.4"/>
+            <rect x="100" y="50" width="6" height="450" fill="#E4E2DE" stroke="#2E4D6B" stroke-width=".9"/>
+            <rect x="106" y="50" width="4" height="450" fill="#F6F6F4" stroke="#2E4D6B" stroke-width=".7"/>
+            <path class="l-cota-a" d="M66 10H110M66 4V16M110 4V16"/>
+            <text class="t-mini" x="88" y="2" text-anchor="middle" dy="-2">e</text>
+
+            <!-- Lo que hay detrás -->
+            <g class="muro-dentro">
+              <rect x="110" y="50" width="410" height="450" fill="#F6F6F4"/>
+              <rect x="110" y="50" width="410" height="450" fill="url(#p-ladrillos)"/>
+              <!-- 1 Humedad por capilaridad -->
+              <path d="M110 500V438q22-18 44-6t40-14q24-16 46 2t38 8q20-10 34 10V500Z" fill="url(#p-oculto)" stroke="#0A0A0A" stroke-width="1.3"/>
+              <!-- 2 Instalaciones: caño y cable -->
+              <path d="M176 50V384H256" fill="none" stroke="#2E4D6B" stroke-width="16" stroke-linejoin="round"/>
+              <path d="M176 50V384H256" fill="none" stroke="#F6F6F4" stroke-width="12" stroke-linejoin="round"/>
+              <path d="M170 120H182M170 220H182M170 320H182M210 378V390" stroke="#2E4D6B" stroke-width="1.4"/>
+              <path d="M300 50q8 14 0 28t0 28q-8 14 0 28t0 28q8 14 0 28" fill="none" stroke="#2E4D6B" stroke-width="5"/>
+              <path d="M300 50q8 14 0 28t0 28q-8 14 0 28t0 28q8 14 0 28" fill="none" stroke="#F6F6F4" stroke-width="2" stroke-dasharray="2 4"/>
+              <rect x="288" y="190" width="26" height="26" fill="#F6F6F4" stroke="#2E4D6B" stroke-width="1.6"/>
+              <!-- 3 Fisura -->
+              <path d="M462 58l-14 30 10 18-22 34 8 22-20 30 6 20-14 26" fill="none" stroke="#0A0A0A" stroke-width="5.5" stroke-linejoin="round"/>
+              <path d="M462 58l-14 30 10 18-22 34 8 22-20 30 6 20-14 26" fill="none" stroke="#FFE500" stroke-width="3" stroke-linejoin="round"/>
+              <!-- 4 Potencial: vano posible -->
+              <path d="M372 500V318H470V500" fill="none" stroke="#2E4D6B" stroke-width="1.8" stroke-dasharray="8 6"/>
+              <path class="l-cota-a" d="M372 302H470M372 296V308M470 296V308"/>
+              <text class="t-mini" x="421" y="294" text-anchor="middle">vano posible</text>
+            </g>
+
+            <!-- El revoque: lo que se ve. Se abre de izquierda a derecha. -->
+            <g class="muro-revoque" clip-path="url(#muro-clip)">
+              <rect x="110" y="50" width="410" height="450" fill="#ECEAE6"/>
+              <rect x="110" y="50" width="410" height="450" fill="url(#p-agua)" opacity=".18"/>
+              <path d="M150 488q20-6 40 0t40-2" fill="none" stroke="#85827C" stroke-width="1"/>
+              <path d="M458 74l-6 12" stroke="#85827C" stroke-width="1"/>
+              <rect x="110" y="482" width="410" height="18" fill="#DCD9D3"/>
+            </g>
+            <path class="muro-borde" data-muro-borde d="M520 50V500" stroke="#0A0A0A" stroke-width="2"/>
+
+            <!-- 5 Documentación: plano con sello -->
+            <g class="muro-doc">
+              <rect x="544" y="300" width="88" height="118" fill="#FFF" stroke="#2E4D6B" stroke-width="1.4" transform="rotate(4 588 359)"/>
+              <path d="M556 318h40M556 330h56M556 342h30" stroke="#2E4D6B" stroke-width="1.2" transform="rotate(4 588 359)"/>
+              <rect x="556" y="352" width="50" height="34" fill="none" stroke="#2E4D6B" stroke-width="1" transform="rotate(4 588 359)"/>
+              <circle cx="606" cy="400" r="15" fill="none" stroke="#0A0A0A" stroke-width="1.6"/>
+              <path d="M599 400l5 5 9-10" fill="none" stroke="#0A0A0A" stroke-width="1.8"/>
+            </g>
+          </svg>
+          <!-- Hotspots: posiciones en % del viewBox (640 × 560). -->
+          <button type="button" class="hot" data-hot="0" style="--x:36%;--y:81%" aria-label="1. Humedades"><span>1</span></button>
+          <button type="button" class="hot" data-hot="1" style="--x:31%;--y:42%" aria-label="2. Instalaciones"><span>2</span></button>
+          <button type="button" class="hot" data-hot="2" style="--x:72%;--y:24%" aria-label="3. Estado general"><span>3</span></button>
+          <button type="button" class="hot" data-hot="3" style="--x:66%;--y:68%" aria-label="4. Potencial de reforma"><span>4</span></button>
+          <button type="button" class="hot" data-hot="4" style="--x:94%;--y:52%" aria-label="5. Documentación"><span>5</span></button>
+        </div>
+        <p class="muro-hint">Tocá los números para ver qué revisamos.</p>
+      </div>
+
+      <ol class="c-5 muro-lista" data-muro-lista>
+        <li class="muro-item" data-item="0"><span class="n">1</span><div><h3>Humedades</h3><p>Qué se ve, qué indica y qué conviene verificar antes de decidir.</p></div></li>
+        <li class="muro-item" data-item="1"><span class="n">2</span><div><h3>Instalaciones</h3><p>El estado de lo accesible y qué conviene revisar con un especialista.</p></div></li>
+        <li class="muro-item" data-item="2"><span class="n">3</span><div><h3>Estado general</h3><p>Fisuras, cielorrasos, carpinterías y posibles condicionantes estructurales.</p></div></li>
+        <li class="muro-item" data-item="3"><span class="n">4</span><div><h3>Potencial de reforma</h3><p>Qué se puede, qué no se puede y qué se puede pero sale caro.</p></div></li>
+        <li class="muro-item" data-item="4"><span class="n">5</span><div><h3>Documentación</h3><p>Revisión preliminar de planos y papeles con abogados especializados en el rubro inmobiliario. Lo definitivo lo certifica el escribano; nosotros te decimos qué pedirle.</p></div></li>
+      </ol>
     </div>
-    <p class="zonas-cierre medida" data-reveal>Si tu propiedad está fuera de esta área, escribinos igual y lo evaluamos.</p>
+
+    <div class="informe g12">
+      <figure class="c-6 informe-mock">
+        <!-- PLACEHOLDER: reemplazar por páginas reales de un informe
+             anonimizado cuando estén. -->
+        <svg viewBox="0 0 520 440" aria-hidden="true">
+          <defs><filter id="borroso" x="-5%" y="-20%" width="110%" height="140%"><feGaussianBlur stdDeviation="2.4"/></filter></defs>
+          <g transform="translate(250 30) skewY(-6)">
+            <rect width="230" height="320" fill="#FFF" stroke="#85827C"/>
+            <rect x="20" y="22" width="80" height="8" fill="#0A0A0A"/>
+            <g filter="url(#borroso)" fill="#85827C"><rect x="20" y="52" width="190" height="7"/><rect x="20" y="68" width="160" height="7"/><rect x="20" y="96" width="190" height="90" fill="#E4E2DE"/><rect x="20" y="204" width="190" height="7"/><rect x="20" y="220" width="140" height="7"/></g>
+          </g>
+          <g transform="translate(140 60) skewY(-6)">
+            <rect width="230" height="320" fill="#FFF" stroke="#85827C"/>
+            <rect x="20" y="22" width="80" height="8" fill="#0A0A0A"/>
+            <g filter="url(#borroso)"><rect x="20" y="50" width="190" height="7" fill="#85827C"/><g fill="#2E4D6B"><rect x="30" y="150" width="22" height="50"/><rect x="62" y="120" width="22" height="80"/><rect x="94" y="132" width="22" height="68"/><rect x="126" y="100" width="22" height="100"/></g><rect x="158" y="86" width="22" height="114" fill="#FFE500"/><rect x="20" y="226" width="190" height="7" fill="#85827C"/><rect x="20" y="242" width="150" height="7" fill="#85827C"/></g>
+          </g>
+          <g transform="translate(30 90) skewY(-6)">
+            <rect width="230" height="320" fill="#FFF" stroke="#1A1917" stroke-width="1.2"/>
+            <rect x="0" y="0" width="230" height="54" fill="#0A0A0A"/>
+            <text x="20" y="34" font-family="Antonio, sans-serif" font-weight="700" font-size="20" fill="#FFF">BLACK</text>
+            <text x="20" y="80" font-family="Antonio, sans-serif" font-weight="700" font-size="17" fill="#1A1917">Informe de decisión</text>
+            <g filter="url(#borroso)" fill="#85827C"><rect x="20" y="96" width="190" height="7"/><rect x="20" y="112" width="170" height="7"/><rect x="20" y="128" width="120" height="7"/></g>
+            <g fill="none" stroke="#85827C"><path d="M20 156H210M20 180H210M20 204H210M20 228H210M110 156V252M20 252H210"/></g>
+            <g filter="url(#borroso)" fill="#85827C"><rect x="26" y="164" width="70" height="8"/><rect x="118" y="164" width="60" height="8"/><rect x="26" y="188" width="60" height="8"/><rect x="118" y="188" width="76" height="8"/><rect x="26" y="212" width="74" height="8"/><rect x="118" y="212" width="50" height="8"/></g>
+            <rect x="20" y="272" width="120" height="22" fill="#FFE500"/>
+          </g>
+        </svg>
+        <figcaption>Vista ilustrativa del informe. Los datos están ocultos.</figcaption>
+      </figure>
+
+      <div class="c-6">
+        <h3>No te llevás una opinión. Te llevás un informe de decisión.</h3>
+        <ol class="entregables">
+          <li><b>Visita técnica dentro de las 72 h.</b> Entre 45 y 75 minutos de recorrido con Esteban.</li>
+          <li><b>Ficha Black de la propiedad y minuta de visita,</b> en PDF.</li>
+          <li><b>Análisis comparativo de mercado:</b> precios publicados contra precios realmente vendidos y rango de negociación.</li>
+          <li><b>Inversión estimada por etapas:</b> qué hacer, en qué orden y con qué rango de costo.</li>
+          <li><b>Revisión documental preliminar</b> con el equipo legal.</li>
+          <li><b>Informe de decisión a los 7 días:</b> diagnóstico arquitectónico, potencial de reforma, inversión preliminar, análisis de mercado, análisis económico, estrategia de negociación y puntos a verificar antes de escriturar.</li>
+          <li><b>Reunión de devolución online</b> para repasar todo y responder lo que quieras.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="g12 cierre-informe">
+      <p class="c-6 riesgo"><b>Sin riesgo:</b> el Diagnóstico se descuenta entero de los honorarios si avanzás con el proyecto. Y si te decimos que no la compres, cumplió su mejor función.</p>
+      <p class="c-6 packs"><b>¿Estás comparando varias propiedades?</b> Las analizamos con el mismo criterio y te entregamos una matriz comparativa. Tenemos packs para eso.</p>
+    </div>
+    <div class="cta-fila">
+      <a class="btn btn-1 btn-lg" href="#diagnostico" data-cta="cta_informe"><span>Quiero mi Diagnóstico</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
+    </div>
   </div>
 </section>
 
+<div class="cota-sep wrap" aria-hidden="true"></div>
 
-<!-- ====================================================== 15 · CIERRE ==== -->
-<section class="s-cierre grilla" data-oculta-sticky>
+
+<!-- ================================================ 6 · CÓMO FUNCIONA ==== -->
+<section class="sec f-hormigon" id="como-funciona">
   <div class="wrap">
-    <img class="cierre-logo" src="assets/brand/black-solo-blanco.png" width="824" height="316" alt="Black" loading="lazy" decoding="async">
-    <h2 class="mask-grupo">
-      <span class="mask"><span>Antes de firmar,</span></span>
-      <span class="mask"><span>tené a alguien de tu lado.</span></span>
-    </h2>
-    <p class="medida texto cierre-txt" data-reveal>Visita técnica en 72 h, análisis de mercado e informe de decisión. Se descuenta de honorarios si avanzás con el proyecto.</p>
-    <div class="cta-bloque" data-reveal>
-      <a class="btn btn-1 btn-lg" href="https://wa.me/5491164803777" data-cta="cierre">
-        <span>Quiero mi Diagnóstico</span>
-        <svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg>
-      </a>
+    <h2 class="medida">De la consulta al informe, en cuatro pasos.</h2>
+    <div class="tl">
+      <div class="tl-cotas" aria-hidden="true">
+        <span class="tl-cota" style="--a:1;--b:3">día 0</span>
+        <span class="tl-cota" style="--a:3;--b:4">72 h</span>
+        <span class="tl-cota" style="--a:4;--b:5">día 7</span>
+      </div>
+      <ol class="tl-pasos">
+        <li><span class="tl-n">1</span><p class="tl-cuando">Día 0</p><p>Completás el formulario (menos de un minuto) y te escribimos por WhatsApp.</p></li>
+        <li><span class="tl-n">2</span><p class="tl-cuando">Día 0</p><p>Nos mandás lo que tengas: la publicación, fotos, planos, el precio que piden y qué querés hacer con la propiedad. Llegamos a la visita con el análisis previo hecho.</p></li>
+        <li><span class="tl-n">3</span><p class="tl-cuando">72 h</p><p>Visita técnica dentro de las 72 h.</p></li>
+        <li><span class="tl-n">4</span><p class="tl-cuando">Día 7</p><p>Informe de decisión y reunión de devolución a los 7 días. El informe es tuyo, para usarlo con quien quieras.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<div class="cota-sep wrap" aria-hidden="true"></div>
+
+
+<!-- ================================================= 7 · QUIÉNES SOMOS ==== -->
+<section class="sec f-papel" id="quienes">
+  <div class="wrap g12">
+    <div class="c-5 duo">
+      <figure class="duo-foto">
+        <picture>
+          <source type="image/avif" srcset="assets/img/esteban-400.avif 400w, assets/img/esteban-560.avif 560w" sizes="(min-width: 900px) 20vw, 45vw">
+          <img src="assets/img/esteban-560.webp" srcset="assets/img/esteban-400.webp 400w, assets/img/esteban-560.webp 560w" sizes="(min-width: 900px) 20vw, 45vw" width="560" height="700" alt="Esteban Crimi" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>Esteban Crimi</figcaption>
+      </figure>
+      <figure class="duo-foto">
+        <picture>
+          <source type="image/avif" srcset="assets/img/carla-400.avif 400w, assets/img/carla-596.avif 596w" sizes="(min-width: 900px) 20vw, 45vw">
+          <img src="assets/img/carla-596.webp" srcset="assets/img/carla-400.webp 400w, assets/img/carla-596.webp 596w" sizes="(min-width: 900px) 20vw, 45vw" width="596" height="745" alt="Carla La Porta" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>Carla La Porta</figcaption>
+      </figure>
+    </div>
+
+    <div class="c-7">
+      <h2>Un arquitecto y una asesora inmobiliaria. Casados.</h2>
+      <div class="personas">
+        <div class="persona"><h3>Esteban Crimi</h3><p class="rol">Arquitecto y Maestro Mayor de Obra, matriculado.</p><p>Un arquitecto proyecta. Un Maestro Mayor de Obra conoce la obra desde adentro: cuánto cuesta en serio cada decisión, cuánto tarda y qué aparece cuando se abre una pared.</p></div>
+        <div class="persona"><h3>Carla La Porta</h3><p class="rol">Asesora inmobiliaria.</p><p>Zona, valores reales de venta y hasta dónde se puede negociar. No lo que dice la publicación: lo que efectivamente se está pagando.</p></div>
+      </div>
+      <p class="texto">Trabajamos juntos porque cada uno sabe lo que el otro, solo, no te puede decir. El arquitecto no sabe si el precio se sostiene. La inmobiliaria no sabe lo que hay detrás de la pared.</p>
+      <p class="legal"><b>Con respaldo legal:</b> un equipo de abogados especializados en el rubro inmobiliario revisa la documentación.</p>
+    </div>
+
+    <ul class="c-12 numeros">
+      <li><b data-stat="anos">15</b><span>años</span></li>
+      <li><b data-stat="obras">120</b><span>obras</span></li>
+      <li><b data-stat="m2">18.000</b><span>m²</span></li>
+    </ul>
+    <div class="c-12">
+      <a class="btn btn-1 btn-lg" href="#diagnostico" data-cta="cta_quienes"><span>Quiero mi Diagnóstico</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<div class="cota-sep wrap" aria-hidden="true"></div>
+
+
+<!-- ============================================================ 8 · FAQ ==== -->
+<!-- PENDIENTE (no publicar hasta tener el texto del cliente):
+     "¿Y si mientras espero el informe me la sacan?" -->
+<section class="sec f-hormigon" id="faq">
+  <div class="wrap g12">
+    <div class="c-4">
+      <h2 class="faq-t">Preguntas frecuentes</h2>
+    </div>
+    <div class="c-8">
+      <div class="faq">
+        <div class="faq-item"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Cuánto cuesta?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Depende de la propiedad y del alcance. Completás el formulario y te pasamos el valor por WhatsApp. Si avanzás con el proyecto, se descuenta entero de los honorarios.</p></div></div></div>
+        <div class="faq-item"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Por qué se paga? Otros hacen la primera visita gratis.<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Porque una visita gratis no es un diagnóstico: es una visita comercial. El que no te cobra por ir tiene que ganar la plata en otro lado, y ese otro lado siempre es que vos avances. Nosotros cobramos por el análisis, y por eso podemos decirte que no.</p></div></div></div>
+        <div class="faq-item"><h3><button class="faq-btn" type="button" aria-expanded="false">Ya tengo inmobiliaria. ¿Para qué esto?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>No la reemplazamos. Te damos lo que ella no te puede dar: una mirada que no depende de que la operación se cierre, y la cuenta de obra que no es su rubro.</p></div></div></div>
+        <div class="faq-item"><h3><button class="faq-btn" type="button" aria-expanded="false">Tengo un arquitecto conocido. ¿Para qué esto?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Te va a decir qué se puede hacer, y probablemente tenga razón. Lo que no te va a decir es si el precio se sostiene en esa zona ni cuánto de tu inversión vuelve al valor de la propiedad. Esa es la mitad que falta.</p></div></div></div>
+        <div class="faq-item"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Y si me dicen que no la compre? ¿Perdí lo que pagué?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Al contrario: ahí es donde más valor tuvo. El Diagnóstico existe para que la decisión sea correcta, no para que sea positiva.</p></div></div></div>
+        <div class="faq-item"><h3><button class="faq-btn" type="button" aria-expanded="false">Ya compré la propiedad. ¿Me sirve igual?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Sí, y es la mitad de nuestros clientes. Cambia la pregunta: ya no es si conviene comprarla, sino qué conviene hacerle, en qué orden y qué parte de esa inversión vuelve al valor.</p></div></div></div>
+        <div class="faq-item"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Estoy obligado a contratarlos después?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>No. El informe es tuyo y podés usarlo con quien quieras.</p></div></div></div>
+        <div class="faq-item"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Me dan el presupuesto exacto de la obra?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Damos rangos de costo por etapa. Un presupuesto exacto requiere un proyecto, que es la etapa siguiente. Con los rangos ya podés decidir y pedir cotizaciones comparables.</p></div></div></div>
+        <div class="faq-item"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Qué no incluye el Diagnóstico?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Es la etapa anterior al proyecto: responde si conviene y qué conviene hacer. No incluye diseño, anteproyecto, planos ni renders. Tampoco cateos, cálculo estructural, certificación de instalaciones, presupuesto definitivo de obra ni estudio de títulos. Lo que sí hacemos es decirte qué conviene verificar, con quién y en qué orden.</p></div></div></div>
+        <div class="faq-item"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Sirve para departamentos, casas y obra nueva?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div><p>Sí. En obra nueva o en pozo el foco se corre hacia la calidad constructiva, la documentación y el valor de la zona respecto de lo que piden.</p></div></div></div>
+        <div class="faq-item"><h3><button class="faq-btn" type="button" aria-expanded="false">¿Trabajan en mi zona?<svg aria-hidden="true"><use href="#i-chev"/></svg></button></h3><div class="faq-panel"><div>
+          <figure class="mapa">
+            <svg viewBox="0 0 400 300" role="img" aria-labelledby="mapa-t">
+              <title id="mapa-t">Esquema de zonas: Zona Norte sobre la costa, CABA junto al río y Zona Oeste hacia el oeste.</title>
+              <path d="M150 0Q210 70 280 110T400 240V0Z" fill="url(#p-agua)"/>
+              <path d="M150 0Q210 70 280 110T400 240" fill="none" stroke="#2E4D6B" stroke-width="1.6"/>
+              <text class="t-mini t-it" x="318" y="60">Río de la Plata</text>
+              <path d="M96 0H150Q190 46 238 82L206 112Q150 80 104 52Z" fill="url(#p-trama)" stroke="#2E4D6B" stroke-width="1.4"/>
+              <path d="M238 82Q262 98 290 118L318 152 300 220 232 236 200 176 206 112Z" fill="#2E4D6B" fill-opacity=".14" stroke="#2E4D6B" stroke-width="1.8"/>
+              <path d="M200 176L232 236 150 296H40L24 212 104 160Z" fill="url(#p-trama)" stroke="#2E4D6B" stroke-width="1.4"/>
+              <text class="t-et" x="104" y="34">Zona Norte</text>
+              <text class="t-et" x="236" y="178">CABA</text>
+              <text class="t-et" x="64" y="250">Zona Oeste</text>
+              <text class="t-mini" x="8" y="292">Esquema, sin escala</text>
+            </svg>
+          </figure>
+          <p><b>CABA:</b> Belgrano, Núñez, Villa Devoto, Villa del Parque, Monte Castro, Villa Santa Rita, Caballito, Palermo, Recoleta y zonas similares.</p>
+          <p><b>Zona Norte:</b> Vicente López, San Isidro, Acassuso, Martínez, Olivos, La Lucila, Tigre y barrios cerrados.</p>
+          <p><b>Zona Oeste:</b> Ramos Mejía, Haedo, Castelar, Ituzaingó, Morón y alrededores.</p>
+          <p>Si tu propiedad está fuera de esta área, escribinos igual y lo evaluamos.</p>
+        </div></div></div>
+      </div>
+      <a class="btn btn-1 btn-lg faq-cta" href="#diagnostico" data-cta="cta_faq"><span>Quiero mi Diagnóstico</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<div class="corte corte-inv" aria-hidden="true"></div>
+
+
+<!-- ========================================================= 9 · CIERRE ==== -->
+<section class="sec f-negro s-cierre" data-oculta-sticky>
+  <div class="wrap g12">
+    <div class="c-7">
+      <img class="cierre-logo" src="assets/brand/black-solo-blanco-160.png" width="160" height="61" alt="Black" loading="lazy" decoding="async">
+      <h2>Antes de firmar, tené a alguien de tu lado.</h2>
+      <p class="texto">Visita técnica en 72 h, análisis de mercado e informe de decisión a los 7 días. Se descuenta de honorarios si avanzás con el proyecto.</p>
+      <a class="btn btn-1 btn-lg" href="#diagnostico" data-cta="cta_cierre"><span>Quiero mi Diagnóstico</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
+    </div>
+    <!-- La hoja que todavía no se firmó, dibujada en línea. -->
+    <div class="cierre-firma" aria-hidden="true">
+      <svg viewBox="0 0 300 380">
+        <g fill="none" stroke="#A8A49D" stroke-linecap="round">
+          <path d="M40 20H230L262 52V360H40Z" stroke-width="1.4"/>
+          <path d="M230 20V52H262" stroke-width="1.2"/>
+          <path d="M70 80H200M70 104H232M70 128H180M70 168H232M70 192H210M70 216H160" stroke-width="1.2" opacity=".6"/>
+          <path d="M70 300H232" stroke-width="1.4"/>
+          <path d="M74 282l12 12M86 282l-12 12" stroke-width="1.6"/>
+          <path d="M20 300H6M6 292V308M20 254V346" stroke-width="1" opacity=".7"/>
+          <path d="M40 372H262M40 366V378M262 366V378" stroke-width="1" opacity=".7"/>
+        </g>
+        <text x="151" y="324" text-anchor="middle" font-family="Poppins, sans-serif" font-size="13" fill="#A8A49D">firma</text>
+      </svg>
     </div>
   </div>
 </section>
 
 </main>
 
-<!-- ====================================================== 16 · FOOTER ==== -->
-<footer class="footer">
-  <div class="wrap">
-    <div class="footer-grid">
-      <div>
-        <img src="assets/brand/logo-white.png" width="828" height="378" alt="Black Arquitectura" loading="lazy" decoding="async">
-        <p class="desc">Arquitectura, obra y desarrollo inmobiliario</p>
-        <div class="matriculas">
-          <span>Arq. Esteban Crimi — Arquitecto y Maestro Mayor de Obra matriculado</span>
-          <span>Carla La Porta — Asesora inmobiliaria</span>
-        </div>
-      </div>
-      <ul class="redes">
-        <li><a href="https://wa.me/5491164803777" target="_blank" rel="noopener noreferrer" data-wa-directo><svg aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp</a></li>
-        <li><a href="https://www.instagram.com/black_arq/" target="_blank" rel="noopener noreferrer" data-ig><svg aria-hidden="true"><use href="#i-ig"/></svg>Instagram</a></li>
-        <li><a href="https://maps.google.com/?cid=7365464068826002467" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-google"/></svg>Google</a></li>
+<!-- ========================================================== FOOTER ==== -->
+<footer class="footer f-negro" data-oculta-sticky>
+  <div class="wrap footer-in">
+    <div>
+      <img src="assets/brand/logo-white-240.png" width="240" height="110" alt="Black Arquitectura" loading="lazy" decoding="async">
+      <ul class="matriculas">
+        <li>Arq. Esteban Crimi — Arquitecto y Maestro Mayor de Obra matriculado</li>
+        <li>Carla La Porta — Asesora inmobiliaria</li>
       </ul>
     </div>
+    <ul class="redes">
+      <li><a href="#diagnostico" data-cta="cta_footer"><svg aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp</a></li>
+      <li><a href="https://www.instagram.com/black_arq/" target="_blank" rel="noopener noreferrer" data-ig><svg aria-hidden="true"><use href="#i-ig"/></svg>Instagram</a></li>
+      <li><a href="https://maps.google.com/?cid=7365464068826002467" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-google"/></svg>Google</a></li>
+    </ul>
     <p class="footer-copy">© 2026 Black Arquitectura</p>
   </div>
 </footer>
 
-<!-- ============================================== CTA STICKY (mobile) === -->
+<!-- ============================================== CTA FIJO (mobile) ===== -->
 <div class="sticky-cta">
-  <a class="btn btn-1" href="https://wa.me/5491164803777" data-cta="sticky">
-    <span>Quiero mi Diagnóstico</span>
-    <svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg>
-  </a>
+  <a class="btn btn-1" href="#diagnostico" data-cta="cta_sticky"><span>Quiero mi Diagnóstico</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
 </div>
 
 <!-- ===================================================== FORMULARIO ===== -->
@@ -891,9 +711,9 @@ gtag('js',new Date());var c={};if(/[?&]ga_debug=1/.test(location.search))c.debug
   </div>
 </div>
 
-<script src="assets/js/config.js?v=20261004" defer></script>
-<script src="assets/js/form-config.js?v=20261004" defer></script>
-<script src="assets/js/site.js?v=20261004" defer></script>
-<script src="assets/js/form.js?v=20261004" defer></script>
+<script src="assets/js/config.js?v=20261007" defer></script>
+<script src="assets/js/form-config.js?v=20261007" defer></script>
+<script src="assets/js/site.js?v=20261007" defer></script>
+<script src="assets/js/form.js?v=20261007" defer></script>
 </body>
 </html>

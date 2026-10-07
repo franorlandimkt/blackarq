@@ -12,7 +12,8 @@
                 Si falta, se usa el id. Es lo que se usa en {llaves} del
                 mensaje de WhatsApp.
      columna:   encabezado de la columna en la hoja "Leads" de Google
-                Sheets. Si la columna no existe, el script la crea al final.
+                Sheets. Si la columna no existe, el script la crea antes de
+                las columnas manuales (integrations/sheets/Code.gs).
      tipo:      "unica"    → una opción; avanza sola al tocar.
                 "multiple" → varias opciones + botón Siguiente.
                 "texto"    → campo de texto corto + botón Siguiente.
@@ -38,7 +39,7 @@ window.BLACK_FORM = {
   intro: {
     titulo:
       "Estás por tomar una decisión importante y queremos entender en qué instancia estás para saber si nuestro Diagnóstico puede ayudarte.",
-    micro: "Completá estas preguntas. Nos lleva menos de 2 minutos.",
+    micro: "Completá estas preguntas. Nos lleva menos de un minuto.",
   },
 
   // Nombre de cada ruta tal como se escribe en la columna "Ruta".
@@ -167,14 +168,14 @@ window.BLACK_FORM = {
     },
 
     /* 7 ------------------------------------------------------------------
-       [TEXTO A CONFIRMAR] Es el ÚNICO lugar del sitio donde aparece el valor.
-       Funciona como filtro.                                               */
+       Funciona como filtro. Alineado con el FAQ de la landing ("¿Cuánto
+       cuesta?"): el valor se pasa por WhatsApp, no se publica en el sitio. */
     {
       id: "inversion",
       columna: "Disposición a invertir",
       tipo: "unica",
       titulo:
-        "Nuestra asesoría tiene un valor base de $300.000 e incluye el análisis profesional online de la propiedad para ayudarte a tomar una decisión con claridad. ¿Estás dispuesto/a a invertir en este asesoramiento?",
+        "El Diagnóstico es un servicio pago: el valor depende de la propiedad y del alcance, y te lo pasamos por WhatsApp. Si avanzás con el proyecto, se descuenta entero de los honorarios. ¿Estás dispuesto/a a invertir en este asesoramiento?",
       opciones: [
         { valor: "Sí, quiero avanzar" },
         { valor: "Sí, también quisiera que visiten mi propiedad" },
@@ -214,7 +215,9 @@ window.BLACK_FORM = {
   },
 
   /* Mensaje prellenado de WhatsApp (solo leads que califican).
-     {llaves}: cualquier `clave` o `id` de pregunta, más {nombre} y {lead_id}. */
+     {llaves}: cualquier `clave` o `id` de pregunta, más {nombre} y {lead_id}
+     ({lead_id} acá es la referencia corta, BLK-XXXXXXXX: el comienzo del
+     lead_id completo, que figura en la columna ref_whatsapp de la hoja). */
   whatsapp: {
     mensaje:
       "Hola, soy {nombre}. Completé el formulario del Diagnóstico Black.\nSituación: {situacion}.\nZona: {zona}.\nPresupuesto: {presupuesto}.\nPlazo: {plazo}.\n(Ref. {lead_id})",

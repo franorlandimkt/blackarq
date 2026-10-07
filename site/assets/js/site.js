@@ -1,7 +1,7 @@
 /* ==========================================================================
-   BLACK — comportamiento del sitio (v2).
-   Vanilla, sin dependencias. Lo que anima usa transform, opacity y
-   stroke-dashoffset. El formulario vive en form.js.
+   BLACK — comportamiento del sitio (v3).
+   Vanilla, sin dependencias. El formulario y el envío a Sheets viven en
+   form.js.
 
    Regla: todo lo animado ya tiene su valor final en el HTML. Si este
    archivo no corre, o corre a medias, la página se lee completa.
@@ -13,6 +13,7 @@
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var desktop = window.matchMedia("(min-width: 900px)");
 
   function storageGet(store, key) {
     try { return JSON.parse(window[store].getItem(key) || "null"); } catch (e) { return null; }
@@ -22,8 +23,6 @@
   }
 
   /* ====================================================== ANALÍTICA ====== */
-  /* gtag ya está definido en el <head>. En localhost no se carga la
-     librería: los eventos quedan en window.dataLayer para inspeccionarlos. */
 
   function track(evento, params) {
     if (typeof window.gtag === "function") window.gtag("event", evento, params || {});
@@ -41,8 +40,11 @@
     window.fbq("init", CFG.metaPixelId);
     window.fbq("track", "PageView");
   }
-  function pixel(evento, params) {
-    if (window.fbq) window.fbq("track", evento, params || {});
+  /** opts: { eventID } para deduplicar con la API de Conversiones. */
+  function pixel(evento, params, opts) {
+    if (!window.fbq) return;
+    if (opts) window.fbq("track", evento, params || {}, opts);
+    else window.fbq("track", evento, params || {});
   }
 
   /** Profundidad de scroll: 25, 50, 75 y 90 %. Una vez cada uno. */
@@ -54,9 +56,7 @@
       var alto = document.documentElement.scrollHeight - window.innerHeight;
       if (alto <= 0) return;
       var pct = (window.scrollY / alto) * 100;
-      while (marcas.length && pct >= marcas[0]) {
-        track("scroll_depth", { percent_scrolled: marcas.shift() });
-      }
+      while (marcas.length && pct >= marcas[0]) track("scroll_depth", { percent_scrolled: marcas.shift() });
       if (!marcas.length) window.removeEventListener("scroll", onScroll);
     }
     function onScroll() {
@@ -68,49 +68,81 @@
   }
 
   /* ==================================================== ATRIBUCIÓN ====== */
-  /* First touch dentro de la sesión: lo que trajo la primera URL con
-     parámetros queda guardado en sessionStorage hasta que se cierre la
-     pestaña. Si entra de nuevo sin parámetros, no se pisa. */
+  /* Dos registros en localStorage, con vencimiento de 90 días:
+     - first touch (black:ft): la primera visita que llegó con parámetros de
+       campaña. No se pisa hasta que vence.
+     - last touch (black:lt): la última visita que llegó con parámetros. Una
+       visita directa posterior no lo borra.                               */
 
-  var ATTR_KEY = "black:attr";
-  var CTA_KEY = "black:cta";
+  var FT_KEY = "black:ft";
+  var LT_KEY = "black:lt";
+  var TTL = 90 * 24 * 60 * 60 * 1000;
   var PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
-    "campaign_id", "adset_id", "ad_id", "placement", "fbclid"];
+    "fbclid", "campaign_id", "adset_id", "ad_id", "placement"];
 
   function dispositivo() {
     var ua = navigator.userAgent || "";
-    var mobile = /Mobi|Android|iPhone|iPad|iPod/i.test(ua) ||
-      (navigator.maxTouchPoints > 1 && /Macintosh/.test(ua));
+    var mobile = /Mobi|Android|iPhone|iPad|iPod/i.test(ua) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(ua));
     var tipo = mobile ? "mobile" : "desktop";
     if (/Instagram/i.test(ua)) return tipo + " · Instagram";
     if (/FBAN|FBAV|FB_IAB|FBIOS|FB4A/i.test(ua)) return tipo + " · Facebook";
     return tipo;
   }
 
+  function leerToque(key) {
+    var t = storageGet("localStorage", key);
+    if (!t || !t.exp || t.exp < Date.now()) {
+      try { localStorage.removeItem(key); } catch (e) { /* nada */ }
+      return null;
+    }
+    return t.data || null;
+  }
+
   function capturarAtribucion() {
     var p = new URLSearchParams(location.search);
-    var trae = PARAMS.some(function (k) { return !!p.get(k); });
-    var prev = storageGet("sessionStorage", ATTR_KEY);
-    var prevTenia = prev && PARAMS.some(function (k) { return !!prev[k]; });
-    // Se guarda la primera visita de la sesión; si esa vino sin parámetros
-    // y después entra por un anuncio, gana la del anuncio.
-    if (prev && (prevTenia || !trae)) return;
-    var a = {};
-    PARAMS.forEach(function (k) { a[k] = p.get(k) || ""; });
-    a.landing_url = location.href.split("#")[0];
-    // Un referrer del propio sitio (recarga, navegación interna) no es una fuente.
-    a.referrer = document.referrer && document.referrer.indexOf(location.origin) !== 0 ? document.referrer : "";
-    a.dispositivo = dispositivo();
-    storageSet("sessionStorage", ATTR_KEY, a);
+    if (!PARAMS.some(function (k) { return !!p.get(k); })) return;
+    var data = {};
+    PARAMS.forEach(function (k) { data[k] = p.get(k) || ""; });
+    data.fecha = new Date().toISOString();
+    var registro = { data: data, exp: Date.now() + TTL };
+    storageSet("localStorage", LT_KEY, registro);
+    if (!leerToque(FT_KEY)) storageSet("localStorage", FT_KEY, registro);
   }
 
+  function referrerExterno() {
+    var r = document.referrer || "";
+    return r && r.indexOf(location.origin) !== 0 ? r : "";
+  }
+
+  /** Todo lo que se manda a Sheets sobre el origen del lead. */
   function getAtribucion() {
-    return storageGet("sessionStorage", ATTR_KEY) || {};
+    var lt = leerToque(LT_KEY) || {};
+    var ft = leerToque(FT_KEY) || {};
+    var a = {};
+    PARAMS.forEach(function (k) { a[k] = lt[k] || ""; });
+    a.ft_campaign = ft.utm_campaign || "";
+    a.ft_adset = ft.utm_term || "";
+    a.ft_ad = ft.utm_content || "";
+    a.ft_fecha = ft.fecha || "";
+    a.dispositivo = dispositivo();
+    a.url = location.href.split("#")[0];
+    a.referrer = referrerExterno();
+    return a;
   }
 
-  /** Último CTA clickeado antes de abrir el formulario. */
-  function setCta(id) { storageSet("sessionStorage", CTA_KEY, id); }
+  /* CTA de origen: el último que abrió el formulario, y la lista de todos los
+     que se tocaron en la sesión (en orden). */
+  var CTA_KEY = "black:cta_origen";
+  var CTAS_KEY = "black:ctas_sesion";
+
+  function setCta(id) {
+    storageSet("sessionStorage", CTA_KEY, id);
+    var lista = storageGet("sessionStorage", CTAS_KEY) || [];
+    lista.push(id);
+    storageSet("sessionStorage", CTAS_KEY, lista.slice(-30));
+  }
   function getCta() { return storageGet("sessionStorage", CTA_KEY) || "directo"; }
+  function getCtasSesion() { return (storageGet("sessionStorage", CTAS_KEY) || []).join(" > "); }
 
   /* Interfaz compartida con form.js */
   window.BLACK_APP = {
@@ -118,13 +150,13 @@
     pixel: pixel,
     getAtribucion: getAtribucion,
     getCta: getCta,
+    getCtasSesion: getCtasSesion,
     setCta: setCta,
     reduce: reduce,
   };
 
   /* ========================================================== CTAs ====== */
-  /* Los CTA son <a href="https://wa.me/..."> con data-cta: sin JS llevan
-     directo a WhatsApp. Con JS abren el formulario. */
+  /* Todos los CTA abren el formulario (href="#diagnostico"). */
 
   function initCtas() {
     $$("[data-cta]").forEach(function (a) {
@@ -138,81 +170,9 @@
         }
       });
     });
-
-    $$("[data-wa-directo]").forEach(function (a) {
-      a.addEventListener("click", function () { track("cta_click", { cta_id: "footer_whatsapp" }); });
-    });
     $$("[data-ig]").forEach(function (a) {
       a.addEventListener("click", function () { track("instagram_redirect", { origen: "footer" }); });
     });
-  }
-
-  /* ==================================================== REVEALS ========== */
-
-  /**
-   * Dispara `alEntrar(el)` una sola vez por elemento cuando entra en
-   * pantalla. IntersectionObserver + un barrido por scroll: con uno solo hay
-   * escenarios (ancla, refresh a media página, pestaña en segundo plano)
-   * donde algo queda sin revelar.
-   */
-  function alEntrarEnPantalla(lista, alEntrar) {
-    if (!lista.length) return;
-    var pendientes = lista.slice();
-    var io = null;
-    var enCola = false;
-
-    function marcar(el) {
-      var i = pendientes.indexOf(el);
-      if (i < 0) return;
-      pendientes.splice(i, 1);
-      alEntrar(el);
-      if (!pendientes.length) desconectar();
-    }
-    function barrer() {
-      enCola = false;
-      var limite = window.innerHeight * 0.9;
-      pendientes.slice().forEach(function (el) {
-        if (el.getBoundingClientRect().top < limite) marcar(el);
-      });
-    }
-    function onScroll() {
-      if (enCola) return;
-      enCola = true;
-      requestAnimationFrame(barrer);
-    }
-    function alVolver() { if (!document.hidden) barrer(); }
-    function desconectar() {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      window.removeEventListener("load", barrer);
-      document.removeEventListener("visibilitychange", alVolver);
-      if (io) io.disconnect();
-    }
-
-    if ("IntersectionObserver" in window) {
-      io = new IntersectionObserver(function (entradas) {
-        entradas.forEach(function (e) { if (e.isIntersecting) marcar(e.target); });
-      }, { rootMargin: "0px 0px -10% 0px" });
-      lista.forEach(function (el) { io.observe(el); });
-    }
-    barrer();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    window.addEventListener("load", barrer);
-    document.addEventListener("visibilitychange", alVolver);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(barrer);
-  }
-
-  function initReveals() {
-    $$(".mask-grupo").forEach(function (g) {
-      $$(".mask > span", g).forEach(function (s, i) { s.style.setProperty("--i", i); });
-    });
-    var els = $$("[data-reveal], .mask-grupo, .persona-foto");
-    if (reduce) {
-      els.forEach(function (el) { el.classList.add("is-in"); });
-      return;
-    }
-    alEntrarEnPantalla(els, function (el) { el.classList.add("is-in"); });
   }
 
   /* ================================================ CIFRAS (config) ====== */
@@ -224,53 +184,8 @@
     if (!s) return;
     $$("[data-stat]").forEach(function (el) {
       var v = s[el.getAttribute("data-stat")];
-      if (typeof v !== "number" || !isFinite(v)) return;
-      el.textContent = nf(v);
-      if (el.hasAttribute("data-contador")) el.setAttribute("data-contador", String(v));
+      if (typeof v === "number" && isFinite(v)) el.textContent = nf(v);
     });
-  }
-
-  /* ==================================================== CONTADORES ======= */
-  /* El texto final ya está en el HTML. El contador recién toca el texto
-     cuando el elemento está en pantalla y el navegador está pintando. Al
-     terminar (o si algo se corta) vuelve a poner exactamente ese texto. */
-
-  function initContadores() {
-    if (reduce) return;
-    var els = $$("[data-contador]");
-    if (!els.length) return;
-    alEntrarEnPantalla(els, correr);
-
-    function correr(el) {
-      var destino = +el.getAttribute("data-contador");
-      var pre = el.getAttribute("data-prefijo") || "";
-      var final = el.textContent;
-      if (!destino || document.hidden) return;
-
-      // Reservamos el ancho final para que el número no empuje nada (CLS).
-      el.style.minWidth = el.getBoundingClientRect().width + "px";
-
-      var ms = 1400, t0 = null, listo = false;
-      function cerrar() {
-        if (listo) return;
-        listo = true;
-        el.textContent = final;
-        document.removeEventListener("visibilitychange", cerrar);
-      }
-      // Red de seguridad: si requestAnimationFrame se frena (pestaña en
-      // segundo plano), el número final igual aparece.
-      setTimeout(cerrar, ms + 500);
-      document.addEventListener("visibilitychange", cerrar);
-
-      requestAnimationFrame(function tick(ahora) {
-        if (listo) return;
-        if (t0 === null) t0 = ahora;
-        var t = Math.min(1, (ahora - t0) / ms);
-        var e = 1 - Math.pow(1 - t, 3);
-        el.textContent = pre + nf(Math.round(destino * e));
-        if (t < 1) requestAnimationFrame(tick); else cerrar();
-      });
-    }
   }
 
   /* ======================================================= STICKY ======== */
@@ -292,12 +207,14 @@
         });
         tapado = visibles.length > 0;
         actualizar();
-      }, { threshold: 0.15 });
+      }, { threshold: 0.1 });
       ocultan.forEach(function (o) { io.observe(o); });
     }
 
+    var altoHero = hero.offsetHeight;
+    window.addEventListener("resize", function () { altoHero = hero.offsetHeight; });
     function actualizar() {
-      var pasoHero = window.scrollY > hero.offsetHeight * 0.7;
+      var pasoHero = window.scrollY > altoHero * 0.8;
       var modal = document.documentElement.classList.contains("modal-abierto");
       sticky.classList.toggle("is-in", pasoHero && !tapado && !modal);
     }
@@ -307,47 +224,7 @@
     document.addEventListener("black:modal", actualizar);
   }
 
-  /* ===================================================== TIMELINE ======== */
-  /* La línea se traza a medida que se scrollea. */
-
-  function initTimeline() {
-    var tl = $(".tl");
-    var trazo = $(".tl-trazo");
-    var pasos = $$(".paso");
-    if (!tl || !trazo || !pasos.length) return;
-
-    if (reduce) {
-      trazo.style.strokeDashoffset = "0";
-      pasos.forEach(function (p) { p.classList.add("activo"); });
-      return;
-    }
-
-    var pendiente = false;
-    function aplicar() {
-      pendiente = false;
-      var r = tl.getBoundingClientRect();
-      var vh = window.innerHeight;
-      var avance = Math.max(0, Math.min(1, (vh * 0.62 - r.top) / r.height));
-      trazo.style.strokeDashoffset = (1 - avance).toFixed(4);
-      var limite = r.top + r.height * avance;
-      pasos.forEach(function (p) {
-        p.classList.toggle("activo", p.getBoundingClientRect().top <= limite + 4);
-      });
-    }
-    function onScroll() {
-      if (pendiente) return;
-      pendiente = true;
-      requestAnimationFrame(aplicar);
-    }
-    aplicar();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-  }
-
   /* ================================================ ANTES / DESPUÉS ====== */
-  /* Punteros sobre el contenedor (mouse, touch y lápiz). touch-action:pan-y
-     deja el scroll vertical en manos del navegador; el arrastre horizontal
-     mueve el divisor. El range oculto queda para teclado. */
 
   function initSliders() {
     $$(".ba").forEach(function (ba) {
@@ -366,7 +243,6 @@
         var r = ba.getBoundingClientRect();
         set(((e.clientX - r.left) / r.width) * 100);
       }
-
       var activo = false;
       ba.addEventListener("pointerdown", function (e) {
         activo = true;
@@ -377,7 +253,6 @@
       ["pointerup", "pointercancel", "lostpointercapture"].forEach(function (t) {
         ba.addEventListener(t, function () { activo = false; });
       });
-      // Respaldo para WebViews sin Pointer Events.
       if (!("PointerEvent" in window)) {
         ba.addEventListener("touchstart", function (e) { desde(e.touches[0]); }, { passive: true });
         ba.addEventListener("touchmove", function (e) { desde(e.touches[0]); }, { passive: true });
@@ -387,19 +262,23 @@
   }
 
   /* ========================================================= FAQ ========= */
+  /* Una abierta a la vez. Sin JS, todas quedan abiertas. */
 
   function initFaq() {
     var items = $$(".faq-item");
-    items.forEach(function (item) {
+    items.forEach(function (item, i) {
       var btn = $(".faq-btn", item);
+      var panel = $(".faq-panel", item);
+      panel.id = "faq-p-" + i;
+      btn.setAttribute("aria-controls", panel.id);
       btn.addEventListener("click", function () {
-        var abierto = item.getAttribute("data-open") === "1";
+        var abierto = item.classList.contains("abierto");
         items.forEach(function (o) {
-          o.setAttribute("data-open", "0");
+          o.classList.remove("abierto");
           $(".faq-btn", o).setAttribute("aria-expanded", "false");
         });
         if (!abierto) {
-          item.setAttribute("data-open", "1");
+          item.classList.add("abierto");
           btn.setAttribute("aria-expanded", "true");
           track("faq_open", { question: btn.textContent.trim() });
         }
@@ -407,7 +286,127 @@
     });
   }
 
+  /* ============================================== ECUACIÓN (3 cuentas) === */
+
+  function initEcuacion() {
+    var ec = $("[data-ecuacion]");
+    if (!ec) return;
+    if (reduce || !("IntersectionObserver" in window)) { ec.classList.add("is-in"); return; }
+    var io = new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) {
+        setTimeout(function () { ec.classList.add("is-in"); }, 500);
+        io.disconnect();
+      }
+    }, { threshold: 0.6 });
+    io.observe(ec);
+  }
+
+  /* =================================================== CORTE DE MURO ===== */
+  /* Al scrollear, el revoque se abre de izquierda a derecha y deja ver lo
+     que hay detrás. Los números (hotspots) abren el texto de cada punto. */
+
+  function initMuro() {
+    var bloque = $("[data-muro]");
+    if (!bloque) return;
+    var clip = $("[data-muro-clip]", bloque);
+    var borde = $("[data-muro-borde]", bloque);
+    var hots = $$(".hot", bloque);
+    var lista = $("[data-muro-lista]", bloque);
+    var items = $$(".muro-item", bloque);
+    var X0 = 110, W = 410;
+    var abierto = 1;
+
+    // Una vez abierto, no se vuelve a cerrar al subir.
+    function abrir(p, forzar) {
+      p = Math.max(0, Math.min(1, p));
+      if (!forzar && p < abierto) return;
+      if (Math.abs(p - abierto) < 0.002 && !forzar) return;
+      abierto = p;
+      var x = X0 + W * p;
+      clip.setAttribute("x", x.toFixed(1));
+      clip.setAttribute("width", (W * (1 - p)).toFixed(1));
+      borde.setAttribute("d", "M" + x.toFixed(1) + " 50V500");
+      borde.style.opacity = p > 0.995 ? "0" : "1";
+    }
+
+    var activo = -1;
+    function activar(i, origen) {
+      if (i === activo) return;
+      activo = i;
+      hots.forEach(function (h, k) { h.classList.toggle("on", k === i); h.setAttribute("aria-pressed", String(k === i)); });
+      items.forEach(function (it, k) { it.classList.toggle("on", k === i); });
+      lista.classList.add("activa");
+      if (origen === "hotspot") track("muro_hotspot", { punto: i + 1 });
+    }
+
+    hots.forEach(function (h, i) {
+      h.setAttribute("aria-pressed", "false");
+      h.setAttribute("aria-controls", "muro-item-" + i);
+      items[i].id = "muro-item-" + i;
+      h.addEventListener("click", function () {
+        abrir(1);
+        activar(i, "hotspot");
+        var it = items[i];
+        if (desktop.matches) {
+          it.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
+        } else {
+          lista.scrollTo({ left: it.offsetLeft - lista.offsetLeft - parseFloat(getComputedStyle(lista).paddingLeft || 0), behavior: reduce ? "auto" : "smooth" });
+        }
+      });
+    });
+
+    // Mobile: la tarjeta que queda al borde izquierdo es la activa.
+    var enCola = false;
+    lista.addEventListener("scroll", function () {
+      if (desktop.matches || enCola) return;
+      enCola = true;
+      requestAnimationFrame(function () {
+        enCola = false;
+        var izq = lista.getBoundingClientRect().left;
+        var mejor = 0, dist = Infinity;
+        items.forEach(function (it, k) {
+          var d = Math.abs(it.getBoundingClientRect().left - izq - 16);
+          if (d < dist) { dist = d; mejor = k; }
+        });
+        activar(mejor);
+      });
+    }, { passive: true });
+
+    // Scroll de página: apertura del revoque (todas las pantallas) y, en
+    // desktop, el punto activo según el texto que está en el centro.
+    var pendiente = false;
+    function aplicar() {
+      pendiente = false;
+      var vh = window.innerHeight;
+      if (!reduce) {
+        var top = bloque.getBoundingClientRect().top;
+        abrir((vh * 0.8 - top) / (vh * 0.55));
+      }
+      if (desktop.matches) {
+        var centro = vh * 0.5, mejor = -1, dist = Infinity;
+        items.forEach(function (it, k) {
+          var r = it.getBoundingClientRect();
+          var d = Math.abs(r.top + Math.min(r.height, 160) / 2 - centro);
+          if (r.bottom > 0 && r.top < vh && d < dist) { dist = d; mejor = k; }
+        });
+        if (mejor >= 0) activar(mejor);
+      }
+    }
+    function onScroll() {
+      if (pendiente) return;
+      pendiente = true;
+      requestAnimationFrame(aplicar);
+    }
+    if (!reduce) abrir(0, true);
+    aplicar();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    if (!desktop.matches) activar(0);
+  }
+
   /* ======================================================= RESEÑAS ======= */
+  /* data/reviews.json. Las entradas con estado "PENDIENTE" no se muestran,
+     salvo con ?preview=1 en la URL (para revisar el armado). */
 
   var SVG_NS = "http://www.w3.org/2000/svg";
   function svgUse(id, cls) {
@@ -428,103 +427,79 @@
 
   function initResenas() {
     var sec = $("#resenas");
-    if (!sec) return;
-    var R = CFG.reviews;
-    if (!R || !R.items || !R.items.length) { sec.remove(); return; }
+    var listaEl = sec && $("[data-res-lista]", sec);
+    if (!listaEl || !window.fetch) return;
+    var preview = /[?&]preview=1/.test(location.search);
 
-    var rating = $("[data-res-rating]", sec);
-    if (rating && typeof R.rating === "number") rating.textContent = R.rating.toFixed(1).replace(".", ",");
-    var total = $("[data-res-total]", sec);
-    if (total && R.total) total.textContent = String(R.total);
-    var link = $("[data-res-url]", sec);
-    if (link && R.url) link.href = R.url;
+    fetch("data/reviews.json", { cache: "no-cache" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (R) {
+        if (!R) return;
+        if (typeof R.rating === "number") $$("[data-res-rating]", sec).forEach(function (x) { x.textContent = R.rating.toFixed(1).replace(".", ","); });
+        if (R.total) $$("[data-res-total]", sec).forEach(function (x) { x.textContent = String(R.total); });
+        if (R.url) $$("[data-res-url]", sec).forEach(function (x) { x.href = R.url; });
 
-    // Testimonio destacado: solo si está completo.
-    var f = R.featured;
-    var fig = $("[data-res-featured]", sec);
-    if (fig && f && f.name && f.barrio && f.text) {
-      var q = el("blockquote", "", "“" + f.text + "”");
-      var cap = el("figcaption");
-      cap.appendChild(el("b", "", f.name));
-      cap.appendChild(document.createTextNode(" · " + f.barrio));
-      fig.appendChild(q);
-      fig.appendChild(cap);
-      fig.hidden = false;
-    }
+        var items = (R.items || []).filter(function (r) { return preview || r.estado !== "PENDIENTE"; });
+        items.forEach(function (r, i) {
+          var pend = r.estado === "PENDIENTE";
+          var li = el("li", "res-card" + (pend ? " pendiente" : ""));
+          li.setAttribute("aria-label", "Reseña " + (i + 1) + " de " + items.length);
+          var head = el("div", "res-card-head");
+          var av = el("span", "res-avatar");
+          if (r.avatar) {
+            var img = el("img");
+            img.src = r.avatar; img.alt = ""; img.width = 40; img.height = 40; img.loading = "lazy";
+            av.appendChild(img);
+          } else {
+            av.textContent = (r.inicial || (r.autor || "?").trim().charAt(0)).toUpperCase();
+          }
+          head.appendChild(av);
+          var quien = el("div");
+          quien.appendChild(el("p", "res-nombre", r.autor || ""));
+          var est = el("div", "estrellas");
+          var n = Math.max(1, Math.min(5, r.estrellas || 5));
+          est.setAttribute("role", "img");
+          est.setAttribute("aria-label", n + " de 5 estrellas");
+          for (var k = 0; k < n; k++) est.appendChild(svgUse("i-star"));
+          quien.appendChild(est);
+          head.appendChild(quien);
+          li.appendChild(head);
+          li.appendChild(el("p", "res-texto", r.texto || ""));
+          if (r.fecha) li.appendChild(el("p", "res-fecha", r.fecha));
+          listaEl.appendChild(li);
+        });
 
-    var pista = $("[data-res-pista]", sec);
-    R.items.forEach(function (r, i) {
-      var li = el("li", "res-card");
-      li.setAttribute("aria-label", "Reseña " + (i + 1) + " de " + R.items.length);
-      var head = el("div", "res-card-head");
-      head.appendChild(el("span", "res-avatar", (r.name || "?").trim().charAt(0).toUpperCase()));
-      var quien = el("div");
-      quien.appendChild(el("p", "res-nombre", r.name));
-      var est = el("div", "estrellas");
-      est.setAttribute("role", "img");
-      est.setAttribute("aria-label", (r.rating || 5) + " de 5 estrellas");
-      for (var k = 0; k < (r.rating || 5); k++) est.appendChild(svgUse("i-star"));
-      quien.appendChild(est);
-      head.appendChild(quien);
-      head.appendChild(svgUse("i-google", "res-card-g"));
-      li.appendChild(head);
+        var mas = $("[data-res-mas]", sec);
+        if (mas && items.length > 6) {
+          mas.hidden = false;
+          mas.addEventListener("click", function () {
+            listaEl.classList.add("todas");
+            mas.hidden = true;
+            track("reviews_more");
+          });
+        }
+      })
+      .catch(function () { /* sin reseñas: queda el encabezado y el link a Google */ });
+  }
 
-      var p = el("p", "res-texto", r.text);
-      p.id = "res-txt-" + i;
-      li.appendChild(p);
+  /* ============================================ PÁGINAS SECUNDARIAS ====== */
+  /* /estudio y /obras usan el sistema anterior (paginas.css), que esconde
+     los bloques hasta que se marcan como visibles. Se muestran de una. */
 
-      var mas = el("button", "res-mas", "Leer más");
-      mas.type = "button";
-      mas.setAttribute("aria-expanded", "false");
-      mas.setAttribute("aria-controls", p.id);
-      mas.hidden = true;
-      mas.addEventListener("click", function () {
-        var abierta = li.classList.toggle("abierta");
-        mas.textContent = abierta ? "Leer menos" : "Leer más";
-        mas.setAttribute("aria-expanded", String(abierta));
-      });
-      li.appendChild(mas);
-      pista.appendChild(li);
-    });
+  function initPaginasSimples() {
+    if ($(".hero")) return;
+    $$("[data-reveal], .mask-grupo, .persona-foto").forEach(function (x) { x.classList.add("is-in"); });
+  }
 
-    sec.hidden = false;
-    // El bloque arrancó oculto: los reveals que contiene se registraron
-    // con alto cero. Se marcan a mano.
-    $$(".mask-grupo", sec).forEach(function (g) {
-      if (reduce) g.classList.add("is-in");
-      else alEntrarEnPantalla([g], function (x) { x.classList.add("is-in"); });
-    });
-
-    // "Leer más" solo donde el texto realmente se corta en 4 líneas.
-    function revisarCortes() {
-      $$(".res-card", pista).forEach(function (card) {
-        if (card.classList.contains("abierta")) return;
-        var t = $(".res-texto", card);
-        $(".res-mas", card).hidden = t.scrollHeight <= t.clientHeight + 2;
-      });
-    }
-    revisarCortes();
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(revisarCortes);
-    var tRes;
-    window.addEventListener("resize", function () { clearTimeout(tRes); tRes = setTimeout(revisarCortes, 150); });
-
-    // Flechas (desktop).
-    var prev = $("[data-res-prev]", sec);
-    var next = $("[data-res-next]", sec);
-    function paso() {
-      var card = $(".res-card", pista);
-      return card ? card.getBoundingClientRect().width + 16 : 300;
-    }
-    function estado() {
-      var max = pista.scrollWidth - pista.clientWidth - 2;
-      if (prev) prev.disabled = pista.scrollLeft <= 2;
-      if (next) next.disabled = pista.scrollLeft >= max;
-    }
-    if (prev) prev.addEventListener("click", function () { pista.scrollBy({ left: -paso(), behavior: reduce ? "auto" : "smooth" }); });
-    if (next) next.addEventListener("click", function () { pista.scrollBy({ left: paso(), behavior: reduce ? "auto" : "smooth" }); });
-    pista.addEventListener("scroll", estado, { passive: true });
-    window.addEventListener("resize", estado);
-    estado();
+  /** Corre `fn` recién cuando `el` se acerca a la pantalla: así el arranque
+      no paga el costo de lo que está más abajo. */
+  function cuandoCerca(el, fn) {
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) { fn(); return; }
+    var io = new IntersectionObserver(function (es) {
+      if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); fn(); }
+    }, { rootMargin: "600px 0px" });
+    io.observe(el);
   }
 
   /* ========================================================= INIT ======== */
@@ -535,13 +510,12 @@
     initStats();
     initCtas();
     initScrollDepth();
-    initReveals();
-    initContadores();
     initSticky();
-    initTimeline();
-    initSliders();
     initFaq();
-    initResenas();
+    initEcuacion();
+    initPaginasSimples();
+    cuandoCerca($("#casos"), function () { initSliders(); initResenas(); });
+    cuandoCerca($("[data-muro]"), initMuro);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
