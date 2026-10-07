@@ -1,0 +1,44 @@
+# Sitio estático: no hay build. Netlify sirve los archivos tal cual.
+# (Sin bloque [build] a propósito: en un deploy por drag-and-drop ese bloque
+#  hace que Netlify busque un directorio de build que no existe y falle.)
+
+# Imágenes y marca: no cambian una vez subidas. Cache agresivo, un año.
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/brand/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# CSS y JS: están en iteración activa mientras se ajusta el diseño.
+# "immutable" acá sería el bug que ya nos pasó una vez: el navegador de un
+# visitante que ya vio el sitio se queda para siempre con la versión vieja,
+# sin revalidar nunca, aunque el archivo en el servidor haya cambiado.
+# max-age corto + must-revalidate: el navegador pregunta si cambió antes de
+# reusar la copia local, así que un cambio se ve casi al instante.
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# /gracias ya no existe: el formulario lleva directo a WhatsApp. Por si
+# quedó algún link o marcador viejo, vuelve a la landing.
+[[redirects]]
+  from = "/gracias/*"
+  to = "/"
+  status = 301
