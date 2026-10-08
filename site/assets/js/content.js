@@ -12,10 +12,9 @@
    ========================================================================== */
 
 window.BLACK_CONTENT = {
-  /* Hero, micro-prueba, y encabezado de las reseñas.
-     Ej.: "5,0 en Google · 41 reseñas"
-     (data/reviews.json tiene 5,0 · 41 del sitio anterior: confirmar.) */
-  resenas_google: "",
+  /* Hero (prueba) y encabezado de las reseñas. Mismos datos que
+     data/reviews.json (rating/total): si cambian, actualizar los dos. */
+  resenas_google: "5,0 en Google · 41 reseñas",
 
   /* Caso Lorena: testimonio textual, sin comillas (las pone la página). */
   testimonio_lorena: "",
@@ -26,9 +25,8 @@ window.BLACK_CONTENT = {
   /* Paso 4: "Confirmás y nos mandás todo. ___." Ej.: "Transferencia o Mercado Pago" */
   forma_pago: "",
 
-  /* Quiénes: trayectoria. Ej.: "15 años · 120 obras" */
-  trayectoria_esteban: "",
-  trayectoria_carla: "",
+  /* Quiénes: trayectoria de Esteban (cifras de config.js → stats). */
+  trayectoria_esteban: "15 años · 120 obras · 18.000 m².",
 
   /* Footer: email de contacto. Ej.: "hola@blackarquitectura.com" */
   email: "",

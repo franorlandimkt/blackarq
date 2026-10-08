@@ -36,7 +36,7 @@ Qué hace el sitio con eso:
 - **Primer toque** (`ft_campaign`, `ft_adset`, `ft_ad`, `ft_fecha`): la primera visita que llegó con parámetros. No se pisa hasta que vence (90 días).
 - **CTA de origen** (`cta_origen`): el botón que abrió el formulario. `ctas_sesion` lista todos los CTA tocados en la sesión, en orden (`cta_hero > cta_casos`).
 
-IDs de los CTA (todos abren el mismo formulario): `cta_header` (encabezado), `cta_hero`, `cta_incluye` (después de "Qué incluye"), `cta_casos`, `cta_garantia`, `cta_faq`, `cta_cierre` y `cta_sticky` (CTA fijo en mobile). Entrar con `#diagnostico` en la URL abre el formulario (`cta_origen = directo`).
+IDs de los CTA (todos abren el mismo formulario): `cta_header` (encabezado, solo desktop), `cta_hero`, `cta_incluye` (después de "Qué incluye"), `cta_casos`, `cta_garantia`, `cta_faq`, `cta_cierre` y `cta_sticky` (CTA fijo en mobile). Entrar con `#diagnostico` en la URL abre el formulario (`cta_origen = directo`).
 
 En la v4 se dejaron de usar `cta_tres_cuentas`, `cta_informe`, `cta_quienes` y `cta_footer` (esas secciones ya no existen) y se sumaron `cta_header`, `cta_incluye` y `cta_garantia`. La pestaña "Resumen" agrupa con `UNIQUE()`, así que los IDs nuevos aparecen solos; los viejos quedan con sus leads históricos.
 
@@ -89,7 +89,7 @@ GA4 (`G-EE9PC274XF`) está en el `<head>` de `index.html`. Eventos: `cta_click`,
 
 `site/data/reviews.json`. Copiar reseñas reales del perfil de Google, **texto literal**. Para publicar una entrada: completar `autor` y `texto` (y si se quiere `fecha`, `avatar`, `link`) y cambiar `estado` a `"OK"`. Las entradas `"PENDIENTE"` no se muestran; se ven agregando `?preview=1` a la URL. Hoy hay 5 reales publicadas (el copy pide 3 a 5). En desktop se ven hasta 6 (con "Ver más" si hay más); en mobile, carrusel horizontal.
 
-El puntaje y la cantidad de reseñas que se muestran en la página salen de `content.js` (`resenas_google`), no de `reviews.json`: el copy los marca como dato a confirmar. `reviews.json` trae 5,0 / 41 del sitio anterior (y el schema `aggregateRating` del `<head>` también): si siguen vigentes, pegar "5,0 en Google · 41 reseñas" en `content.js`.
+El puntaje y la cantidad que se muestran en el hero y en el encabezado de las reseñas salen de `content.js` (`resenas_google`: "5,0 en Google · 41 reseñas"), con los mismos valores que `reviews.json` y el schema `aggregateRating`. Si cambian, actualizar los tres.
 
 ---
 
@@ -99,19 +99,18 @@ Todos se completan en **`site/assets/js/content.js`** (un solo archivo). Mientra
 
 | Clave en `content.js` | Dónde aparece | Qué falta |
 |---|---|---|
-| `resenas_google` | Hero (micro-prueba) y encabezado de reseñas | Puntaje y cantidad de reseñas en Google |
 | `testimonio_lorena` | Caso Lorena | Testimonio textual de Lorena (y permiso de nombre) |
 | `plazo_whatsapp` | Paso a paso, paso 2 | Plazo de respuesta por WhatsApp (ej. "dentro de las 24 h hábiles") |
 | `forma_pago` | Paso a paso, paso 4 | Forma de pago |
-| `trayectoria_esteban` | Quiénes están detrás | Años / obras de Esteban |
-| `trayectoria_carla` | Quiénes están detrás | Años en el rubro de Carla |
 | `email` | Footer | Email de contacto (también arma el `mailto:`) |
+
+Ya completados: `resenas_google` ("5,0 en Google · 41 reseñas") y `trayectoria_esteban` ("15 años · 120 obras · 18.000 m²", las cifras de `config.js`). El dato de años de Carla se sacó de la página.
 
 Material visual pendiente (se reemplaza en `index.html`, cada lugar tiene un comentario `PLACEHOLDER`):
 
-- **Foto de Esteban y Carla juntos en una visita**, con instrumental (sección "Quiénes"). Hoy: los dos retratos individuales, con el marcador `[DATO: foto…]` visible.
+- **Foto de Esteban y Carla juntos en una visita** (sección "Quiénes"). Hoy: los dos retratos individuales (sin marcador visible).
 - **Informe real anonimizado (2–3 páginas)**, con ACM y estrategia de negociación tapados (card "Informe Black de 7 miradas"). Hoy: mockup dibujado en SVG con datos reemplazados por líneas.
-- **Fotos antes/después de Amenábar en alta.** Hoy: las del sitio anterior (`caso2-antes/despues`, 640 y 1000 px, AVIF + WebP). Reemplazar los archivos con el mismo nombre.
+- **Fotos antes/después reales de Lorena (Villa Devoto) y de Amenábar.** Hoy los dos sliders usan las imágenes del sitio anterior (`caso-antes/despues` y `caso2-antes/despues`), que son **el mismo render en blanco y negro y en color**, no un antes y un después reales. Reemplazar los archivos con el mismo nombre (640 y 1000 px, AVIF + WebP).
 - Del listado del cliente que no tiene lugar en la página: testimonio de la clienta que cerró la compra, apellido de Carla (se usa La Porta), cuántas propiedades entran en el Diagnóstico base.
 
 ## 6. Diseño y motion (v4)
@@ -128,10 +127,11 @@ Material visual pendiente (se reemplaza en `index.html`, cada lugar tiene un com
 - **privy.io no se pudo abrir** desde el entorno de trabajo (la política de red bloquea el dominio). Se aplicó el sistema descripto en el brief: hero con aire y pieza visual grande, fila de stats, cards con visual arriba, bloques apilados con divisores finos, cierre que repite el hero.
 - **Rama de trabajo:** `claude/black-landing-redesign-qsk1ax` (la que asigna el entorno) en lugar de `landing-diagnostico-black`.
 - **CTAs intermedios:** además del hero, el cierre y el CTA fijo, se repite el mismo botón ("Quiero mi Diagnóstico Black") en el encabezado y después de Qué incluye, Casos, Garantía y FAQ. No agrega texto nuevo; cada uno con su ID.
-- **Eyebrows de sección** con el nombre de la sección del copy ("Ofertar a ciegas", "Qué incluye el Diagnóstico Black"…) y numeración de plano (B-02, C-03…). La fila de stats usa los rótulos que pide el brief ("familias", "visita", "informe", "ahorro de Lorena").
-- **Comparativa (Quiénes):** qué cubre cada opción se dedujo del copy — Tasación: precio; Inspección: estado; Inmobiliaria: precio y negociación, y cobra si firmás; Diagnóstico Black: todo, y no cobra si firmás. Revisar si se quiere otro criterio.
+- **Sin rótulos de sección** (v4.1): se sacaron los eyebrows ("B-02 · Ofertar a ciegas"…) y los códigos de las cards (A-01…). Regla agregada a la skill `crear-landing-pages`. La fila de stats usa los rótulos que pide el brief ("familias", "visita", "informe", "ahorro de Lorena").
+- **Hero v4.1:** centrado, render de la casa de fondo, titular "Invertí en tu propiedad…", bajada corta, tres bullets, CTA y prueba (caras + cargos de Esteban y Carla + 5,0 en Google). El encabezado (logo + CTA) queda solo en desktop; en mobile el CTA fijo de abajo aparece pasado el hero.
+- **"No es para vos" en rojo** (`--rojo` #CD2B31), único uso del color.
+- **Comparativa (Quiénes):** en mobile es una grilla de 4 columnas sin scroll (el criterio arriba de cada fila, la columna Black continua); en desktop, 5 columnas. Qué cubre cada opción se dedujo del copy — Tasación: precio; Inspección: estado; Inmobiliaria: precio y negociación, y cobra si firmás; Diagnóstico Black: todo, y no cobra si firmás. Revisar si se quiere otro criterio.
 - **Caso Amenábar:** el título de la card es el H3 del copy; "Amenábar 914" va como rótulo arriba.
-- **Micro-prueba del hero:** los tres datos van como lista (en el copy están separados por "·"); el texto es el mismo.
 - **Footer:** zonas + Instagram + email. Se sacaron el link a Google Maps, las matrículas y el WhatsApp directo que tenía la v3 (sin links que saquen de la página salvo Instagram).
 - **Schema:** se mantuvo `ProfessionalService` (con la descripción actualizada) y se reescribió `FAQPage` con las preguntas nuevas, para que coincida con lo visible.
 

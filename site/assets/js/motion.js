@@ -58,16 +58,6 @@
   var contadores = $$("[data-count]");
   contadores.forEach(function (el) { formato(el, +(el.getAttribute("data-from") || 0)); });
 
-  /* ------------------------------------------------------------- hero --- */
-
-  var contador = document.querySelector("[data-contador]");
-  if (contador) {
-    var num = contador.querySelector("[data-count]");
-    setTimeout(function () {
-      marcar(contador);
-      if (num) setTimeout(function () { contar(num, 1400); }, 350);
-    }, 900);
-  }
   var enHero = function (el) { return !!el.closest("[data-hero]"); };
 
   /* ----------------------------------------------- dibujo de las SVG ---- */
@@ -95,33 +85,7 @@
     contar(el);
   }, { threshold: 0.6 });
 
-  /* ------------------------------------------------- scroll: iceberg ---- */
-  /* La línea baja con el scroll y revela las capas ocultas. Solo avanza. */
-
   var scrollers = [];
-
-  var ice = document.querySelector("[data-iceberg]");
-  if (ice) {
-    var clip = ice.querySelector("[data-ice-clip]");
-    var scan = ice.querySelector("[data-ice-scan]");
-    var Y0 = 152, H = 318, maxP = 0;
-    var aplicarIce = function (p) {
-      clip.setAttribute("height", (H * p).toFixed(1));
-      scan.setAttribute("transform", "translate(0 " + (Y0 + (H - 18) * p).toFixed(1) + ")");
-      scan.classList.toggle("on", p > 0.01 && p < 0.999);
-    };
-    aplicarIce(0);
-    scrollers.push({
-      el: ice,
-      fn: function (vh) {
-        var r = ice.getBoundingClientRect();
-        var p = clamp((vh * 0.72 - (r.top + r.height * 0.3)) / (r.height * 0.6));
-        if (p <= maxP) return;
-        maxP = p;
-        aplicarIce(p);
-      },
-    });
-  }
 
   /* --------------------------------------------- scroll: línea de tiempo */
   /* La línea amarilla avanza con el scroll y cada hito se enciende al pasar.

@@ -1,6 +1,6 @@
 # COPY FINAL — Diagnóstico Black (usar literal)
 
-> Fuente única del copy de la landing (`site/index.html`). Es copy final: no se reescribe, no se resume, no se agregan frases. Las líneas de "Ilustración", "Material" y "Por qué" son indicaciones de diseño, no texto publicado. Los marcadores `[DATO: …]` se completan en `site/assets/js/content.js`.
+> Fuente única del copy de la landing (`site/index.html`). Versión 2 (8/10): ajustes de Franco sobre la v1 publicada (hero nuevo, sin rótulos de sección, sin iceberg ni contador, para quién reescrito, garantía sin "qué incluye"). Es copy final: no se reescribe, no se resume, no se agregan frases. Las líneas de "Ilustración", "Material" y "Por qué" son indicaciones de diseño, no texto publicado. Los marcadores `[DATO: …]` se completan en `site/assets/js/content.js`.
 
 ## Estrategia
 
@@ -17,19 +17,20 @@
 
 ## 1. Hero
 
-**Eyebrow:** Diagnóstico Black · Precio, reforma y negociación
+**Titular:** Invertí en tu propiedad sabiendo cuánto vale, cuánto sale reformarla y hasta dónde negociar.
 
-**Titular:** Llegá a la oferta sabiendo cuánto vale la propiedad y hasta dónde negociar.
+**Bajada:** Un arquitecto y una asesora inmobiliaria diagnostican la propiedad que te gusta antes de que ofertes.
 
-**Bajada:** Un arquitecto y una asesora inmobiliaria analizan la propiedad que te gusta antes de que ofertes: en qué estado está, cuánto cuesta dejarla como la querés y cuánto vale de verdad.
+**Bullets:**
+- En qué estado está
+- Cuánto cuesta dejarla como la querés
+- Cuánto vale de verdad
 
 **CTA:** Quiero mi Diagnóstico Black
 
-**Debajo del CTA:** Visita en 72 h · Informe en 7 días · Si no encontramos un argumento para negociar, te devolvemos el Diagnóstico.
+**Prueba (debajo del CTA):** fotos de Esteban y Carla · Esteban Crimi · Arquitecto y Maestro Mayor de Obras · Carla La Porta · Asesora inmobiliaria · ★★★★★ 5,0 en Google · 41 reseñas
 
-**Micro-prueba:** Más de 97 familias ya compraron sabiendo cuánto pagaban y en qué se metían · Lorena compró en Devoto por USD 40.000 menos · [DATO: puntaje y cantidad de reseñas en Google]
-
-> **Ilustración:** contador "USD 460.000 → USD 420.000" con la leyenda "Casa de 180 m², Devoto" — **Por qué:** el titular promete negociar; el número lo prueba antes del primer scroll.
+> **Fondo:** render de la casa (fondo arquitectónico) con velo oscuro. Sin eyebrow, sin línea de reaseguro, sin micro-prueba de "97 familias" y sin contador 460.000 → 420.000 (eliminados por pedido de Franco).
 
 ---
 
@@ -37,31 +38,32 @@
 
 **Subtítulo:** Hoy ofertás con un solo dato: el precio que te pidieron.
 
-Encontraste una propiedad que te gusta. El precio parece lógico. Todos los que la vieron con vos coinciden en que es una buena compra. Y probablemente hay otro interesado.
+Encontraste una propiedad que te gusta. El precio parece lógico. Todos los que la vieron con vos coinciden en que es una buena compra.
 
 Pero hay tres preguntas que nadie te respondió:
 
 - **¿El precio se sostiene?** Lo que piden no es lo que vale. *"¿Y si me están cobrando de más?"*
-- **¿Cuánto vas a tener que poner después?** Humedad, instalaciones viejas, una cocina que hay que tirar abajo. Eso no aparece en las fotos. *"¿Y si compro y después aparecen problemas?"* Según Houzz, el 34% de quienes reforman se pasa del presupuesto; entre quienes acaban de comprar, el 45%.
+- **¿Cuánto vas a tener que poner después?** Humedad, instalaciones viejas, una cocina que hay que tirar abajo. Eso no aparece en las fotos. *"¿Y si compro y después aparecen problemas?"*
 - **¿Quién te está diciendo la verdad?** El que vende quiere vender. La inmobiliaria cobra si firmás. No te mienten, pero todos forman parte de la operación. *"No sé en quién confiar."*
 
-> **Ilustración:** iceberg/corte. Arriba: "precio publicado". Abajo: humedades, instalación eléctrica, plomería, caldera, documentación — **Por qué:** hace visible el segundo costo.
+> Sin ilustración (el iceberg se eliminó).
 
 ---
 
 ## 3. Idea central: el precio es la mitad de la cuenta
 
-**Subtítulo:** Una propiedad de USD 200.000 puede salirte más cara que una de 250.000.
+**Subtítulo:** Una propiedad de USD 200.000 puede salirte más cara que una de 240.000.
 
 Lo que te cuesta una propiedad no es el precio. Es el precio más la reforma que necesita para quedar como la querés.
 
 Una compra tiene dos partes: la **inmobiliaria** (cuánto vale) y la **constructiva** (cuánto cuesta dejarla como la querés). Lo que define si es una buena compra son las dos juntas, no una.
 
-Casi todos lo hacen al revés: primero compran y después llaman a un arquitecto. Para cuando los dos números se cruzan, ya firmaste.
+**Título:** Casi todos lo hacen al revés.
+Primero compran y después llaman a un arquitecto. Para cuando los dos números se cruzan, ya firmaste.
 
 **Antes de ofertar es el único momento en que todavía podés negociar esta propiedad o elegir otra.**
 
-> **Ilustración 1:** ecuación "Precio + Reforma = Lo que realmente pagás", con dos propiedades: A USD 200.000 + 80.000 = 280.000 / B USD 250.000 + 15.000 = 265.000 ("valores ilustrativos").
+> **Ilustración 1:** ecuación "Precio + Reforma = Lo que realmente pagás", con dos propiedades: A USD 200.000 + 95.000 = 295.000 / B USD 240.000 + 15.000 = 255.000 ("valores ilustrativos").
 > **Ilustración 2:** dos mitades que se unen: plano arquitectónico (constructivo) + gráfico de mercado/valor m² (inmobiliario) = una sola decisión.
 > **Ilustración 3:** "Proceso habitual: comprar → llamar al arquitecto → descubrir el costo" vs. "Proceso Black: analizar → negociar → comprar".
 
@@ -72,7 +74,7 @@ Casi todos lo hacen al revés: primero compran y después llaman a un arquitecto
 **Subtítulo:** Todo lo que necesitás saber antes de ofertar, en un solo análisis.
 
 **Visita técnica dentro de las 72 h.**
-Un arquitecto recorre la propiedad entre 45 y 75 minutos: distribución, humedades, instalaciones, estructura visible. No vamos solo a mirar: vamos a analizar. Te llevás la minuta en el momento y después la Ficha Black de la propiedad.
+Un arquitecto recorre la propiedad entre 45 y 75 minutos: distribución, humedades, instalaciones, estructura visible. No vamos solo a mirar: vamos a analizar.
 
 **Cuánto vale de verdad.**
 Comparamos la propiedad contra operaciones cerradas, no solo contra publicaciones. Lo que piden no es lo que vale.
@@ -133,6 +135,8 @@ Más de 97 familias ya llegaron a la escritura sabiendo exactamente qué comprab
 
 ### USD 40.000 menos en una casa de 180 m² en Devoto
 
+> Primero la imagen antes/después de la casa (slider), después el texto.
+
 Lorena había encontrado en Devoto una casa con lo que buscaba: algo con espíritu de barrio privado, pero en Capital. Estaba convencida de que para eso tenía que invertir cerca de USD 460.000.
 
 Antes de ofertar, por miedo a equivocarse, nos consultó.
@@ -162,9 +166,9 @@ Compraron sabiendo el potencial y la magnitud de la obra. Después hicimos el pr
 
 Una tasación te dice cuánto pedir. Una inspección te dice cómo está. La inmobiliaria cobra si firmás. Nosotros juntamos precio, reforma y negociación en el mismo análisis, y **cobramos lo mismo si comprás o no.**
 
-**Esteban Ciro Crimi:** arquitecto y Maestro Mayor de Obras, especializado en refacciones y transformación de propiedades existentes. Ve lo que está a la vista y lo que hay detrás. [DATO: años / obras]
+**Esteban Ciro Crimi:** arquitecto y Maestro Mayor de Obras, especializado en refacciones y transformación de propiedades existentes. Ve lo que está a la vista y lo que hay detrás. 15 años · 120 obras · 18.000 m².
 
-**Carla La Porta:** asesora inmobiliaria. Análisis de mercado, comparables y negociación. [DATO: años en el rubro]
+**Carla La Porta:** asesora inmobiliaria. Análisis de mercado, comparables y negociación.
 
 **Equipo legal:** abogados dedicados 100% al rubro inmobiliario, que hacen una revisión preliminar de la documentación y los planos.
 
@@ -177,20 +181,19 @@ Si después de analizarla creemos que no te conviene, te lo vamos a decir igual.
 
 ## 9. Para quién es
 
-**Subtítulo:** Es para vos si estás por poner una parte importante de tus ahorros en una propiedad.
+**Subtítulo:** Esto es para vos si…
 
 **Sí, si:**
 - Encontraste una propiedad y estás por ofertar.
+- Ya compraste una propiedad y querés reformarla.
 - Estás comparando dos o más y no sabés cuál conviene.
 - Ya reservaste y querés validar antes de avanzar.
 - Vas a comprar para reformar y querés el número total antes de firmar.
 
-**¿Ya es tuya?** El mismo análisis te dice qué reforma conviene, en qué orden y cuánto cuesta.
-
-**No, si:**
+**No, si:** (en rojo)
 - Buscás una tasación gratis para publicar.
-- Necesitás un certificado estructural, de instalaciones o un estudio de títulos. Eso lo hacen especialistas y el escribano; nosotros te decimos qué conviene verificar.
-- Vas a decidir solo por el precio más bajo.
+- Querés que te diseñemos el proyecto de la reforma.
+- Buscás un asesoramiento gratuito.
 
 ---
 
@@ -202,11 +205,7 @@ Si después de analizarla creemos que no te conviene, te lo vamos a decir igual.
 
 **Y se descuenta:** si después hacés el proyecto o la reforma con Black, el Diagnóstico se descuenta de los honorarios.
 
-El valor depende de cuántas propiedades analicemos. Te lo pasamos por WhatsApp apenas completás el formulario. Para dimensionarlo: en el caso de Lorena, el Diagnóstico fue una fracción mínima de los USD 40.000 que dejó de pagar.
-
-**Qué incluye y qué no:**
-- Incluye: análisis visual y con instrumental, valor de mercado, inversión estimada de reforma por etapas, estrategia de negociación y revisión preliminar de documentación con abogados. Traslados incluidos dentro de CABA; fuera de CABA se cotizan aparte.
-- No incluye: diagnóstico estructural definitivo, cateos, cálculo estructural, certificación de instalaciones, proyecto ni presupuesto definitivo de obra. Si algo de eso hace falta, te lo indicamos en "Puntos a verificar".
+El valor depende de cuántas propiedades analicemos. Te lo pasamos por WhatsApp apenas completás el formulario.
 
 ---
 
