@@ -1,7 +1,7 @@
 /* ==========================================================================
-   BLACK — comportamiento del sitio (v3).
+   BLACK — comportamiento del sitio (v4).
    Vanilla, sin dependencias. El formulario y el envío a Sheets viven en
-   form.js.
+   form.js; las animaciones de la landing, en motion.js.
 
    Regla: todo lo animado ya tiene su valor final en el HTML. Si este
    archivo no corre, o corre a medias, la página se lee completa.
@@ -13,7 +13,6 @@
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var desktop = window.matchMedia("(min-width: 900px)");
 
   function storageGet(store, key) {
     try { return JSON.parse(window[store].getItem(key) || "null"); } catch (e) { return null; }
@@ -225,39 +224,97 @@
   }
 
   /* ================================================ ANTES / DESPUÉS ====== */
+  /* Se arrastra con el dedo (solo el gesto horizontal: el vertical sigue
+     scrolleando la página), con mouse y con teclado sobre el handle
+     (role="slider"). La primera vez que entra en pantalla, el handle se
+     mueve solo un poco para mostrar que se puede arrastrar. */
 
   function initSliders() {
-    $$(".ba").forEach(function (ba) {
-      var range = $(".ba-range", ba);
-      var usado = false;
-      function set(v) {
-        v = Math.max(0, Math.min(100, v));
-        ba.style.setProperty("--pos", v + "%");
-        if (range) range.value = String(Math.round(v));
-        if (!usado) {
-          usado = true;
-          track("case_slider_used", { case_id: ba.getAttribute("data-caso") || "" });
+    $$("[data-ba]").forEach(function (ba) {
+      var knob = $(".ba-knob", ba);
+      var pos = 50, usado = false, tocado = false;
+
+      function set(v, user) {
+        pos = Math.max(0, Math.min(100, v));
+        ba.style.setProperty("--pos", pos.toFixed(2) + "%");
+        if (knob) {
+          knob.setAttribute("aria-valuenow", String(Math.round(pos)));
+          knob.setAttribute("aria-valuetext", Math.round(pos) + "% antes");
+        }
+        if (user) {
+          tocado = true;
+          if (!usado) {
+            usado = true;
+            track("case_slider_used", { case_id: ba.getAttribute("data-caso") || "" });
+          }
         }
       }
       function desde(e) {
         var r = ba.getBoundingClientRect();
-        set(((e.clientX - r.left) / r.width) * 100);
+        set(((e.clientX - r.left) / r.width) * 100, true);
       }
-      var activo = false;
+
+      var activo = false, enganchado = false, x0 = 0, y0 = 0;
       ba.addEventListener("pointerdown", function (e) {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
         activo = true;
-        try { ba.setPointerCapture(e.pointerId); } catch (err) { /* iOS viejo */ }
+        x0 = e.clientX; y0 = e.clientY;
+        // Mouse: arrastre directo. Touch/lápiz: espera a ver si el gesto
+        // es horizontal antes de mover nada.
+        enganchado = e.pointerType === "mouse";
+        if (enganchado) {
+          ba.classList.add("arrastrando");
+          try { ba.setPointerCapture(e.pointerId); } catch (err) { /* nada */ }
+          desde(e);
+        }
+      });
+      ba.addEventListener("pointermove", function (e) {
+        if (!activo) return;
+        if (!enganchado) {
+          var dx = Math.abs(e.clientX - x0), dy = Math.abs(e.clientY - y0);
+          if (dx < 6 || dx < dy) return;
+          enganchado = true;
+          ba.classList.add("arrastrando");
+          try { ba.setPointerCapture(e.pointerId); } catch (err) { /* iOS viejo */ }
+        }
         desde(e);
       });
-      ba.addEventListener("pointermove", function (e) { if (activo) desde(e); });
       ["pointerup", "pointercancel", "lostpointercapture"].forEach(function (t) {
-        ba.addEventListener(t, function () { activo = false; });
+        ba.addEventListener(t, function () { activo = false; enganchado = false; ba.classList.remove("arrastrando"); });
       });
       if (!("PointerEvent" in window)) {
-        ba.addEventListener("touchstart", function (e) { desde(e.touches[0]); }, { passive: true });
         ba.addEventListener("touchmove", function (e) { desde(e.touches[0]); }, { passive: true });
       }
-      if (range) range.addEventListener("input", function () { set(+range.value); });
+
+      if (knob) {
+        knob.addEventListener("keydown", function (e) {
+          var paso = { ArrowLeft: -5, ArrowDown: -5, ArrowRight: 5, ArrowUp: 5, PageDown: -10, PageUp: 10 }[e.key];
+          if (e.key === "Home") set(0, true);
+          else if (e.key === "End") set(100, true);
+          else if (paso) set(pos + paso, true);
+          else return;
+          e.preventDefault();
+        });
+      }
+
+      // Pista: un vaivén corto, una sola vez, si nadie lo tocó todavía.
+      if (reduce || !("IntersectionObserver" in window)) return;
+      var io = new IntersectionObserver(function (es) {
+        if (!es[0].isIntersecting) return;
+        io.disconnect();
+        var t0 = null, dur = 1500;
+        setTimeout(function () {
+          requestAnimationFrame(function paso(t) {
+            if (tocado) return;
+            if (t0 === null) t0 = t;
+            var k = Math.min(1, (t - t0) / dur);
+            set(50 + Math.sin(k * Math.PI * 2) * 14 * (1 - k * 0.35) * (k < 1 ? 1 : 0));
+            if (k < 1) requestAnimationFrame(paso);
+            else set(50);
+          });
+        }, 350);
+      }, { threshold: 0.6 });
+      io.observe(ba);
     });
   }
 
@@ -286,122 +343,22 @@
     });
   }
 
-  /* ============================================== ECUACIÓN (3 cuentas) === */
+  /* ================================================ DATOS PENDIENTES ===== */
+  /* [DATO: …] de la página: se completan en content.js. Vacío = queda el
+     marcador visible. */
 
-  function initEcuacion() {
-    var ec = $("[data-ecuacion]");
-    if (!ec) return;
-    if (reduce || !("IntersectionObserver" in window)) { ec.classList.add("is-in"); return; }
-    var io = new IntersectionObserver(function (es) {
-      if (es[0].isIntersecting) {
-        setTimeout(function () { ec.classList.add("is-in"); }, 500);
-        io.disconnect();
-      }
-    }, { threshold: 0.6 });
-    io.observe(ec);
-  }
-
-  /* =================================================== CORTE DE MURO ===== */
-  /* Al scrollear, el revoque se abre de izquierda a derecha y deja ver lo
-     que hay detrás. Los números (hotspots) abren el texto de cada punto. */
-
-  function initMuro() {
-    var bloque = $("[data-muro]");
-    if (!bloque) return;
-    var clip = $("[data-muro-clip]", bloque);
-    var borde = $("[data-muro-borde]", bloque);
-    var hots = $$(".hot", bloque);
-    var lista = $("[data-muro-lista]", bloque);
-    var items = $$(".muro-item", bloque);
-    var X0 = 110, W = 410;
-    var abierto = 1;
-
-    // Una vez abierto, no se vuelve a cerrar al subir.
-    function abrir(p, forzar) {
-      p = Math.max(0, Math.min(1, p));
-      if (!forzar && p < abierto) return;
-      if (Math.abs(p - abierto) < 0.002 && !forzar) return;
-      abierto = p;
-      var x = X0 + W * p;
-      clip.setAttribute("x", x.toFixed(1));
-      clip.setAttribute("width", (W * (1 - p)).toFixed(1));
-      borde.setAttribute("d", "M" + x.toFixed(1) + " 50V500");
-      borde.style.opacity = p > 0.995 ? "0" : "1";
-    }
-
-    var activo = -1;
-    function activar(i, origen) {
-      if (i === activo) return;
-      activo = i;
-      hots.forEach(function (h, k) { h.classList.toggle("on", k === i); h.setAttribute("aria-pressed", String(k === i)); });
-      items.forEach(function (it, k) { it.classList.toggle("on", k === i); });
-      lista.classList.add("activa");
-      if (origen === "hotspot") track("muro_hotspot", { punto: i + 1 });
-    }
-
-    hots.forEach(function (h, i) {
-      h.setAttribute("aria-pressed", "false");
-      h.setAttribute("aria-controls", "muro-item-" + i);
-      items[i].id = "muro-item-" + i;
-      h.addEventListener("click", function () {
-        abrir(1);
-        activar(i, "hotspot");
-        var it = items[i];
-        if (desktop.matches) {
-          it.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
-        } else {
-          lista.scrollTo({ left: it.offsetLeft - lista.offsetLeft - parseFloat(getComputedStyle(lista).paddingLeft || 0), behavior: reduce ? "auto" : "smooth" });
-        }
-      });
+  function initDatos() {
+    var C = window.BLACK_CONTENT || {};
+    $$("[data-dato]").forEach(function (x) {
+      var v = C[x.getAttribute("data-dato")];
+      if (typeof v !== "string" || !v.trim()) return;
+      x.textContent = v.trim();
+      x.classList.remove("dato");
     });
-
-    // Mobile: la tarjeta que queda al borde izquierdo es la activa.
-    var enCola = false;
-    lista.addEventListener("scroll", function () {
-      if (desktop.matches || enCola) return;
-      enCola = true;
-      requestAnimationFrame(function () {
-        enCola = false;
-        var izq = lista.getBoundingClientRect().left;
-        var mejor = 0, dist = Infinity;
-        items.forEach(function (it, k) {
-          var d = Math.abs(it.getBoundingClientRect().left - izq - 16);
-          if (d < dist) { dist = d; mejor = k; }
-        });
-        activar(mejor);
-      });
-    }, { passive: true });
-
-    // Scroll de página: apertura del revoque (todas las pantallas) y, en
-    // desktop, el punto activo según el texto que está en el centro.
-    var pendiente = false;
-    function aplicar() {
-      pendiente = false;
-      var vh = window.innerHeight;
-      if (!reduce) {
-        var top = bloque.getBoundingClientRect().top;
-        abrir((vh * 0.8 - top) / (vh * 0.55));
-      }
-      if (desktop.matches) {
-        var centro = vh * 0.5, mejor = -1, dist = Infinity;
-        items.forEach(function (it, k) {
-          var r = it.getBoundingClientRect();
-          var d = Math.abs(r.top + Math.min(r.height, 160) / 2 - centro);
-          if (r.bottom > 0 && r.top < vh && d < dist) { dist = d; mejor = k; }
-        });
-        if (mejor >= 0) activar(mejor);
-      }
-    }
-    function onScroll() {
-      if (pendiente) return;
-      pendiente = true;
-      requestAnimationFrame(aplicar);
-    }
-    if (!reduce) abrir(0, true);
-    aplicar();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    if (!desktop.matches) activar(0);
+    var mail = (C.email || "").trim();
+    $$("[data-dato-email]").forEach(function (a) {
+      if (mail) a.href = "mailto:" + mail;
+    });
   }
 
   /* ======================================================= RESEÑAS ======= */
@@ -512,10 +469,9 @@
     initScrollDepth();
     initSticky();
     initFaq();
-    initEcuacion();
+    initDatos();
     initPaginasSimples();
     cuandoCerca($("#casos"), function () { initSliders(); initResenas(); });
-    cuandoCerca($("[data-muro]"), initMuro);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

@@ -1,18 +1,21 @@
 # Diagnóstico Black — landing
 
-Landing de una sola página para tráfico de Meta Ads. Sitio estático, sin build: la carpeta `site/` se sirve tal cual (Netlify).
+Landing de una sola página para tráfico de Meta Ads (85 %+ mobile). Vende el Diagnóstico Black: precio, reforma y negociación antes de ofertar. Sitio estático, sin build: la carpeta `site/` se sirve tal cual (Netlify).
 
 ```
+docs/landing-copy.md         COPY FINAL de la landing (fuente única, se usa literal)
 site/
-  index.html                 la landing
+  index.html                 la landing (12 secciones + ilustraciones SVG inline)
   data/reviews.json          reseñas de Google (carga manual)
-  assets/css/site.css        sistema de diseño de la landing
+  assets/css/site.css        sistema de diseño (el bloque del formulario no cambió)
   assets/css/paginas.css     estilos de /estudio y /obras (sistema anterior)
-  assets/js/config.js        WhatsApp, Píxel, URL de Sheets, cifras
-  assets/js/form-config.js   preguntas del formulario
-  assets/js/form.js          motor del formulario + envío a Sheets
-  assets/js/site.js          atribución, CTA, corte de muro, reseñas, FAQ
-integrations/sheets/Code.gs  Apps Script que escribe los leads en Google Sheets
+  assets/js/config.js        WhatsApp, Píxel, URL de Sheets, cifras          (sin cambios)
+  assets/js/form-config.js   preguntas del formulario                        (sin cambios)
+  assets/js/form.js          motor del formulario + envío a Sheets           (sin cambios)
+  assets/js/content.js       [DATO: …] pendientes: se completan acá, en un solo lugar
+  assets/js/site.js          atribución, CTA, CTA fijo, slider, reseñas, FAQ, datos
+  assets/js/motion.js        animaciones de la landing (reveals, contadores, dibujo SVG…)
+integrations/sheets/Code.gs  Apps Script que escribe los leads en Google Sheets (sin cambios)
 ```
 
 Para probar en local: `cd site && python3 -m http.server 8080` y abrir http://localhost:8080.
@@ -33,7 +36,9 @@ Qué hace el sitio con eso:
 - **Primer toque** (`ft_campaign`, `ft_adset`, `ft_ad`, `ft_fecha`): la primera visita que llegó con parámetros. No se pisa hasta que vence (90 días).
 - **CTA de origen** (`cta_origen`): el botón que abrió el formulario. `ctas_sesion` lista todos los CTA tocados en la sesión, en orden (`cta_hero > cta_casos`).
 
-IDs de los CTA: `cta_hero`, `cta_sticky`, `cta_tres_cuentas`, `cta_casos`, `cta_informe`, `cta_quienes`, `cta_faq`, `cta_cierre`, `cta_footer`. Entrar con `#diagnostico` en la URL abre el formulario (`cta_origen = directo`).
+IDs de los CTA (todos abren el mismo formulario): `cta_header` (encabezado), `cta_hero`, `cta_incluye` (después de "Qué incluye"), `cta_casos`, `cta_garantia`, `cta_faq`, `cta_cierre` y `cta_sticky` (CTA fijo en mobile). Entrar con `#diagnostico` en la URL abre el formulario (`cta_origen = directo`).
+
+En la v4 se dejaron de usar `cta_tres_cuentas`, `cta_informe`, `cta_quienes` y `cta_footer` (esas secciones ya no existen) y se sumaron `cta_header`, `cta_incluye` y `cta_garantia`. La pestaña "Resumen" agrupa con `UNIQUE()`, así que los IDs nuevos aparecen solos; los viejos quedan con sus leads históricos.
 
 ---
 
@@ -76,22 +81,62 @@ Solo fórmulas, sin carga manual: totales; leads, vendidos, tasa de venta y mont
 
 `metaPixelId` en `config.js`. Vacío = no se carga. Con ID: `PageView`, `InitiateCheckout` al abrir el formulario y `Lead` solo en envíos que califican, con `eventID = lead_id` (para deduplicar si después se suma la API de Conversiones).
 
-GA4 (`G-EE9PC274XF`) está en el `<head>` de `index.html`. Eventos: `cta_click`, `form_start`, `form_step`, `form_route`, `form_submit`, `whatsapp_redirect`, `faq_open`, `case_slider_used`, `muro_hotspot`, `reviews_more`, `scroll_depth`.
+GA4 (`G-EE9PC274XF`) está en el `<head>` de `index.html`. Eventos: `cta_click`, `form_start`, `form_step`, `form_route`, `form_submit`, `whatsapp_redirect`, `instagram_redirect`, `faq_open`, `case_slider_used`, `reviews_more`, `scroll_depth`. (`muro_hotspot` dejó de existir con la sección del corte de muro.)
 
 ---
 
 ## 4. Reseñas
 
-`site/data/reviews.json`. Copiar reseñas reales del perfil de Google, **texto literal**. Para publicar una entrada: completar `autor` y `texto` (y si se quiere `fecha`, `avatar`, `link`) y cambiar `estado` a `"OK"`. Las entradas `"PENDIENTE"` no se muestran; se ven agregando `?preview=1` a la URL. En desktop se ven 6 y un botón "Ver más"; en mobile, carrusel horizontal.
+`site/data/reviews.json`. Copiar reseñas reales del perfil de Google, **texto literal**. Para publicar una entrada: completar `autor` y `texto` (y si se quiere `fecha`, `avatar`, `link`) y cambiar `estado` a `"OK"`. Las entradas `"PENDIENTE"` no se muestran; se ven agregando `?preview=1` a la URL. Hoy hay 5 reales publicadas (el copy pide 3 a 5). En desktop se ven hasta 6 (con "Ver más" si hay más); en mobile, carrusel horizontal.
 
-`rating` y `total` (5,0 / 41) se muestran en el encabezado: actualizarlos a mano cuando cambien.
+El puntaje y la cantidad de reseñas que se muestran en la página salen de `content.js` (`resenas_google`), no de `reviews.json`: el copy los marca como dato a confirmar. `reviews.json` trae 5,0 / 41 del sitio anterior (y el schema `aggregateRating` del `<head>` también): si siguen vigentes, pegar "5,0 en Google · 41 reseñas" en `content.js`.
 
 ---
 
-## 5. Pendientes de contenido
+## 5. Contenido pendiente — `[DATO: …]`
 
-- Reseñas: 7 entradas `PENDIENTE` en `data/reviews.json` (hay 5 reales).
-- Foto de Esteban y Carla juntos (hoy: dos retratos individuales en el hero y en "Quiénes somos").
-- Informe real anonimizado (hoy: mockup dibujado en la sección "Qué analizamos").
-- Respuesta del FAQ "¿Y si mientras espero el informe me la sacan?" (comentada en `index.html`, no se publica).
-- `sheets.url` y `metaPixelId` en `config.js`.
+Todos se completan en **`site/assets/js/content.js`** (un solo archivo). Mientras estén vacíos se ven en la página como un marcador amarillo punteado.
+
+| Clave en `content.js` | Dónde aparece | Qué falta |
+|---|---|---|
+| `resenas_google` | Hero (micro-prueba) y encabezado de reseñas | Puntaje y cantidad de reseñas en Google |
+| `testimonio_lorena` | Caso Lorena | Testimonio textual de Lorena (y permiso de nombre) |
+| `plazo_whatsapp` | Paso a paso, paso 2 | Plazo de respuesta por WhatsApp (ej. "dentro de las 24 h hábiles") |
+| `forma_pago` | Paso a paso, paso 4 | Forma de pago |
+| `trayectoria_esteban` | Quiénes están detrás | Años / obras de Esteban |
+| `trayectoria_carla` | Quiénes están detrás | Años en el rubro de Carla |
+| `email` | Footer | Email de contacto (también arma el `mailto:`) |
+
+Material visual pendiente (se reemplaza en `index.html`, cada lugar tiene un comentario `PLACEHOLDER`):
+
+- **Foto de Esteban y Carla juntos en una visita**, con instrumental (sección "Quiénes"). Hoy: los dos retratos individuales, con el marcador `[DATO: foto…]` visible.
+- **Informe real anonimizado (2–3 páginas)**, con ACM y estrategia de negociación tapados (card "Informe Black de 7 miradas"). Hoy: mockup dibujado en SVG con datos reemplazados por líneas.
+- **Fotos antes/después de Amenábar en alta.** Hoy: las del sitio anterior (`caso2-antes/despues`, 640 y 1000 px, AVIF + WebP). Reemplazar los archivos con el mismo nombre.
+- Del listado del cliente que no tiene lugar en la página: testimonio de la clienta que cerró la compra, apellido de Carla (se usa La Porta), cuántas propiedades entran en el Diagnóstico base.
+
+## 6. Diseño y motion (v4)
+
+- **Dirección:** estudio de arquitectura contemporáneo con lenguaje de plano. Base negro + grises (`--g1` #121212, `--g2` #1A1A1A), blanco cálido (`--hueso` #F4F3EF) solo en "Idea central" y "Para quién". Antonio (títulos) + Poppins (texto) y el amarillo de marca existente (`--acento` #FFE500), solo como acento.
+- **Resaltados** (siempre los mismos tres): `.hl-u` subrayado que se dibuja, `.hl-m` marcador que se pinta, `.hl-y` palabra/cifra en amarillo. Sobre blanco, `.hl-y` pasa a fondo amarillo con texto negro (contraste AA).
+- **Ilustraciones:** SVG inline propias, un solo sistema (trazo 1,5 px, puntas redondeadas, rellenos planos en grises, amarillo solo en el protagonista, rótulos Poppins en mayúsculas). Se dibujan con `stroke-dashoffset` al entrar, una sola vez.
+- **Motion:** `motion.js`, vanilla (IntersectionObserver + rAF + transiciones CSS). La entrada del hero la dispara un script inline en `index.html` (no espera a los scripts diferidos, así el titular no parpadea). Con `prefers-reduced-motion`, o si `motion.js` no corre, todo aparece estático, ya dibujado y con los números finales.
+- **Fuentes:** fallbacks con métricas ajustadas (`Antonio Fallback`, `Poppins Fallback` en `site.css`) para que el cambio de fuente no mueva la página.
+
+### Decisiones tomadas sin consultar
+
+- **Sin GSAP ni Lenis.** El brief decía usar el stack existente, pero el proyecto no los tenía: es vanilla y sin build. Sumarlos agregaba ~60 KB de JS antes de animar nada y Lenis (scroll suavizado) se pelea con el slider táctil y con el scroll del modal. Todo el motion pedido está hecho con JS propio (~7 KB sin comprimir).
+- **privy.io no se pudo abrir** desde el entorno de trabajo (la política de red bloquea el dominio). Se aplicó el sistema descripto en el brief: hero con aire y pieza visual grande, fila de stats, cards con visual arriba, bloques apilados con divisores finos, cierre que repite el hero.
+- **Rama de trabajo:** `claude/black-landing-redesign-qsk1ax` (la que asigna el entorno) en lugar de `landing-diagnostico-black`.
+- **CTAs intermedios:** además del hero, el cierre y el CTA fijo, se repite el mismo botón ("Quiero mi Diagnóstico Black") en el encabezado y después de Qué incluye, Casos, Garantía y FAQ. No agrega texto nuevo; cada uno con su ID.
+- **Eyebrows de sección** con el nombre de la sección del copy ("Ofertar a ciegas", "Qué incluye el Diagnóstico Black"…) y numeración de plano (B-02, C-03…). La fila de stats usa los rótulos que pide el brief ("familias", "visita", "informe", "ahorro de Lorena").
+- **Comparativa (Quiénes):** qué cubre cada opción se dedujo del copy — Tasación: precio; Inspección: estado; Inmobiliaria: precio y negociación, y cobra si firmás; Diagnóstico Black: todo, y no cobra si firmás. Revisar si se quiere otro criterio.
+- **Caso Amenábar:** el título de la card es el H3 del copy; "Amenábar 914" va como rótulo arriba.
+- **Micro-prueba del hero:** los tres datos van como lista (en el copy están separados por "·"); el texto es el mismo.
+- **Footer:** zonas + Instagram + email. Se sacaron el link a Google Maps, las matrículas y el WhatsApp directo que tenía la v3 (sin links que saquen de la página salvo Instagram).
+- **Schema:** se mantuvo `ProfessionalService` (con la descripción actualizada) y se reescribió `FAQPage` con las preguntas nuevas, para que coincida con lo visible.
+
+### Formulario, Sheets y tracking
+
+No se tocaron `form.js`, `form-config.js`, `config.js` ni `Code.gs`, ni el HTML del modal ni sus estilos. En `site.js` las funciones de atribución, Píxel, CTA y CTA fijo quedaron iguales; solo cambiaron las partes visuales (slider nuevo, se fueron el corte de muro y la ecuación de la v3, se sumó el completado de `[DATO]`).
+
+Prueba de punta a punta (Playwright, antes y después del cambio, con una URL de Sheets de prueba interceptada porque `sheets.url` sigue vacío en `config.js`): el payload a Sheets (respuestas, ruta, califica, motivo, CTA de origen, UTMs, IDs de campaña/conjunto/anuncio, primer toque, dispositivo), la URL de WhatsApp con el mensaje precargado, los eventos de GA4 y del Píxel (`InitiateCheckout`, `Lead`) y la pantalla de Instagram para el no calificado salieron **idénticos** a la línea base. Mientras `sheets.url` y `metaPixelId` estén vacíos, en producción no se escribe en la planilla ni carga el Píxel (igual que antes).
