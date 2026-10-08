@@ -3036,3 +3036,55 @@ h2 + .intro {
     text-align: left;
   }
 }
+
+/* ============================================================ v4.4 ======= */
+/* Mobile: hero y solución más livianos para que se lean. */
+.solucion span {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--texto-3);
+}
+@media (max-width: 599px) {
+  .hero-logo {
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: 1.95rem;
+    line-height: 1.12;
+  }
+  .hero-bajada {
+    margin-top: 1rem;
+    font-size: 0.975rem;
+    line-height: 1.5;
+  }
+  .hero-bullets {
+    gap: 0.45rem;
+    margin-top: 1.1rem;
+  }
+  .hero-bullets li {
+    font-size: 0.875rem;
+    line-height: 1.35;
+  }
+  .hero-bullets svg {
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+  }
+  .hero-cta {
+    margin-top: 1.5rem;
+  }
+  .hero-cta .btn-lg {
+    font-size: 0.95rem;
+  }
+  .hero-garantia {
+    font-size: 0.8125rem;
+  }
+  .solucion {
+    padding: 1.25rem;
+  }
+  .solucion b {
+    font-size: 1.6rem;
+  }
+}
