@@ -70,6 +70,8 @@
   --borde: #2a2a2a;
   --borde-2: #3a3a3a;
   --borde-claro: #d9d8d3;
+  --verde: #2bff88; /* cifras y beneficios */
+  --verde-osc: #0a7a3a; /* verde sobre blanco (5,3:1) */
   --rojo: #cd2b31; /* solo para el "No es para vos" (5,1:1 sobre blanco) */
 
   /* Heredados del formulario (no cambiar: los usa el modal) */
@@ -83,14 +85,14 @@
   --display: "Antonio", "Antonio Fallback", "Arial Narrow", sans-serif;
   --sans: "Poppins", "Poppins Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  --fs-h1: clamp(2.6rem, 1.6rem + 4.4vw, 4.75rem);
-  --fs-h2: clamp(2rem, 1.35rem + 2.9vw, 3.6rem);
+  --fs-h1: clamp(2.3rem, 1.6rem + 3vw, 3.9rem);
+  --fs-h2: clamp(1.9rem, 1.4rem + 1.9vw, 2.9rem);
   --fs-h3: clamp(1.3rem, 1.15rem + 0.6vw, 1.6rem);
   --fs-body: clamp(1.0625rem, 1.03rem + 0.15vw, 1.125rem);
   --fs-small: 0.875rem;
   --t-micro: var(--fs-small);
 
-  --max: 76rem;
+  --max: 68rem;
   --gutter: clamp(1rem, 4vw, 3rem);
   --gap: clamp(1rem, 2vw, 1.5rem);
   --sec: clamp(4.5rem, 3rem + 6vw, 8.5rem);
@@ -1971,140 +1973,6 @@ h2 + .intro {
   }
 }
 
-/* Comparativa. Mobile: 4 columnas, el criterio arriba de cada fila y la
-   celda Black ocupando las dos líneas (columna continua). Desktop: 5. */
-.comp {
-  margin-top: clamp(3.5rem, 7vw, 5rem);
-  border: 1px solid var(--borde);
-  border-radius: var(--r);
-  background: #0e0e0e;
-  overflow: hidden;
-}
-.comp-head,
-.comp-fila {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  align-items: center;
-  text-align: center;
-}
-.comp-head > span {
-  padding: 1rem 0.25rem 0.85rem;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  line-height: 1.25;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--texto-2);
-}
-@media (max-width: 759px) {
-  .comp-head > span {
-    letter-spacing: 0;
-    font-size: 0.625rem;
-  }
-}
-.comp-vacio {
-  display: none;
-}
-.comp-fila {
-  border-top: 1px solid var(--borde);
-}
-.comp-label {
-  grid-column: 1 / 4;
-  grid-row: 1;
-  padding: 0.8rem 0.75rem 0;
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-align: left;
-  color: var(--texto);
-}
-.comp-fila > [role="cell"] {
-  display: grid;
-  place-items: center;
-  grid-row: 2;
-  padding: 0.45rem 0 0.8rem;
-}
-.comp-fila > .comp-black {
-  grid-column: 4;
-  grid-row: 1 / 3;
-  align-self: stretch;
-  padding: 0;
-}
-.comp .comp-black {
-  background: #17160c;
-  box-shadow:
-    inset 1.5px 0 0 var(--acento),
-    inset -1.5px 0 0 var(--acento);
-}
-.comp-head .comp-black {
-  align-self: stretch;
-  display: grid;
-  place-items: center;
-  color: var(--acento);
-  box-shadow:
-    inset 1.5px 0 0 var(--acento),
-    inset -1.5px 0 0 var(--acento),
-    inset 0 1.5px 0 var(--acento);
-  border-radius: var(--r) var(--r) 0 0;
-}
-.comp-ult .comp-black {
-  box-shadow:
-    inset 1.5px 0 0 var(--acento),
-    inset -1.5px 0 0 var(--acento),
-    inset 0 -1.5px 0 var(--acento);
-  border-radius: 0 0 var(--r) var(--r);
-}
-.comp svg {
-  width: 22px;
-  height: 22px;
-}
-.comp .ok {
-  color: var(--texto);
-}
-.comp .no {
-  color: #555552;
-}
-.comp .comp-black .ok,
-.comp .comp-black b {
-  color: var(--acento);
-}
-.comp b {
-  font-size: 0.875rem;
-  color: var(--texto-2);
-}
-.comp .comp-si {
-  color: var(--texto);
-}
-@media (min-width: 760px) {
-  .comp-head,
-  .comp-fila {
-    grid-template-columns: minmax(0, 1.5fr) repeat(4, minmax(0, 1fr));
-  }
-  .comp-vacio {
-    display: block;
-  }
-  .comp-head > span {
-    padding: 1.1rem 0.5rem;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-  }
-  .comp-label,
-  .comp-fila > [role="cell"],
-  .comp-fila > .comp-black {
-    grid-column: auto;
-    grid-row: auto;
-    align-self: stretch;
-    display: grid;
-    align-items: center;
-    padding: 1rem 0.75rem;
-  }
-  .comp-fila > [role="cell"] {
-    justify-items: center;
-  }
-  .comp-label {
-    padding-left: 1.25rem;
-  }
-}
-
 /* ========================================================= PARA QUIÉN ==== */
 
 .pq {
@@ -2873,5 +2741,202 @@ h2 + .intro {
   .btn:active,
   .f-op:active {
     transform: none;
+  }
+}
+
+/* ============================================================ v4.2 ======= */
+
+/* Cifras y beneficios: verde eléctrico. */
+.hl-v {
+  color: var(--verde);
+}
+.bg-blanco .hl-v {
+  color: var(--verde-osc);
+}
+.ecu-tot-v {
+  color: var(--verde-osc);
+}
+.ecu-dif {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.5rem;
+  margin-top: 1.25rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--r-s);
+  background: var(--verde);
+  color: var(--tinta);
+}
+.ecu-dif b {
+  font-family: var(--display);
+  font-size: 1.25rem;
+}
+.ecu-dif span {
+  font-weight: 600;
+}
+
+/* Puente al Diagnóstico */
+.solucion {
+  max-width: var(--medida);
+  margin-top: clamp(3rem, 6vw, 5rem);
+  font-family: var(--display);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--tinta-2);
+}
+.solucion b {
+  color: var(--tinta);
+}
+.solucion + .frase {
+  margin-top: 1rem;
+}
+
+/* Hero: más compacto en mobile; prueba en fila (caras a la izquierda). */
+.hero h1 {
+  font-size: clamp(2.15rem, 1.5rem + 3vw, 3.9rem);
+}
+.hero-prueba {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.85rem;
+  text-align: left;
+}
+.hero-caras {
+  flex-shrink: 0;
+}
+.hero-google {
+  justify-content: flex-start;
+}
+
+/* Comparativa: una card por opción. */
+.comp {
+  display: grid;
+  gap: var(--gap);
+  margin-top: clamp(3.5rem, 7vw, 5rem);
+}
+.comp-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border: 1px solid var(--borde);
+  border-radius: var(--r);
+  background: #111;
+}
+.comp-n {
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--texto);
+}
+.comp-d {
+  margin-top: 0.2rem;
+  font-size: 0.875rem;
+  color: var(--texto-2);
+}
+.comp-card ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 0.75rem;
+  margin-top: 1rem;
+}
+.comp-card li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  color: var(--texto-3);
+}
+.comp-card li svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+.comp-card li.si svg {
+  color: var(--verde);
+}
+.comp-card li.no {
+  color: #6b6b67;
+}
+.comp-card li.no svg {
+  color: #4a4a47;
+}
+.comp-c {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--borde);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.comp-c-si {
+  color: var(--texto-2);
+}
+.comp-c-no {
+  color: var(--rojo);
+}
+.comp-b {
+  border-color: var(--acento);
+  background: #16150c;
+}
+.comp-b .comp-n {
+  color: var(--acento);
+}
+.comp-b .comp-c {
+  color: var(--verde);
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+@media (min-width: 700px) {
+  .comp {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .comp {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .comp-card ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Desktop: encabezados de sección centrados y bloques de texto al medio,
+   para que nada quede pegado a los bordes. */
+@media (min-width: 960px) {
+  .sec .medida,
+  .preguntas,
+  .solucion,
+  .frase {
+    margin-inline: auto;
+  }
+  .sec .medida > h2,
+  .solucion,
+  .frase {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .sec .medida > .intro {
+    text-align: center;
+  }
+  .sec .cta-fila {
+    text-align: center;
+  }
+  .idea-fila {
+    max-width: 60rem;
+    margin-inline: auto;
+    gap: 3.5rem;
+  }
+  .idea-fila > figure,
+  .idea-fila-inv > figure {
+    justify-self: center;
+  }
+  .faq-grid .cta-fila,
+  .garantia .cta-fila {
+    text-align: left;
   }
 }

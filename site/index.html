@@ -140,17 +140,6 @@ split(t);var y0=null,l=-1;q('[data-split] .w').forEach(function(w){var y=w.getBo
 requestAnimationFrame(function(){requestAnimationFrame(function(){h.classList.add('hero-on')})});
 setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-in')})},700)})()</script>
 
-<!-- ============================================================ STATS ==== -->
-<section class="stats bg-negro" aria-label="Cifras">
-  <ul class="wrap stats-in" data-stagger>
-    <li><b><span data-count="97" data-prefix="+">+97</span></b><span>familias</span></li>
-    <li><b><span data-count="72">72</span> h</b><span>visita</span></li>
-    <li><b><span data-count="7">7</span> días</b><span>informe</span></li>
-    <li><b>USD <span data-count="40000">40.000</span></b><span>ahorro de Lorena</span></li>
-  </ul>
-</section>
-
-
 <!-- ===================================================== 2 · PROBLEMA ==== -->
 <section class="sec bg-g1" id="problema">
   <div class="wrap">
@@ -165,6 +154,9 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
         <li><p><b>¿Cuánto vas a tener que poner después?</b> Humedad, instalaciones viejas, una cocina que hay que tirar abajo. Eso no aparece en las fotos. <em>“¿Y si compro y después aparecen problemas?”</em></p></li>
         <li><p><b>¿Quién te está diciendo la verdad?</b> El que vende quiere vender. La inmobiliaria cobra si firmás. No te mienten, pero todos forman parte de la operación. <em>“No sé en quién confiar.”</em></p></li>
       </ol>
+      <div class="cta-fila" data-reveal>
+        <a class="btn btn-1 btn-l btn-lg" href="#diagnostico" data-cta="cta_problema"><span>Quiero mi Diagnóstico Black</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
+      </div>
     </div>
 
   </div>
@@ -192,11 +184,12 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
             <p class="ecu-id">A</p>
           </div>
           <div class="ecu-col" style="--p:240;--r:15">
-            <p class="ecu-tot">USD <span data-count="255000">255.000</span></p>
+            <p class="ecu-tot ecu-tot-v">USD <span data-count="255000">255.000</span></p>
             <div class="ecu-bar"><span class="ecu-r ecu-r-chica"><em>+ <span data-count="15000">15.000</span></em></span><span class="ecu-p"><em><span data-count="240000">240.000</span></em></span></div>
             <p class="ecu-id">B</p>
           </div>
         </div>
+        <p class="ecu-dif"><b>B te sale USD 40.000 menos</b> <span>(−13,6%)</span></p>
         <figcaption class="rotulo">Valores ilustrativos</figcaption>
       </figure>
     </div>
@@ -262,7 +255,11 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
       </figure>
     </div>
 
+    <p class="solucion" data-reveal>Todo esto tiene solución: <b>un asesoramiento de punta a punta, antes de ofertar.</b></p>
     <p class="frase medida" data-reveal><strong class="hl-m">Antes de ofertar es el único momento en que todavía podés negociar esta propiedad o elegir otra.</strong></p>
+    <div class="cta-fila" data-reveal>
+      <a class="btn btn-1 btn-l btn-lg" href="#diagnostico" data-cta="cta_solucion"><span>Quiero mi Diagnóstico Black</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
+    </div>
   </div>
 </section>
 
@@ -279,7 +276,7 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
         <div class="card-vis il" data-draw>
           <svg viewBox="0 0 96 72" aria-hidden="true"><path class="s" d="M26 46a22 22 0 0 1 44 0"/><path class="s" d="M20 46H76V52H20Z"/><path class="y" d="M48 24V14M42 18h12"/><path class="s2" d="M38 26v20M58 26v20"/><path class="s2 nd" d="M14 62H82M14 58V66M82 58V66"/></svg>
         </div>
-        <h3>Visita técnica dentro de las <span class="hl-y">72 h</span>.</h3>
+        <h3>Visita técnica dentro de las <span class="hl-v">72 h</span>.</h3>
         <p>Un arquitecto recorre la propiedad entre 45 y 75 minutos: distribución, humedades, instalaciones, estructura visible. No vamos solo a mirar: vamos a analizar.</p>
       </li>
       <li class="card">
@@ -322,7 +319,7 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
           <div class="card-vis card-vis-mini il" data-draw>
             <svg viewBox="0 0 96 72" aria-hidden="true"><path class="s" d="M26 10H62L72 20V62H26Z"/><path class="s" d="M62 10V20H72"/><path class="s2" d="M34 28H64M34 36H64M34 44H54"/><rect class="yf" x="34" y="50" width="20" height="5" rx="1"/></svg>
           </div>
-          <h3>Informe Black de <span class="hl-y">7 miradas</span> + reunión de decisión.</h3>
+          <h3>Informe Black de <span class="hl-v">7 miradas</span> + reunión de decisión.</h3>
           <p>Todo ordenado en un informe y una reunión de 1 hora donde te lo traducimos a una decisión.</p>
         </div>
         <!-- PLACEHOLDER: reemplazar por 2–3 páginas reales del informe
@@ -437,13 +434,16 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
         <div class="tramo-in">
           <span class="tl-riel" aria-hidden="true"><i data-tl-fill></i></span>
           <ol class="tl-pasos" start="5">
-            <li class="tl-paso"><span class="tl-n" aria-hidden="true">5</span><span class="tl-badge" aria-hidden="true">72 h</span><div><p class="tl-t">Visita técnica dentro de las <span class="hl-y">72 h</span>.</p><p>Te llevás la minuta en el momento.</p></div></li>
+            <li class="tl-paso"><span class="tl-n" aria-hidden="true">5</span><span class="tl-badge" aria-hidden="true">72 h</span><div><p class="tl-t">Visita técnica dentro de las <span class="hl-v">72 h</span>.</p><p>Te llevás la minuta en el momento.</p></div></li>
             <li class="tl-paso"><span class="tl-n" aria-hidden="true">6</span><div><p class="tl-t">Analizamos mercado y reforma.</p><p>Valor real, inversión estimada por etapas y rango de negociación.</p></div></li>
-            <li class="tl-paso"><span class="tl-n" aria-hidden="true">7</span><span class="tl-badge" aria-hidden="true">7 días</span><div><p class="tl-t">Informe y reunión de decisión, a los <span class="hl-y">7 días</span>.</p><p>Reunión online de 1 hora: qué conviene, cuánto cuesta y con qué argumentos ofertar.</p></div></li>
+            <li class="tl-paso"><span class="tl-n" aria-hidden="true">7</span><span class="tl-badge" aria-hidden="true">7 días</span><div><p class="tl-t">Informe y reunión de decisión, a los <span class="hl-v">7 días</span>.</p><p>Reunión online de 1 hora: qué conviene, cuánto cuesta y con qué argumentos ofertar.</p></div></li>
             <li class="tl-paso"><span class="tl-n" aria-hidden="true">8</span><div><p class="tl-t">Ofertás con fundamentos.</p><p>Y si después hacés el proyecto o la reforma con Black, el Diagnóstico <span class="hl-u">se descuenta de los honorarios</span>.</p></div></li>
           </ol>
         </div>
       </div>
+    </div>
+    <div class="cta-fila" data-reveal>
+      <a class="btn btn-1 btn-l btn-lg" href="#diagnostico" data-cta="cta_pasos"><span>Quiero mi Diagnóstico Black</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
     </div>
   </div>
 </section>
@@ -480,15 +480,11 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
         </div>
       </div>
       <div class="caso-txt texto">
-        <h3 class="caso-t"><span class="hl-y">USD 40.000 menos</span> en una casa de 180 m² en Devoto</h3>
+        <h3 class="caso-t"><span class="hl-v">USD 40.000 menos</span> en una casa de 180 m² en Devoto</h3>
         <p>Lorena había encontrado en Devoto una casa con lo que buscaba: algo con espíritu de barrio privado, pero en Capital. Estaba convencida de que para eso tenía que invertir cerca de USD 460.000.</p>
         <p>Antes de ofertar, por miedo a equivocarse, nos consultó.</p>
         <p>Analizamos la casa desde lo arquitectónico y lo inmobiliario. Con el Análisis Comparativo de Mercado vimos que estaba publicada por encima de su valor. Con esos argumentos armamos su oferta.</p>
         <p><strong class="hl-m">Compró a USD 420.000.</strong> Esos USD 40.000 pasaron a ser parte de la inversión para reformar la casa, que después proyectamos y construimos nosotros.</p>
-        <blockquote class="cita">
-          <p>“<span class="dato" data-dato="testimonio_lorena">[DATO: testimonio textual de Lorena]</span>”</p>
-          <footer>— Lorena, Villa Devoto</footer>
-        </blockquote>
       </div>
     </article>
 
@@ -517,7 +513,7 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
       </div>
       <div class="caso-txt texto">
         <p class="caso-et">Amenábar 914</p>
-        <h3>Les recomendamos comprar aunque la operación la cerrara otra inmobiliaria</h3>
+        <h3>La mejor vista del departamento estaba encerrada en el lavadero</h3>
         <p>Una pareja buscaba departamento con Carla. La propiedad que eligieron la vendía otra inmobiliaria, que no compartía honorarios. Igual les recomendamos avanzar, porque era la propiedad correcta.</p>
         <p>Antes de que compraran, Esteban la analizó: un departamento antiguo, de categoría, con la mejor vista encerrada en el lavadero de servicio y toda la infraestructura (caldera, tablero, gas y agua) en el muro que había que tirar abajo.</p>
         <p>Compraron sabiendo el potencial y la magnitud de la obra. Después hicimos el proyecto y la reforma completa de Amenábar 914, hasta entregarlo listo para mudarse.</p>
@@ -567,7 +563,7 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
       <div class="quienes-txt">
         <p class="texto" data-reveal>Una tasación te dice cuánto pedir. Una inspección te dice cómo está. La inmobiliaria cobra si firmás. Nosotros juntamos precio, reforma y negociación en el mismo análisis, y <strong class="hl-m">cobramos lo mismo si comprás o no.</strong></p>
         <ul class="atributos" data-stagger>
-          <li><span class="plano-cod" aria-hidden="true">01</span><p><b>Esteban Ciro Crimi:</b> arquitecto y Maestro Mayor de Obras, especializado en refacciones y transformación de propiedades existentes. Ve lo que está a la vista y lo que hay detrás. <span class="dato" data-dato="trayectoria_esteban">[DATO: años / obras]</span></p></li>
+          <li><span class="plano-cod" aria-hidden="true">01</span><p><b>Esteban Ciro Crimi:</b> arquitecto y Maestro Mayor de Obras, especializado en refacciones y transformación de propiedades existentes. <span class="dato" data-dato="trayectoria_esteban">[DATO: años / obras]</span></p></li>
           <li><span class="plano-cod" aria-hidden="true">02</span><p><b>Carla La Porta:</b> asesora inmobiliaria. Análisis de mercado, comparables y negociación.</p></li>
           <li><span class="plano-cod" aria-hidden="true">03</span><p><b>Equipo legal:</b> abogados dedicados 100% al rubro inmobiliario, que hacen una revisión preliminar de la documentación y los planos.</p></li>
         </ul>
@@ -575,16 +571,33 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
       </div>
     </div>
 
-    <!-- Comparativa. Mobile: las 4 columnas a la vista, el criterio arriba de
-         cada fila y la columna Black continua. Desktop: tabla de 5 columnas. -->
-    <div class="comp" role="table" aria-label="Comparativa: Tasación, Inspección, Inmobiliaria y Diagnóstico Black" data-reveal>
-      <div class="comp-head" role="row"><span class="comp-vacio" role="columnheader"></span><span role="columnheader">Tasación</span><span role="columnheader">Inspección</span><span role="columnheader">Inmobiliaria</span><span class="comp-black" role="columnheader">Diagnóstico Black</span></div>
-      <div class="comp-fila" role="row"><span class="comp-label" role="rowheader">Precio real</span><span role="cell"><svg class="ok" role="img" aria-label="Sí"><use href="#i-ok"/></svg></span><span role="cell"><svg class="no" role="img" aria-label="No"><use href="#i-no"/></svg></span><span role="cell"><svg class="ok" role="img" aria-label="Sí"><use href="#i-ok"/></svg></span><span class="comp-black" role="cell"><svg class="ok" role="img" aria-label="Sí"><use href="#i-ok"/></svg></span></div>
-      <div class="comp-fila" role="row"><span class="comp-label" role="rowheader">Estado</span><span role="cell"><svg class="no" role="img" aria-label="No"><use href="#i-no"/></svg></span><span role="cell"><svg class="ok" role="img" aria-label="Sí"><use href="#i-ok"/></svg></span><span role="cell"><svg class="no" role="img" aria-label="No"><use href="#i-no"/></svg></span><span class="comp-black" role="cell"><svg class="ok" role="img" aria-label="Sí"><use href="#i-ok"/></svg></span></div>
-      <div class="comp-fila" role="row"><span class="comp-label" role="rowheader">Costo de reforma</span><span role="cell"><svg class="no" role="img" aria-label="No"><use href="#i-no"/></svg></span><span role="cell"><svg class="no" role="img" aria-label="No"><use href="#i-no"/></svg></span><span role="cell"><svg class="no" role="img" aria-label="No"><use href="#i-no"/></svg></span><span class="comp-black" role="cell"><svg class="ok" role="img" aria-label="Sí"><use href="#i-ok"/></svg></span></div>
-      <div class="comp-fila" role="row"><span class="comp-label" role="rowheader">Negociación</span><span role="cell"><svg class="no" role="img" aria-label="No"><use href="#i-no"/></svg></span><span role="cell"><svg class="no" role="img" aria-label="No"><use href="#i-no"/></svg></span><span role="cell"><svg class="ok" role="img" aria-label="Sí"><use href="#i-ok"/></svg></span><span class="comp-black" role="cell"><svg class="ok" role="img" aria-label="Sí"><use href="#i-ok"/></svg></span></div>
-      <div class="comp-fila comp-ult" role="row"><span class="comp-label" role="rowheader">¿Cobra si firmás?</span><span role="cell"><b>No</b></span><span role="cell"><b>No</b></span><span role="cell"><b class="comp-si">Sí</b></span><span class="comp-black" role="cell"><b>No</b></span></div>
-    </div>
+    <!-- Comparativa: una card por opción con lo que cubre. -->
+    <ul class="comp" data-stagger>
+      <li class="comp-card"><p class="comp-n">Tasación</p><p class="comp-d">Te dice cuánto pedir.</p><ul>
+        <li class="si"><svg aria-hidden="true"><use href="#i-ok"/></svg>Precio real<span class="sr">: sí</span></li>
+        <li class="no"><svg aria-hidden="true"><use href="#i-no"/></svg>Estado<span class="sr">: no</span></li>
+        <li class="no"><svg aria-hidden="true"><use href="#i-no"/></svg>Costo de reforma<span class="sr">: no</span></li>
+        <li class="no"><svg aria-hidden="true"><use href="#i-no"/></svg>Negociación<span class="sr">: no</span></li>
+      </ul><p class="comp-c comp-c-si">No cobra si firmás</p></li>
+      <li class="comp-card"><p class="comp-n">Inspección</p><p class="comp-d">Te dice cómo está.</p><ul>
+        <li class="no"><svg aria-hidden="true"><use href="#i-no"/></svg>Precio real<span class="sr">: no</span></li>
+        <li class="si"><svg aria-hidden="true"><use href="#i-ok"/></svg>Estado<span class="sr">: sí</span></li>
+        <li class="no"><svg aria-hidden="true"><use href="#i-no"/></svg>Costo de reforma<span class="sr">: no</span></li>
+        <li class="no"><svg aria-hidden="true"><use href="#i-no"/></svg>Negociación<span class="sr">: no</span></li>
+      </ul><p class="comp-c comp-c-si">No cobra si firmás</p></li>
+      <li class="comp-card"><p class="comp-n">Inmobiliaria</p><p class="comp-d">Te muestra y negocia la venta.</p><ul>
+        <li class="si"><svg aria-hidden="true"><use href="#i-ok"/></svg>Precio real<span class="sr">: sí</span></li>
+        <li class="no"><svg aria-hidden="true"><use href="#i-no"/></svg>Estado<span class="sr">: no</span></li>
+        <li class="no"><svg aria-hidden="true"><use href="#i-no"/></svg>Costo de reforma<span class="sr">: no</span></li>
+        <li class="si"><svg aria-hidden="true"><use href="#i-ok"/></svg>Negociación<span class="sr">: sí</span></li>
+      </ul><p class="comp-c comp-c-no">Cobra si firmás</p></li>
+      <li class="comp-card comp-b"><p class="comp-n">Diagnóstico Black</p><p class="comp-d">Precio, reforma y negociación en el mismo análisis.</p><ul>
+        <li class="si"><svg aria-hidden="true"><use href="#i-ok"/></svg>Precio real<span class="sr">: sí</span></li>
+        <li class="si"><svg aria-hidden="true"><use href="#i-ok"/></svg>Estado<span class="sr">: sí</span></li>
+        <li class="si"><svg aria-hidden="true"><use href="#i-ok"/></svg>Costo de reforma<span class="sr">: sí</span></li>
+        <li class="si"><svg aria-hidden="true"><use href="#i-ok"/></svg>Negociación<span class="sr">: sí</span></li>
+      </ul><p class="comp-c comp-c-si">Cobra lo mismo si comprás o no</p></li>
+    </ul>
   </div>
 </section>
 
