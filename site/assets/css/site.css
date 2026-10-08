@@ -49,7 +49,7 @@
 :root {
   /* Marca */
   --negro: #0a0a0a;
-  --acento: #ffe500;
+  --acento: #ff5f00;
 
   /* Fondos */
   --g1: #121212;
@@ -292,13 +292,13 @@ strong {
 }
 .btn-1.btn-l {
   border-color: var(--acento);
-  box-shadow: 0 0 0 rgba(255, 229, 0, 0);
+  box-shadow: 0 0 0 rgba(255, 95, 0, 0);
 }
 @media (hover: hover) {
   .btn-1.btn-l:hover {
     transform: translateY(-2px);
     background: #fff27a;
-    box-shadow: 0 10px 34px -10px rgba(255, 229, 0, 0.6);
+    box-shadow: 0 10px 34px -10px rgba(255, 95, 0, 0.6);
   }
 }
 .btn-1.btn-l:active {
@@ -468,9 +468,9 @@ h2 + .intro {
 .dato {
   padding: 0.05em 0.35em;
   border-radius: 4px;
-  outline: 1px dashed rgba(255, 229, 0, 0.7);
+  outline: 1px dashed rgba(255, 95, 0, 0.7);
   outline-offset: -1px;
-  background: rgba(255, 229, 0, 0.08);
+  background: rgba(255, 95, 0, 0.08);
   font-family: var(--sans);
   font-size: 0.85em;
   font-style: normal;
@@ -481,7 +481,7 @@ h2 + .intro {
 }
 .bg-blanco .dato {
   outline-color: #7a6a00;
-  background: rgba(255, 229, 0, 0.3);
+  background: rgba(255, 95, 0, 0.3);
   color: var(--tinta);
 }
 
@@ -565,7 +565,7 @@ h2 + .intro {
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  background: radial-gradient(circle, rgba(255, 229, 0, 0.2) 0%, rgba(255, 229, 0, 0.07) 32%, transparent 62%);
+  background: radial-gradient(circle, rgba(255, 95, 0, 0.2) 0%, rgba(255, 95, 0, 0.07) 32%, transparent 62%);
 }
 
 /* Marcas de esquina tipo plano. */
@@ -1469,7 +1469,7 @@ h2 + .intro {
 }
 .card-destacada {
   isolation: isolate;
-  border-color: rgba(255, 229, 0, 0.4);
+  border-color: rgba(255, 95, 0, 0.4);
 }
 .card-destacada .card-vis {
   background-color: rgba(10, 10, 10, 0.55);
@@ -1478,7 +1478,7 @@ h2 + .intro {
   left: 35%;
   top: 8%;
   width: 190%;
-  background: radial-gradient(circle, rgba(255, 229, 0, 0.42) 0%, rgba(255, 229, 0, 0.14) 28%, transparent 58%);
+  background: radial-gradient(circle, rgba(255, 95, 0, 0.42) 0%, rgba(255, 95, 0, 0.14) 28%, transparent 58%);
 }
 @media (min-width: 1024px) {
   .cards-bonos {
@@ -1584,7 +1584,7 @@ h2 + .intro {
   color: var(--texto-2);
 }
 .motion .tl-paso.on .tl-n {
-  box-shadow: 0 0 0 6px rgba(255, 229, 0, 0.14);
+  box-shadow: 0 0 0 6px rgba(255, 95, 0, 0.14);
 }
 .tl-badge {
   display: inline-block;
@@ -1756,7 +1756,7 @@ h2 + .intro {
   background: var(--acento);
   color: var(--negro);
   box-shadow:
-    0 0 0 6px rgba(255, 229, 0, 0.22),
+    0 0 0 6px rgba(255, 95, 0, 0.22),
     0 8px 24px rgba(0, 0, 0, 0.5);
   transform: translate(-50%, -50%);
   transition: transform 0.2s var(--e-out);
@@ -1875,7 +1875,7 @@ h2 + .intro {
 }
 .res-card.pendiente {
   border-style: dashed;
-  border-color: rgba(255, 229, 0, 0.6);
+  border-color: rgba(255, 95, 0, 0.6);
 }
 .resenas .btn-2 {
   margin-top: 1rem;
@@ -1947,7 +1947,7 @@ h2 + .intro {
   align-self: start;
   margin-top: 0.15rem;
   color: var(--acento);
-  border-color: rgba(255, 229, 0, 0.45);
+  border-color: rgba(255, 95, 0, 0.45);
 }
 .atributos b {
   color: var(--texto);
@@ -2579,7 +2579,7 @@ h2 + .intro {
 }
 .f-op.on {
   border-color: var(--acento);
-  background: rgba(255, 229, 0, 0.08);
+  background: rgba(255, 95, 0, 0.08);
 }
 .f-op.on .f-op-marca {
   border-color: var(--acento);
@@ -2848,7 +2848,7 @@ h2 + .intro {
   padding: 1.25rem 1.5rem;
   border: 1px solid var(--acento);
   border-radius: var(--r);
-  background: #16150c;
+  background: #1a0e06;
   color: var(--texto-3);
 }
 .recupero svg {
@@ -2972,7 +2972,7 @@ h2 + .intro {
 }
 .comp-b {
   border-color: var(--acento);
-  background: #16150c;
+  background: #1a0e06;
 }
 .comp-b .comp-n {
   color: var(--acento);
