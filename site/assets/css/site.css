@@ -70,8 +70,8 @@
   --borde: #2a2a2a;
   --borde-2: #3a3a3a;
   --borde-claro: #d9d8d3;
-  --verde: #2bff88; /* cifras y beneficios */
-  --verde-osc: #0a7a3a; /* verde sobre blanco (5,3:1) */
+  --verde: #00f26d; /* verde eléctrico: cifras y "sí" sobre oscuro */
+  --verde-osc: #00f26d; /* sobre blanco el verde va de fondo, nunca de texto */
   --rojo: #cd2b31; /* solo para el "No es para vos" (5,1:1 sobre blanco) */
 
   /* Heredados del formulario (no cambiar: los usa el modal) */
@@ -2004,9 +2004,18 @@ h2 + .intro {
   padding: 5px;
   border-radius: 50%;
 }
+.pq-t {
+  justify-content: center;
+}
+.pq-t svg {
+  width: 64px;
+  height: 64px;
+  padding: 12px;
+}
 .pq-si .pq-t svg {
-  background: var(--acento);
+  background: var(--verde);
   color: var(--tinta);
+  stroke-width: 2.6;
 }
 .pq-no {
   border-color: rgba(205, 43, 49, 0.35);
@@ -2040,12 +2049,12 @@ h2 + .intro {
   color: var(--tinta);
 }
 .pq-si li::before {
-  top: 1.2rem;
-  width: 6px;
-  height: 11px;
+  top: 1.15rem;
+  width: 7px;
+  height: 13px;
   background: none;
-  border-right: 2px solid var(--tinta);
-  border-bottom: 2px solid var(--tinta);
+  border-right: 3px solid #00b852;
+  border-bottom: 3px solid #00b852;
   transform: rotate(45deg);
   left: 0.35rem;
 }
@@ -2078,7 +2087,8 @@ h2 + .intro {
 .sello-wrap {
   position: relative;
   isolation: isolate;
-  width: 7.5rem;
+  width: 9rem;
+  margin-inline: auto;
 }
 .sello .sello-txt {
   font-size: 11.5px;
@@ -2140,14 +2150,12 @@ h2 + .intro {
   .garantia {
     grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
     gap: 4.5rem;
-    align-items: start;
+    align-items: center;
   }
   .sello-wrap {
-    position: sticky;
-    top: calc(var(--top-h) + 4rem);
     width: 100%;
-    max-width: 18rem;
-    margin-top: 2rem;
+    max-width: 16rem;
+    margin: 0 auto;
   }
 }
 
@@ -2751,28 +2759,30 @@ h2 + .intro {
   color: var(--verde);
 }
 .bg-blanco .hl-v {
-  color: var(--verde-osc);
-}
-.ecu-tot-v {
-  color: var(--verde-osc);
-}
-.ecu-dif {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 0.5rem;
-  margin-top: 1.25rem;
-  padding: 0.7rem 0.9rem;
-  border-radius: var(--r-s);
+  padding: 0 0.2em;
+  border-radius: 3px;
   background: var(--verde);
   color: var(--tinta);
 }
-.ecu-dif b {
-  font-family: var(--display);
-  font-size: 1.25rem;
+.ecu-dif {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 1.25rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--r-s);
+  background: var(--negro);
+  color: var(--texto-3);
 }
 .ecu-dif span {
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.ecu-dif b {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 1.3rem + 1vw, 2rem);
+  line-height: 1.1;
+  color: var(--acento);
 }
 
 /* Puente al Diagnóstico */
@@ -2785,11 +2795,78 @@ h2 + .intro {
   line-height: 1.3;
   color: var(--tinta-2);
 }
+.solucion {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border-radius: var(--r);
+  background: var(--negro);
+  color: var(--texto-2);
+}
+.solucion span {
+  display: block;
+  font-size: 0.6em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 .solucion b {
-  color: var(--tinta);
+  display: block;
+  margin-top: 0.4rem;
+  font-size: clamp(1.9rem, 1.3rem + 2.6vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--acento);
 }
 .solucion + .frase {
-  margin-top: 1rem;
+  margin-top: 1.25rem;
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--tinta-2);
+}
+
+/* Hero: bajada con el "juntos" en blanco pleno y garantía bajo el CTA. */
+.hero-bajada b {
+  font-weight: 600;
+  color: #fff;
+}
+.hero-garantia {
+  max-width: 26rem;
+  margin: 0.9rem auto 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--texto-3);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* Paso a paso: recupero del Diagnóstico. */
+.recupero {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  max-width: 46rem;
+  margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--acento);
+  border-radius: var(--r);
+  background: #16150c;
+  color: var(--texto-3);
+}
+.recupero svg {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  border-radius: 50%;
+  background: var(--acento);
+  color: var(--negro);
+}
+.recupero b {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--display);
+  font-size: 1.35rem;
+  line-height: 1.25;
+  color: var(--texto);
 }
 
 /* Hero: más compacto en mobile; prueba en fila (caras a la izquierda). */
@@ -2810,10 +2887,19 @@ h2 + .intro {
 }
 
 /* Comparativa: una card por opción. */
+.comp-t {
+  margin-top: clamp(3.5rem, 7vw, 5rem);
+  font-family: var(--display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--texto);
+}
 .comp {
   display: grid;
   gap: var(--gap);
-  margin-top: clamp(3.5rem, 7vw, 5rem);
+  margin-top: 1.75rem;
 }
 .comp-card {
   display: flex;
@@ -2872,7 +2958,17 @@ h2 + .intro {
   color: var(--texto-2);
 }
 .comp-c-no {
-  color: var(--rojo);
+  align-self: stretch;
+  padding: 0.6rem 0.75rem;
+  border-top: 0;
+  border-radius: var(--r-s);
+  background: var(--rojo);
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: #fff;
 }
 .comp-b {
   border-color: var(--acento);
