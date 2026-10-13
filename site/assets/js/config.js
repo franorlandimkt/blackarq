@@ -29,6 +29,7 @@ window.BLACK = {
             No es una contraseña (cualquiera puede verlo en el navegador):
             sirve para descartar envíos que no vienen de este sitio.       */
   sheets: {
+    // ▼▼▼ PEGAR ACÁ la URL de la aplicación web de Apps Script (entre las comillas) ▼▼▼
     url: "",
     token: "blk_1c8fdfbb46be0a9ec65a444f",
   },

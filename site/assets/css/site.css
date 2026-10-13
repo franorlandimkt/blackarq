@@ -1088,7 +1088,6 @@ h2 + .intro {
   max-width: 30rem;
 }
 .ecu,
-.mitades,
 .flujos {
   width: 100%;
   max-width: 30rem;
@@ -1207,35 +1206,6 @@ h2 + .intro {
 }
 .motion .ecu.is-in .ecu-bar > span {
   transform: none;
-}
-
-.mitades svg {
-  max-width: 26rem;
-  margin-inline: auto;
-}
-.motion .mitades .mit-l,
-.motion .mitades .mit-r {
-  transition: transform 0.9s var(--e-out) 0.4s;
-}
-.motion .mitades .mit-l {
-  transform: translateX(-22px);
-}
-.motion .mitades .mit-r {
-  transform: translateX(22px);
-}
-.motion .mitades.is-in .mit-l,
-.motion .mitades.is-in .mit-r {
-  transform: none;
-}
-.motion .mitades .mit-marco {
-  transition-delay: 1s;
-}
-.motion .mitades .mit-u {
-  opacity: 0;
-  transition: opacity 0.6s ease 1.5s;
-}
-.motion .mitades.is-in .mit-u {
-  opacity: 1;
 }
 
 /* Proceso invertido. Mobile: dos columnas verticales; desktop: dos filas. */
@@ -2896,90 +2866,6 @@ h2 + .intro {
   text-align: center;
   color: var(--texto);
 }
-.comp {
-  display: grid;
-  gap: var(--gap);
-  margin-top: 1.75rem;
-}
-.comp-card {
-  display: flex;
-  flex-direction: column;
-  padding: 1.25rem;
-  border: 1px solid var(--borde);
-  border-radius: var(--r);
-  background: #111;
-}
-.comp-n {
-  font-family: var(--display);
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--texto);
-}
-.comp-d {
-  margin-top: 0.2rem;
-  font-size: 0.875rem;
-  color: var(--texto-2);
-}
-.comp-card ul {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem 0.75rem;
-  margin-top: 1rem;
-}
-.comp-card li {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.875rem;
-  color: var(--texto-3);
-}
-.comp-card li svg {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-}
-.comp-card li.si svg {
-  color: var(--verde);
-}
-.comp-card li.no {
-  color: #6b6b67;
-}
-.comp-card li.no svg {
-  color: #4a4a47;
-}
-.comp-c {
-  margin-top: 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--borde);
-  font-size: 0.8125rem;
-  font-weight: 600;
-}
-.comp-c-si {
-  color: var(--texto-2);
-}
-.comp-c-no {
-  align-self: stretch;
-  padding: 0.6rem 0.75rem;
-  border-top: 0;
-  border-radius: var(--r-s);
-  background: var(--rojo);
-  font-family: var(--display);
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-align: center;
-  color: #fff;
-}
-.comp-b {
-  border-color: var(--acento);
-  background: #16150c;
-}
-.comp-b .comp-n {
-  color: var(--acento);
-}
-.comp-b .comp-c {
-  color: var(--verde);
-}
 .sr {
   position: absolute;
   width: 1px;
@@ -2987,20 +2873,6 @@ h2 + .intro {
   overflow: hidden;
   clip: rect(0 0 0 0);
 }
-@media (min-width: 700px) {
-  .comp {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (min-width: 1024px) {
-  .comp {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-  .comp-card ul {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* Desktop: encabezados de sección centrados y bloques de texto al medio,
    para que nada quede pegado a los bordes. */
 @media (min-width: 960px) {
@@ -3086,5 +2958,374 @@ h2 + .intro {
   }
   .solucion b {
     font-size: 1.6rem;
+  }
+}
+
+/* ============================================================ v5 ========= */
+
+/* ---- Hero: titular a todo el ancho, sin resaltado. 2 líneas en 375 px. */
+.hero h1 {
+  max-width: none;
+  width: 100%;
+  font-size: clamp(2.6rem, 1.2rem + 6.4vw, 4.6rem);
+  line-height: 1.05;
+}
+.hero-garantia span {
+  display: block;
+}
+.hero-garantia span + span {
+  margin-top: 0.2rem;
+}
+@media (max-width: 599px) {
+  .hero h1 {
+    font-size: clamp(2.45rem, 0.6rem + 9.6vw, 3.2rem);
+    line-height: 1.05;
+  }
+}
+
+/* ---- Problema: auto usado vs propiedad. Sin íconos: "Sí" en amarillo
+   (acá es lo malo), "No" en tono neutro. Filas alineadas con subgrid. */
+.av {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(4, auto);
+  gap: 0 0.75rem;
+  max-width: 40rem;
+  margin-top: 2rem;
+}
+.av-card {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  margin: 0;
+  padding: 1rem 0.9rem 0.4rem;
+  border: 1px solid var(--borde-2);
+  border-radius: var(--r);
+  background: var(--negro);
+}
+.av-n {
+  padding-bottom: 0.75rem;
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--texto);
+}
+.av-f {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--borde);
+}
+.av-k {
+  font-family: var(--display);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texto-2);
+}
+.av-v {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--texto);
+}
+.av-no {
+  color: var(--texto-3);
+}
+.av-si {
+  font-size: 1.15rem;
+  color: var(--acento);
+}
+.av-txt {
+  margin-top: 2rem;
+  color: var(--texto-3);
+}
+.puente {
+  margin-top: 2.25rem;
+  font-family: var(--display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--texto);
+}
+.puente + .preguntas {
+  margin-top: 1rem;
+}
+@media (min-width: 960px) {
+  .av {
+    margin-inline: auto;
+  }
+  .av-card {
+    padding: 1.5rem 1.5rem 0.6rem;
+  }
+  .av-n {
+    font-size: 1.6rem;
+  }
+  .av-v {
+    font-size: 1.0625rem;
+  }
+  .av-txt,
+  .puente {
+    text-align: center;
+  }
+}
+
+/* ---- Mapa conceptual: compra → tres partes. Fondo oscuro de marca
+   también dentro de la sección clara. */
+.il.mapa,
+.bg-blanco .il.mapa {
+  --il-l: #f4f3ef;
+  --il-t: var(--texto-2);
+  width: 100%;
+  max-width: 30rem;
+  padding: 1.5rem 0.5rem;
+  border-radius: var(--r);
+  background: var(--negro);
+}
+.mapa .s {
+  stroke-width: 1.25;
+}
+.mapa-c {
+  font-family: var(--display);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  fill: var(--negro);
+}
+.mapa-l {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  fill: var(--texto);
+}
+.mapa-d {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  fill: #b5b4ae;
+}
+.motion .mapa .mapa-n {
+  transition-delay: 0.55s;
+}
+@media (min-width: 600px) {
+  .il.mapa,
+  .bg-blanco .il.mapa {
+    padding: 1.75rem 1.25rem;
+  }
+}
+
+/* ---- Remate del bloque de problema: panel oscuro con aire, separado del
+   comparativo "Habitual vs Black". */
+.remate {
+  max-width: 52rem;
+  margin: clamp(4.5rem, 10vw, 7.5rem) auto 0;
+  padding: clamp(2rem, 6vw, 3.75rem) clamp(1.25rem, 5vw, 3.75rem);
+  border-radius: var(--r);
+  background: var(--negro);
+  color: var(--texto);
+}
+.remate .solucion {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  text-align: left;
+}
+.remate .solucion span {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acento);
+}
+.remate .solucion b {
+  margin-top: 0.75rem;
+  font-family: var(--display);
+  font-size: clamp(2.3rem, 1.4rem + 4vw, 4rem);
+  font-weight: 700;
+  line-height: 1.04;
+  color: var(--texto);
+}
+.remate .frase {
+  max-width: 38rem;
+  margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
+  padding: 0.2rem 0 0.2rem 1.1rem;
+  border-left: 3px solid var(--acento);
+  font-family: var(--sans);
+  font-size: clamp(1.05rem, 1rem + 0.3vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
+  color: var(--texto-3);
+}
+.remate .cta-fila {
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+  text-align: left;
+}
+
+/* ---- Comparativa en matriz. Mobile: criterio arriba de cada fila y las 4
+   opciones debajo; desktop: criterio a la izquierda. La columna Black es
+   un fondo continuo (::before) con borde amarillo. */
+.mx {
+  --mx-k: 0px;
+  position: relative;
+  isolation: isolate;
+  max-width: 60rem;
+  margin: 1.75rem auto 0;
+}
+.mx::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: calc((100% - var(--mx-k)) / 4);
+  border: 1.5px solid var(--acento);
+  border-radius: var(--r-s);
+  background: #16150c;
+}
+.mx-r {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.mx-k {
+  grid-column: 1 / -1;
+  padding: 0.85rem 0 0.2rem;
+  border-top: 1px solid var(--borde);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-2);
+}
+.mx-head .mx-k {
+  padding: 0;
+  border: 0;
+}
+.mx-o {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.9rem 0.25rem 0.75rem;
+  text-align: center;
+}
+.mx-o b {
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--texto);
+}
+.mx-o small {
+  margin-top: 0.3rem;
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  color: var(--texto-2);
+}
+.mx-o:last-child b {
+  color: var(--acento);
+}
+.mx-c {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.25rem 0.75rem;
+}
+.mx-c svg {
+  width: 22px;
+  height: 22px;
+}
+.mx-c.si svg {
+  color: var(--texto-3);
+}
+.mx-c.no svg {
+  width: 18px;
+  height: 18px;
+  color: #4a4a47;
+}
+.mx-c:last-child.si svg {
+  width: 26px;
+  height: 26px;
+  color: var(--acento);
+}
+.mx-cobra .mx-c {
+  padding: 0.4rem 0.3rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--texto-3);
+}
+.mx-cobra .mx-mal {
+  margin: 0.2rem 0.2rem 0.8rem;
+  padding: 0.45rem 0.3rem;
+  border-radius: 8px;
+  background: var(--rojo);
+  color: #fff;
+}
+.mx-cobra .mx-c:last-child {
+  color: var(--acento);
+}
+@media (min-width: 700px) {
+  .mx {
+    --mx-k: 10rem;
+  }
+  .mx-r {
+    grid-template-columns: var(--mx-k) repeat(4, minmax(0, 1fr));
+  }
+  .mx-r > * {
+    border-top: 1px solid var(--borde);
+  }
+  .mx-head > * {
+    border-top: 0;
+  }
+  .mx-k {
+    grid-column: auto;
+    display: flex;
+    align-items: center;
+    padding: 0.9rem 1rem 0.9rem 0;
+  }
+  .mx-c,
+  .mx-cobra .mx-c {
+    padding-block: 1rem;
+  }
+  .mx-o {
+    padding: 1.25rem 0.75rem 1rem;
+  }
+  .mx-o b {
+    font-size: 1.3rem;
+  }
+  .mx-o small {
+    font-size: 0.8125rem;
+  }
+  .mx-cobra .mx-c {
+    font-size: 0.875rem;
+  }
+  .mx-cobra .mx-mal {
+    margin: 0.6rem 0.5rem;
+  }
+}
+@media (max-width: 699px) {
+  .mx-o b {
+    font-size: 0.9rem;
+    letter-spacing: -0.005em;
+  }
+}
+@media (max-width: 399px) {
+  .remate {
+    padding-inline: 1rem;
+  }
+  .remate .btn-l.btn-lg {
+    padding-inline: 0.75rem;
+    font-size: 0.95rem;
   }
 }

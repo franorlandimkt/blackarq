@@ -19,15 +19,6 @@ window.BLACK_CONTENT = {
   /* Caso Lorena: testimonio textual, sin comillas (las pone la página). */
   testimonio_lorena: "",
 
-  /* Paso 2: "Te escribimos por WhatsApp ___." Ej.: "dentro de las 24 h hábiles" */
-  plazo_whatsapp: "",
-
-  /* Paso 4: "Confirmás y nos mandás todo. ___." Ej.: "Transferencia o Mercado Pago" */
-  forma_pago: "",
-
   /* Quiénes: trayectoria de Esteban (cifras de config.js → stats). */
   trayectoria_esteban: "15 años · 120 obras · 18.000 m².",
-
-  /* Footer: email de contacto. Ej.: "hola@blackarquitectura.com" */
-  email: "",
 };

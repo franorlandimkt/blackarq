@@ -17,36 +17,36 @@
 
 ## 1. Hero
 
-**Titular:** Invertí en tu propiedad sabiendo cuánto vale, cuánto sale reformarla y hasta dónde negociar.
+**Titular (H1):** ¿Estás por comprar una propiedad?
 
-**Bajada:** Un arquitecto y una asesora inmobiliaria diagnostican la propiedad que te gusta antes de que ofertes.
+**Bajada:** Un arquitecto y una asesora inmobiliaria la analizan a tu lado, antes de que ofertes.
 
 **Bullets:**
-- En qué estado está
-- Cuánto cuesta dejarla como la querés
-- Cuánto vale de verdad
+- Valor real de mercado de la propiedad
+- Presupuesto estimado para dejarla como la querés
+- Argumentos concretos para negociar el precio
 
-**CTA:** Quiero mi Diagnóstico Black
+**CTA:** Quiero analizar mi propiedad →
 
-**Prueba (debajo del CTA):** fotos de Esteban y Carla · Esteban Crimi · Arquitecto y Maestro Mayor de Obras · Carla La Porta · Asesora inmobiliaria · ★★★★★ 5,0 en Google · 41 reseñas
+**Debajo del CTA:** Visita en 72 h · Informe en 7 días / Si no encontramos ni con qué negociar ni un costo oculto, te lo devolvemos.
 
-> **Fondo:** render de la casa (fondo arquitectónico) con velo oscuro. Sin eyebrow, sin línea de reaseguro, sin micro-prueba de "97 familias" y sin contador 460.000 → 420.000 (eliminados por pedido de Franco).
+**Prueba:** fotos de Esteban y Carla · Esteban Crimi · Arquitecto y Maestro Mayor de Obras · Carla La Porta · Asesora inmobiliaria · ★★★★★ 5,0 en Google · 41 reseñas
 
 ---
 
-## 2. Problema: ofertar a ciegas
+## 2. Problema
 
-**Subtítulo:** Hoy ofertás con un solo dato: el precio que te pidieron.
+**Subtítulo:** Un auto usado lo hacés revisar por un mecánico. Una propiedad, por el que cobra si la comprás.
 
-Encontraste una propiedad que te gusta. El precio parece lógico. Todos los que la vieron con vos coinciden en que es una buena compra.
+> **Tarjetas:** Auto usado — Precio: USD 15.000 · ¿Quién la revisa?: Un mecánico · ¿Gana si comprás?: No. Propiedad — Precio: USD 200.000 · ¿Quién la revisa?: El vendedor y la inmobiliaria · ¿Gana si comprás?: Sí. Sin tildes ni cruces.
 
-Pero hay tres preguntas que nadie te respondió:
+Antes de comprar un auto, nadie firma sin que lo vea alguien que no gana nada con la venta. Con una propiedad, que vale más de diez veces más, casi todos ofertan después de una visita de 20 minutos y con la opinión de quien cobra si firmás. No te mienten, pero forman parte de la operación.
+
+Hay tres preguntas que tenés que poder responder antes de ofertar:
 
 - **¿El precio se sostiene?** Lo que piden no es lo que vale. *"¿Y si me están cobrando de más?"*
 - **¿Cuánto vas a tener que poner después?** Humedad, instalaciones viejas, una cocina que hay que tirar abajo. Eso no aparece en las fotos. *"¿Y si compro y después aparecen problemas?"*
-- **¿Quién te está diciendo la verdad?** El que vende quiere vender. La inmobiliaria cobra si firmás. No te mienten, pero todos forman parte de la operación. *"No sé en quién confiar."*
-
-> Sin ilustración (el iceberg se eliminó).
+- **¿Puede quedar como la querés?** Si la casa que imaginás entra en esa propiedad, y cuánto puede valer después. *"¿Y si no se puede hacer lo que quiero?"*
 
 ---
 
@@ -56,16 +56,18 @@ Pero hay tres preguntas que nadie te respondió:
 
 Lo que te cuesta una propiedad no es el precio. Es el precio más la reforma que necesita para quedar como la querés.
 
-Una compra tiene dos partes: la **inmobiliaria** (cuánto vale) y la **constructiva** (cuánto cuesta dejarla como la querés). Lo que define si es una buena compra son las dos juntas, no una.
+Una compra tiene tres partes: la **inmobiliaria**, que te dice cuánto vale realmente esa propiedad en el mercado; la **constructiva**, que te dice en qué estado está de verdad y si tiene vicios ocultos; y la **arquitectónica**, que te dice qué potencial tiene para revalorizarse y quedar como la querés. Lo que define si es una buena compra son las tres juntas, no una sola.
 
 **Título:** Casi todos lo hacen al revés.
 Primero compran y después llaman a un arquitecto. Para cuando los dos números se cruzan, ya firmaste.
 
+**Todo esto tiene solución: un asesoramiento de punta a punta, antes de ofertar.**
+
 **Antes de ofertar es el único momento en que todavía podés negociar esta propiedad o elegir otra.**
 
-> **Ilustración 1:** ecuación "Precio + Reforma = Lo que realmente pagás", con dos propiedades: A USD 200.000 + 95.000 = 295.000 / B USD 240.000 + 15.000 = 255.000 ("valores ilustrativos").
-> **Ilustración 2:** dos mitades que se unen: plano arquitectónico (constructivo) + gráfico de mercado/valor m² (inmobiliario) = una sola decisión.
-> **Ilustración 3:** "Proceso habitual: comprar → llamar al arquitecto → descubrir el costo" vs. "Proceso Black: analizar → negociar → comprar".
+> **Ilustración 1:** ecuación "Precio + Reforma = Lo que realmente pagás" (A 200.000 + 95.000 = 295.000 / B 240.000 + 15.000 = 255.000, valores ilustrativos).
+> **Ilustración 2:** mapa conceptual COMPRA → Inmobiliario (Cuánto vale de verdad) · Constructivo (En qué estado está) · Arquitectónico (Cuánto puede valer).
+> **Ilustración 3:** "Habitual: comprar → arquitecto → descubrís el costo" vs. "Black: analizar → negociar → comprar".
 
 ---
 
@@ -114,10 +116,10 @@ Todo ordenado en un informe y una reunión de 1 hora donde te lo traducimos a un
 
 **Subtítulo:** Del formulario a tu oferta. Sin sorpresas.
 
-1. **Completás el formulario.** 6 preguntas, menos de un minuto.
-2. **Te escribimos por WhatsApp** [DATO: plazo, ej. "dentro de las 24 h hábiles"]. Entendemos tu caso y qué propiedades querés analizar.
+1. **Completás el formulario de admisión.** 6 preguntas para saber si realmente te podemos ayudar.
+2. **Nos escribís por WhatsApp.** Al terminar el formulario, te asesoramos por WhatsApp: entendemos tu caso y qué propiedades querés analizar.
 3. **Te pasamos la propuesta.** Qué incluye y su valor según cuántas propiedades sean. Sin compromiso hasta que confirmes.
-4. **Confirmás y nos mandás todo.** [DATO: forma de pago]. Publicación, fotos, videos y, sobre todo, los planos. Empezamos a analizar antes de ir.
+4. **Confirmás y nos mandás todo.** Publicación, fotos, videos y, sobre todo, los planos. Empezamos a analizar antes de ir.
 5. **Visita técnica dentro de las 72 h.** Te llevás la minuta en el momento.
 6. **Analizamos mercado y reforma.** Valor real, inversión estimada por etapas y rango de negociación.
 7. **Informe y reunión de decisión, a los 7 días.** Reunión online de 1 hora: qué conviene, cuánto cuesta y con qué argumentos ofertar.
@@ -250,7 +252,7 @@ Sí, y es justamente lo que garantiza que nadie gana nada si comprás. Y si no e
 
 **Debajo del CTA:** Visita en 72 h · Informe en 7 días · Garantía de devolución.
 
-**Footer:** zonas de cobertura (sin mapa ni dirección) · Instagram · email.
+**Footer:** zonas de cobertura (sin mapa ni dirección). Sin Instagram ni email.
 
 ---
 

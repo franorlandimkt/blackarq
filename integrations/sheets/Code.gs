@@ -10,7 +10,7 @@
  *                 Se puede volver a correr: no borra filas de "Leads".
  *   doPost(e)     La llama el sitio en cada envío del formulario. Agrega una
  *                 fila en "Leads". Nunca escribe en las columnas manuales
- *                 (salvo "estado" = "Nuevo" en la fila nueva).
+ *                 ("Estado", "¿Se vendió?", etc.): quedan vacías.
  */
 
 /* Tiene que ser IGUAL a `sheets.token` de site/assets/js/config.js. No es
@@ -37,7 +37,9 @@ var AUTOMATICAS = [
 ];
 
 /* Columnas que completa Black a mano. El script nunca las pisa. */
-var MANUALES = ['estado', 'vendido', 'fecha_venta', 'monto', 'motivo_no_venta', 'notas'];
+var MANUALES = ['Estado', '¿Se vendió?', 'fecha_venta', 'monto', 'motivo_no_venta', 'notas'];
+var COL_ESTADO = MANUALES[0];
+var COL_VENDIDO = MANUALES[1];
 
 var ESTADOS = ['Nuevo', 'Contactado', 'Calificado', 'Diagnóstico vendido', 'No vendido', 'No califica'];
 var COLOR_ESTADO = {
@@ -84,7 +86,6 @@ function doPost(e) {
 
       var fila = headers.map(function (h) {
         if (h === 'fecha_hora') return new Date();
-        if (h === 'estado') return 'Nuevo';
         if (MANUALES.indexOf(h) >= 0) return '';
         return limpiar_(f[h]);
       });
@@ -185,9 +186,9 @@ function setupSheet() {
   rango('fecha_venta').setNumberFormat('dd/mm/yyyy');
   rango('monto').setNumberFormat('#,##0');
 
-  rango('estado').setDataValidation(SpreadsheetApp.newDataValidation()
+  rango(COL_ESTADO).setDataValidation(SpreadsheetApp.newDataValidation()
     .requireValueInList(ESTADOS, true).setAllowInvalid(false).build());
-  rango('vendido').setDataValidation(SpreadsheetApp.newDataValidation()
+  rango(COL_VENDIDO).setDataValidation(SpreadsheetApp.newDataValidation()
     .requireValueInList(['Sí', 'No'], true).setAllowInvalid(false).build());
   rango('motivo_no_venta').setDataValidation(SpreadsheetApp.newDataValidation()
     .requireValueInList(MOTIVOS, true).setAllowInvalid(false).build());
@@ -197,7 +198,7 @@ function setupSheet() {
     .requireNumberGreaterThanOrEqualTo(0).setAllowInvalid(false).build());
 
   // Formato condicional: la fila entera según el estado.
-  var letraEstado = letra_(col('estado'));
+  var letraEstado = letra_(col(COL_ESTADO));
   var filas = sh.getRange(2, 1, maxFilas - 1, nCols);
   var reglas = sh.getConditionalFormatRules().filter(function (r) {
     return !r.getRanges().some(function (x) { return x.getSheet().getName() === HOJA_LEADS; });
@@ -220,7 +221,7 @@ function setupSheet() {
     var l = letra_(col(nombre));
     return "'" + HOJA_LEADS + "'!$" + l + '$2:$' + l;
   }
-  var ID = ref('lead_id'), VEND = ref('vendido'), MONTO = ref('monto'), FECHA = ref('fecha_hora');
+  var ID = ref('lead_id'), VEND = ref(COL_VENDIDO), MONTO = ref('monto'), FECHA = ref('fecha_hora');
 
   rs.getRange('A1').setValue('Resumen — se calcula solo a partir de "Leads". No escribir en esta pestaña.')
     .setFontWeight('bold');

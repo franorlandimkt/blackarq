@@ -67,13 +67,13 @@ Si después se edita `Code.gs`: **Implementar → Administrar implementaciones �
 Una fila por envío (califique o no).
 
 - **Automáticas** (las escribe el script): `fecha_hora`, `lead_id`, `ref_whatsapp`, las respuestas del formulario con el mismo nombre que en `form-config.js` (`Situación`, `Zona`, `Presupuesto`, `Plazo`, `¿Visitó la propiedad?`, `Qué busca`, `Disposición a invertir`), `ruta`, `califica`, `motivo_descalificacion`, `nombre`, `whatsapp`, `cta_origen`, `ctas_sesion`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_term` (conjunto), `utm_content` (anuncio), `campaign_id`, `adset_id`, `ad_id`, `placement`, `fbclid`, `ft_campaign`, `ft_adset`, `ft_ad`, `ft_fecha`, `dispositivo`, `url`, `referrer`.
-- **Manuales** (encabezado azul, las completa Black, el script nunca las pisa): `estado` (Nuevo / Contactado / Calificado / Diagnóstico vendido / No vendido / No califica), `vendido` (Sí / No), `fecha_venta`, `monto`, `motivo_no_venta` (Precio / No respondió / Fuera de zona / Ya compró / Otro), `notas`. Cada fila nueva entra con `estado = Nuevo`.
+- **Manuales** (encabezado azul, las completa Black, el script nunca las pisa): `Estado` (Nuevo / Contactado / Calificado / Diagnóstico vendido / No vendido / No califica), `¿Se vendió?` (Sí / No), `fecha_venta`, `monto`, `motivo_no_venta` (Precio / No respondió / Fuera de zona / Ya compró / Otro), `notas`. Cada fila nueva entra con las manuales vacías.
 
 Si se agrega una pregunta al formulario, su columna se crea sola antes de las manuales.
 
 ### Pestaña "Resumen"
 
-Solo fórmulas, sin carga manual: totales; leads, vendidos, tasa de venta y monto vendido **por campaña, por conjunto, por anuncio y por CTA de origen**; y lo mismo **por semana**. Para que cuente una venta, `vendido` tiene que ser **Sí**. Lo que llega sin campaña se agrupa como "(sin dato)".
+Solo fórmulas, sin carga manual: totales; leads, vendidos, tasa de venta y monto vendido **por campaña, por conjunto, por anuncio y por CTA de origen**; y lo mismo **por semana**. Para que cuente una venta, `¿Se vendió?` tiene que ser **Sí**. Lo que llega sin campaña se agrupa como "(sin dato)".
 
 ---
 
@@ -100,9 +100,6 @@ Todos se completan en **`site/assets/js/content.js`** (un solo archivo). Mientra
 | Clave en `content.js` | Dónde aparece | Qué falta |
 |---|---|---|
 | `testimonio_lorena` | Caso Lorena | Testimonio textual de Lorena (y permiso de nombre) |
-| `plazo_whatsapp` | Paso a paso, paso 2 | Plazo de respuesta por WhatsApp (ej. "dentro de las 24 h hábiles") |
-| `forma_pago` | Paso a paso, paso 4 | Forma de pago |
-| `email` | Footer | Email de contacto (también arma el `mailto:`) |
 
 Ya completados: `resenas_google` ("5,0 en Google · 41 reseñas") y `trayectoria_esteban` ("15 años · 120 obras · 18.000 m²", las cifras de `config.js`). El dato de años de Carla se sacó de la página.
 
@@ -113,7 +110,19 @@ Material visual pendiente (se reemplaza en `index.html`, cada lugar tiene un com
 - **Fotos antes/después reales de Lorena (Villa Devoto) y de Amenábar.** Hoy los dos sliders usan las imágenes del sitio anterior (`caso-antes/despues` y `caso2-antes/despues`), que son **el mismo render en blanco y negro y en color**, no un antes y un después reales. Reemplazar los archivos con el mismo nombre (640 y 1000 px, AVIF + WebP).
 - Del listado del cliente que no tiene lugar en la página: testimonio de la clienta que cerró la compra, apellido de Carla (se usa La Porta), cuántas propiedades entran en el Diagnóstico base.
 
-## 6. Diseño y motion (v4)
+## 6. Cambios v5 (13/10)
+
+- **Hero:** H1 "¿Estás por comprar una propiedad?" a todo el ancho, sin resaltado (2 líneas en 358–390 px). Bullets y subtítulo nuevos. CTA del hero: "Quiero analizar mi propiedad" (el resto sigue "Quiero mi Diagnóstico Black"). Debajo: "Visita en 72 h · Informe en 7 días" + garantía.
+- **Problema:** H2 del auto usado, tarjetas Auto usado vs Propiedad (sin íconos: el "Sí" malo va en amarillo), texto, puente y pregunta 3 nueva ("¿Puede quedar como la querés?").
+- **Idea central:** compra en tres partes + mapa conceptual SVG (COMPRA → Inmobiliario · Constructivo · Arquitectónico) que reemplaza la ilustración de las dos mitades.
+- **Remate** ("Todo esto tiene solución"): panel oscuro con más aire, frase con barra amarilla.
+- **Pasos 1, 2 y 4** nuevos; sin `[DATO]` de plazo y forma de pago.
+- **Foto de Carla** corregida en el archivo (niveles de negro, contraste, color) en todos sus tamaños (mini, 400, 596; WebP + AVIF).
+- **Comparativa** en matriz y **footer** sin Instagram ni email.
+- **Motion:** sigue siendo el sistema propio (no hay GSAP/Lenis en el proyecto): las tarjetas entran con `data-stagger` y las flechas del mapa se dibujan con `data-draw` (stroke-dashoffset). Con `prefers-reduced-motion`, todo estático.
+- Punto de restauración: tag `restore-pre-cambios-finales`.
+
+## 7. Diseño y motion (v4)
 
 - **Dirección:** estudio de arquitectura contemporáneo con lenguaje de plano. Base negro + grises (`--g1` #121212, `--g2` #1A1A1A), blanco cálido (`--hueso` #F4F3EF) solo en "Idea central" y "Para quién". Antonio (títulos) + Poppins (texto) y el amarillo de marca existente (`--acento` #FFE500), solo como acento.
 - **Resaltados** (siempre los mismos tres): `.hl-u` subrayado que se dibuja, `.hl-m` marcador que se pinta, `.hl-y` palabra/cifra en amarillo. Sobre blanco, `.hl-y` pasa a fondo amarillo con texto negro (contraste AA).
@@ -130,9 +139,9 @@ Material visual pendiente (se reemplaza en `index.html`, cada lugar tiene un com
 - **Sin rótulos de sección** (v4.1): se sacaron los eyebrows ("B-02 · Ofertar a ciegas"…) y los códigos de las cards (A-01…). Regla agregada a la skill `crear-landing-pages`. La fila de stats usa los rótulos que pide el brief ("familias", "visita", "informe", "ahorro de Lorena").
 - **Hero v4.1:** centrado, render de la casa de fondo, titular "Invertí en tu propiedad…", bajada corta, tres bullets, CTA y prueba (caras + cargos de Esteban y Carla + 5,0 en Google). El encabezado (logo + CTA) queda solo en desktop; en mobile el CTA fijo de abajo aparece pasado el hero.
 - **"No es para vos" en rojo** (`--rojo` #CD2B31), único uso del color.
-- **Comparativa (Quiénes):** en mobile es una grilla de 4 columnas sin scroll (el criterio arriba de cada fila, la columna Black continua); en desktop, 5 columnas. Qué cubre cada opción se dedujo del copy — Tasación: precio; Inspección: estado; Inmobiliaria: precio y negociación, y cobra si firmás; Diagnóstico Black: todo, y no cobra si firmás. Revisar si se quiere otro criterio.
+- **Comparativa (Quiénes, v5):** matriz (criterios en filas, opciones en columnas). En mobile, 4 columnas sin scroll con el criterio arriba de cada fila; en desktop, el criterio a la izquierda. Columna Black con fondo y borde amarillo y tildes amarillos; en las otras, tilde neutro para sí y ✕ gris apagado para no. Qué cubre cada opción se dedujo del copy — Tasación: precio; Inspección: estado; Inmobiliaria: precio y negociación, y cobra si firmás; Diagnóstico Black: todo, y no cobra si firmás. Revisar si se quiere otro criterio.
 - **Caso Amenábar:** el título de la card es el H3 del copy; "Amenábar 914" va como rótulo arriba.
-- **Footer:** zonas + Instagram + email. Se sacaron el link a Google Maps, las matrículas y el WhatsApp directo que tenía la v3 (sin links que saquen de la página salvo Instagram).
+- **Footer (v5):** logo + zonas + copyright. Sin Instagram ni email (ningún link saca de la página).
 - **Schema:** se mantuvo `ProfessionalService` (con la descripción actualizada) y se reescribió `FAQPage` con las preguntas nuevas, para que coincida con lo visible.
 
 ### Formulario, Sheets y tracking
