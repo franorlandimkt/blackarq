@@ -19,7 +19,10 @@ window.BLACK = {
      para deduplicar si después se suma la API de Conversiones).
      Meta Business > Administrador de eventos > tu píxel > ID.
      (GA4 está instalado en el <head> de index.html: G-EE9PC274XF.)        */
-  metaPixelId: "",
+  metaPixelId: "1638281244623196",
+  /* Lead también por API de Conversiones (función de Netlify). El token NO
+     va acá: es la variable META_CAPI_TOKEN en Netlify. Vacío = no se usa. */
+  metaCapiUrl: "/.netlify/functions/meta-capi",
 
   /* --- Registro de leads en Google Sheets --------------------------------
      url:   la URL de la aplicación web de Apps Script (termina en /exec).

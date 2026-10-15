@@ -554,6 +554,7 @@
     // 3. Destino.
     if (cal.ok) {
       APP.pixel("Lead", { content_name: "Diagnóstico Black" }, { eventID: leadId });
+      mandarACapi(leadId, nombre, tel);
       var msg = plantilla((F.whatsapp && F.whatsapp.mensaje) || "", porClave);
       var url = "https://wa.me/" + (CFG.whatsapp || "") + "?text=" + encodeURIComponent(msg);
       pantallaFinal("califica", url, nombre);
@@ -561,6 +562,28 @@
     } else {
       pantallaFinal("noCalifica", CFG.instagram || "https://www.instagram.com/black_arq/", nombre);
     }
+  }
+
+  /** Lead por API de Conversiones. keepalive: sobrevive al salto a WhatsApp. */
+  function mandarACapi(leadId, nombre, tel) {
+    if (!CFG.metaPixelId || !CFG.metaCapiUrl) return;
+    function cookie(n) {
+      var m = document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)"));
+      return m ? decodeURIComponent(m[1]) : "";
+    }
+    var fbc = cookie("_fbc");
+    var fbclid = (APP.getAtribucion() || {}).fbclid;
+    if (!fbc && fbclid) fbc = "fb.1." + Date.now() + "." + fbclid;
+    try {
+      fetch(CFG.metaCapiUrl, {
+        method: "POST", keepalive: true,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event_id: leadId, nombre: nombre, telefono: tel,
+          fbp: cookie("_fbp"), fbc: fbc, url: location.href.split("#")[0],
+        }),
+      }).catch(function () {});
+    } catch (e) {}
   }
 
   /** Redirige ya. Espera como mucho 300 ms a que GA4 confirme el evento. */
