@@ -67,10 +67,15 @@ window.BLACK_FORM = {
     {
       id: "zona",
       columna: "Zona",
-      tipo: "texto",
+      tipo: "unica",
       titulo: "¿Dónde está ubicada la propiedad?",
-      placeholder: "Barrio / localidad",
-      autocomplete: "address-level2",
+      opciones: [
+        { valor: "CABA" },
+        { valor: "Zona Norte" },
+        { valor: "Zona Oeste" },
+        { valor: "Zona Sur" },
+        { valor: "Otra localidad" },
+      ],
     },
 
     /* 3A ----------------------------------------------------------------- */
@@ -190,8 +195,9 @@ window.BLACK_FORM = {
       tipo: "datos",
       titulo: "Tus datos",
       campos: [
-        { id: "nombre", columna: "Nombre", label: "Nombre", tipo: "text", autocomplete: "given-name", requerido: true },
+        { id: "nombre", columna: "Nombre", label: "Nombre y apellido", tipo: "text", autocomplete: "name", requerido: true },
         { id: "whatsapp", columna: "WhatsApp", label: "WhatsApp con código de área", tipo: "tel", autocomplete: "tel", placeholder: "11 6480 3777", requerido: true, validar: "telefonoAR" },
+        { id: "email", columna: "Email", label: "Email", tipo: "email", autocomplete: "email", placeholder: "nombre@mail.com", requerido: true, validar: "email" },
       ],
       nota: "Te escribimos solo por este tema. No hacemos llamados automáticos ni te sumamos a ninguna lista.",
     },
@@ -208,7 +214,9 @@ window.BLACK_FORM = {
       multiple: "Elegí al menos una opción.",
       otro: "Contanos qué buscás en “Otro”.",
       texto: "Completá este dato para seguir.",
-      nombre: "Escribí tu nombre.",
+      nombre: "Escribí tu nombre y apellido.",
+      email: "Escribí tu email.",
+      emailValido: "Revisá el email: tiene que ser del tipo nombre@mail.com.",
       whatsapp: "Escribí tu WhatsApp.",
       telefonoAR: "Revisá el número: tiene que tener código de área. Ej.: 11 6480 3777",
     },

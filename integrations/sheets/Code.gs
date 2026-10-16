@@ -28,7 +28,7 @@ var AUTOMATICAS = [
   'fecha_hora', 'lead_id', 'ref_whatsapp',
   'Situación', 'Zona', 'Presupuesto', 'Plazo', '¿Visitó la propiedad?', 'Qué busca', 'Disposición a invertir',
   'ruta', 'califica', 'motivo_descalificacion',
-  'nombre', 'whatsapp',
+  'nombre', 'whatsapp', 'email',
   'cta_origen', 'ctas_sesion',
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
   'campaign_id', 'adset_id', 'ad_id', 'placement', 'fbclid',

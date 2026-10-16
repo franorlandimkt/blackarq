@@ -1,7 +1,7 @@
 /* ==========================================================================
    API DE CONVERSIONES DE META (lado servidor)
    Recibe el Lead calificado desde form.js y lo reenvía a Meta con el mismo
-   event_id que el Píxel (Meta deduplica). Nombre y teléfono se hashean acá
+   event_id que el Píxel (Meta deduplica). Nombre, email y teléfono se hashean acá
    (SHA-256), nunca viajan en claro a Meta.
    Variables de entorno en Netlify (Site configuration > Environment variables):
      META_CAPI_TOKEN   token de acceso de la API de Conversiones (obligatoria)
@@ -34,7 +34,13 @@ exports.handler = async (event) => {
   if (d.fbc) user.fbc = String(d.fbc);
   const tel = String(d.telefono || "").replace(/\D/g, "");
   if (tel) user.ph = [sha(tel)];
-  if (d.nombre) user.fn = [sha(d.nombre)];
+  // "Nombre y apellido" en un solo campo: Meta los pide por separado
+  // (fn = primera palabra, ln = el resto).
+  const partes = String(d.nombre || "").trim().split(/\s+/).filter(Boolean);
+  if (partes.length) user.fn = [sha(partes[0])];
+  if (partes.length > 1) user.ln = [sha(partes.slice(1).join(" "))];
+  const em = String(d.email || "").trim().toLowerCase();
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) user.em = [sha(em)];
   user.country = [sha("ar")];
   user.external_id = [sha(d.event_id)];
 

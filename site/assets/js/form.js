@@ -414,8 +414,9 @@
       var input = h("input", {
         type: c.tipo || "text", class: "f-input", id: "f-" + c.id, name: c.id,
         autocomplete: c.autocomplete || "off", placeholder: c.placeholder || "",
-        inputmode: c.tipo === "tel" ? "tel" : null, maxlength: "80",
-        enterkeyhint: "next", autocapitalize: c.tipo === "tel" ? null : "words",
+        inputmode: c.tipo === "tel" ? "tel" : c.tipo === "email" ? "email" : null, maxlength: "80",
+        enterkeyhint: "next", autocapitalize: c.tipo === "tel" || c.tipo === "email" ? "off" : "words",
+        spellcheck: c.tipo === "email" ? "false" : null,
         "aria-required": c.requerido ? "true" : null,
       });
       input.value = S.d[c.id] || "";
@@ -456,6 +457,7 @@
         var msg = null;
         if (c.requerido && !v) msg = E[c.id] || E.texto;
         else if (c.validar === "telefonoAR" && v && !telefonoAR(v)) msg = E.telefonoAR;
+        else if (c.validar === "email" && v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) msg = E.emailValido;
         if (msg) {
           input.setAttribute("aria-invalid", "true");
           errorEn(campo, msg);
@@ -554,7 +556,7 @@
     // 3. Destino.
     if (cal.ok) {
       APP.pixel("Lead", { content_name: "Diagnóstico Black" }, { eventID: leadId });
-      mandarACapi(leadId, nombre, tel);
+      mandarACapi(leadId, nombre, tel, (S.d.email || "").trim());
       var msg = plantilla((F.whatsapp && F.whatsapp.mensaje) || "", porClave);
       var url = "https://wa.me/" + (CFG.whatsapp || "") + "?text=" + encodeURIComponent(msg);
       pantallaFinal("califica", url, nombre);
@@ -565,7 +567,7 @@
   }
 
   /** Lead por API de Conversiones. keepalive: sobrevive al salto a WhatsApp. */
-  function mandarACapi(leadId, nombre, tel) {
+  function mandarACapi(leadId, nombre, tel, email) {
     if (!CFG.metaPixelId || !CFG.metaCapiUrl) return;
     function cookie(n) {
       var m = document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)"));
@@ -579,7 +581,7 @@
         method: "POST", keepalive: true,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          event_id: leadId, nombre: nombre, telefono: tel,
+          event_id: leadId, nombre: nombre, telefono: tel, email: email,
           fbp: cookie("_fbp"), fbc: fbc, url: location.href.split("#")[0],
         }),
       }).catch(function () {});
