@@ -45,7 +45,7 @@ gtag('js',new Date());var c={};if(/[?&]ga_debug=1/.test(location.search))c.debug
 <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/antonio/v22/gNMEW3NwSYq_9WD3yHQiFQ.woff2" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@600;700&family=Poppins:ital,wght@0,400;0,500;0,600;1,400&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@600;700&family=Poppins:ital,wght@0,400;0,500;0,600;1,400&display=swap"></noscript>
-<link rel="stylesheet" href="assets/css/site.css?v=20261013">
+<link rel="stylesheet" href="assets/css/site.css?v=20261016">
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://blackarquitectura.com/#business","name":"Black Arquitectura","description":"Estudio de arquitectura, obra y desarrollo inmobiliario en Buenos Aires. Diagnóstico Black: un arquitecto y una asesora inmobiliaria analizan la propiedad antes de que ofertes: precio, reforma y negociación.","url":"https://blackarquitectura.com/","telephone":"+54 9 11 6480-3777","image":"https://blackarquitectura.com/assets/brand/og.png","logo":"https://blackarquitectura.com/assets/brand/logo-white.png","sameAs":["https://www.instagram.com/black_arq/","https://maps.google.com/?cid=7365464068826002467"],"areaServed":[{"@type":"AdministrativeArea","name":"CABA"},{"@type":"AdministrativeArea","name":"Zona Norte"},{"@type":"AdministrativeArea","name":"Zona Oeste"}],"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"41"}}
@@ -463,28 +463,7 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
       <p class="texto intro" data-reveal>Más de 97 familias ya llegaron a la escritura sabiendo exactamente qué compraban y por qué ese precio. Dos de esos casos:</p>
     </div>
 
-    <article class="caso" data-reveal>
-      <div class="caso-vis esquinas esquinas-ba">
-        <!-- Imágenes del caso Villa Devoto del sitio anterior. Reemplazar
-             caso-antes/despues-* por las fotos reales en alta. -->
-        <div class="ba" data-ba data-caso="villa-devoto" style="--pos:50%">
-          <picture>
-            <source type="image/avif" srcset="assets/img/caso-despues-640.avif 640w, assets/img/caso-despues-1000.avif 1000w" sizes="(min-width: 960px) 560px, 92vw">
-            <img src="assets/img/caso-despues-1000.webp" srcset="assets/img/caso-despues-640.webp 640w, assets/img/caso-despues-1000.webp 1000w" sizes="(min-width: 960px) 560px, 92vw" width="1000" height="1111" alt="Casa de Lorena en Villa Devoto después de la reforma" loading="lazy" decoding="async">
-          </picture>
-          <div class="ba-top">
-            <picture>
-              <source type="image/avif" srcset="assets/img/caso-antes-640.avif 640w, assets/img/caso-antes-1000.avif 1000w" sizes="(min-width: 960px) 560px, 92vw">
-              <img src="assets/img/caso-antes-1000.webp" srcset="assets/img/caso-antes-640.webp 640w, assets/img/caso-antes-1000.webp 1000w" sizes="(min-width: 960px) 560px, 92vw" width="1000" height="1111" alt="Casa de Lorena en Villa Devoto antes de la reforma" loading="lazy" decoding="async">
-            </picture>
-          </div>
-          <span class="ba-tag a" aria-hidden="true">Antes</span><span class="ba-tag b" aria-hidden="true">Después</span>
-          <div class="ba-div" aria-hidden="true"></div>
-          <span class="ba-knob" role="slider" tabindex="0" aria-label="Comparar antes y después de la casa de Villa Devoto" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% antes">
-            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6-5 6 5 6M15 6l5 6-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-        </div>
-      </div>
+    <article class="caso caso-solo" data-reveal>
       <div class="caso-txt texto">
         <h3 class="caso-t"><span class="hl-v">USD 40.000</span> menos en una casa de 180 m² en Devoto</h3>
         <p>Lorena había encontrado en Devoto una casa con lo que buscaba: algo con espíritu de barrio privado, pero en Capital. Estaba convencida de que para eso tenía que invertir cerca de USD 460.000.</p>
@@ -496,16 +475,16 @@ setTimeout(function(){q('.hl-u,.hl-m').forEach(function(e){e.classList.add('is-i
 
     <article class="caso caso-inv" data-reveal>
       <div class="caso-vis esquinas esquinas-ba">
-        <!-- Fotos reales de Amenábar en alta, recortadas al centro a 9:10. -->
-        <div class="ba" data-ba data-caso="amenabar" style="--pos:50%">
+        <!-- Fotos reales de Amenábar en alta, 4:3 recortadas al centro. -->
+        <div class="ba ba-43" data-ba data-caso="amenabar" style="--pos:50%">
           <picture>
             <source type="image/avif" srcset="assets/img/caso2-despues-640.avif 640w, assets/img/caso2-despues-1000.avif 1000w" sizes="(min-width: 960px) 560px, 92vw">
-            <img src="assets/img/caso2-despues-1000.webp" srcset="assets/img/caso2-despues-640.webp 640w, assets/img/caso2-despues-1000.webp 1000w" sizes="(min-width: 960px) 560px, 92vw" width="1000" height="1111" alt="Cocina de Amenábar 914 después de la reforma" loading="lazy" decoding="async">
+            <img src="assets/img/caso2-despues-1000.webp" srcset="assets/img/caso2-despues-640.webp 640w, assets/img/caso2-despues-1000.webp 1000w" sizes="(min-width: 960px) 560px, 92vw" width="1000" height="750" alt="Cocina de Amenábar 914 después de la reforma" loading="lazy" decoding="async">
           </picture>
           <div class="ba-top">
             <picture>
               <source type="image/avif" srcset="assets/img/caso2-antes-640.avif 640w, assets/img/caso2-antes-1000.avif 1000w" sizes="(min-width: 960px) 560px, 92vw">
-              <img src="assets/img/caso2-antes-1000.webp" srcset="assets/img/caso2-antes-640.webp 640w, assets/img/caso2-antes-1000.webp 1000w" sizes="(min-width: 960px) 560px, 92vw" width="1000" height="1111" alt="Amenábar 914 antes de la reforma" loading="lazy" decoding="async">
+              <img src="assets/img/caso2-antes-1000.webp" srcset="assets/img/caso2-antes-640.webp 640w, assets/img/caso2-antes-1000.webp 1000w" sizes="(min-width: 960px) 560px, 92vw" width="1000" height="750" alt="Amenábar 914 antes de la reforma" loading="lazy" decoding="async">
             </picture>
           </div>
           <span class="ba-tag a" aria-hidden="true">Antes</span><span class="ba-tag b" aria-hidden="true">Después</span>
