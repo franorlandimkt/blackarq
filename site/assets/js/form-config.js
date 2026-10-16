@@ -228,7 +228,7 @@ window.BLACK_FORM = {
      lead_id completo, que figura en la columna ref_whatsapp de la hoja). */
   whatsapp: {
     mensaje:
-      "Hola, soy {nombre}. Completé el formulario del Diagnóstico Black.\nSituación: {situacion}.\nZona: {zona}.\nPresupuesto: {presupuesto}.\nPlazo: {plazo}.\n(Ref. {lead_id})",
+      "Hola, soy {nombre}. Completé el formulario del Diagnóstico Black.\nSituación: {situacion}.\nZona: {zona}.\nPresupuesto: {presupuesto}.\nPlazo: {plazo}.\n¿Visitó la propiedad?: {visito}.\nQué busca del Diagnóstico: {objetivos}.\nDisposición a invertir: {inversion}.\nWhatsApp: {whatsapp}.\nEmail: {email}.\n(Ref. {lead_id})",
   },
 
   final: {
