@@ -24,6 +24,12 @@ window.BLACK = {
      va acá: es la variable META_CAPI_TOKEN en Netlify. Vacío = no se usa. */
   metaCapiUrl: "/.netlify/functions/meta-capi",
 
+  /* --- Go High Level -----------------------------------------------------
+     Cada envío del formulario (califique o no) se manda a un Workflow de
+     GHL. La URL del webhook NO va acá: es la variable GHL_WEBHOOK_URL en
+     Netlify. Vacío = no se usa.                                          */
+  ghlUrl: "/.netlify/functions/ghl-lead",
+
   /* --- Registro de leads en Google Sheets --------------------------------
      url:   la URL de la aplicación web de Apps Script (termina en /exec).
             Vacía = no se envía nada (útil para probar en local).

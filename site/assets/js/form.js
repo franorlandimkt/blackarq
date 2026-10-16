@@ -541,6 +541,17 @@
       mandarASheets(sh.url, item);
     }
 
+    // 1b. Go High Level (función de Netlify). Fuego y olvido, igual que Sheets.
+    if (CFG.ghlUrl && window.fetch) {
+      try {
+        fetch(CFG.ghlUrl, {
+          method: "POST", keepalive: true,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ hp: honeypot || "", fields: fields }),
+        }).catch(function () {});
+      } catch (e) {}
+    }
+
     // 2. Eventos.
     APP.track("form_submit", {
       qualified: cal.ok,
