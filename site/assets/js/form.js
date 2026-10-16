@@ -5,9 +5,9 @@
    archivo.
 
    Flujo al enviar (califique o no):
-     0. Lead completo a GoHighLevel (subcuenta Black Arquitectura) por la
-        función de Netlify ghl-lead: contacto + todas las respuestas en
-        campos + nota + oportunidad. Misma cola de reintento que Sheets.
+     0. Lead completo a GoHighLevel por la función de Netlify ghl-lead, que
+        lo reenvía al Inbound Webhook del Workflow "Black – Nuevo lead".
+        Cola de reintento en localStorage si la red falla.
      1. Lead completo a Google Sheets (si sheets.url tiene valor): fetch text/plain + keepalive (sin
         preflight de CORS). No bloquea ni demora nada. Antes de mandarlo se
         guarda en una cola en localStorage; si el envío falla, se reintenta
@@ -590,6 +590,8 @@
     // Para que Meta y el CRM usen los mismos identificadores de navegador.
     fields.fbp = cookieMeta("_fbp");
     fields.fbc = cookieMeta("_fbc") || (attr.fbclid ? "fb.1." + Date.now() + "." + attr.fbclid : "");
+    // Mismo external_id que Píxel y CAPI: GHL lo reusa en Schedule/ShowUp/Purchase.
+    fields.external_id = APP.visitorId();
 
     // 0. CRM (GoHighLevel). Fuego y olvido, con cola si la red falla.
     if (CFG.crmUrl) {

@@ -22,29 +22,18 @@ Para probar en local: `cd site && python3 -m http.server 8080` y abrir http://lo
 
 ---
 
-## 0. CRM: GoHighLevel (subcuenta Black Arquitectura)
+## 0. CRM: Go High Level (subcuenta Black Arquitectura)
 
-Cada envío del formulario (califique o no) va a `netlify/functions/ghl-lead.js`, que en GHL:
+Cada envío del formulario (califique o no) va a `netlify/functions/ghl-lead.js`, que lo reenvía al disparador **Inbound Webhook** del Workflow **"Black – Nuevo lead"**. Variable en Netlify: `GHL_WEBHOOK_URL` (la URL del disparador). Sin ella, la función responde 503 y el navegador guarda el lead en la cola para reintentar.
 
-1. Crea o actualiza el **contacto** (nombre, apellido, email, WhatsApp, origen "Landing Diagnóstico Black · campaña").
-2. Escribe **todas las respuestas** y la atribución en **campos personalizados** del contacto (Situación, Zona, Presupuesto, Plazo, ¿Visitó la propiedad?, Qué busca, Disposición a invertir, Ruta, Califica, Motivo de descalificación, CTA de origen, campaña/conjunto/anuncio y sus IDs, primer toque, dispositivo, fbclid, fbp/fbc, Lead ID, Ref. WhatsApp). Los campos que no existen **se crean solos** la primera vez.
-3. Etiquetas: `lead-web`, `diagnostico-black`, `califica` / `no-califica`, `ruta-compra` / `ruta-reforma`.
-4. **Nota** con el resumen completo (si la misma persona vuelve a completar, queda el historial).
-5. Si califica, **oportunidad** en el pipeline (primera etapa). La venta se registra en GHL marcándola Ganada con su valor, o Perdida.
+Claves que llegan al webhook (planas, sin tildes, para mapear en el Workflow):
 
-El `Ref. BLK-XXXXXXXX` del mensaje de WhatsApp está en el campo "Ref. WhatsApp": así se cruza el chat con el contacto.
+- **Contacto:** `first_name`, `last_name`, `full_name`, `phone` (+54…), `email`, `country`, `source`, `tags` (`diagnostico-black` + `califica` / `no-califica`).
+- **Respuestas:** `situacion`, `zona`, `presupuesto`, `plazo`, `visito_propiedad`, `que_busca`, `disposicion_invertir`. Una pregunta nueva llega con su `columna` en snake_case.
+- **Lead:** `lead_id`, `ref_whatsapp` (la `Ref. BLK-XXXX` del WhatsApp), `ruta`, `califica` ("Sí"/"No"), `motivo_descalificacion`.
+- **Atribución:** `cta_origen`, `ctas_sesion`, `utm_*`, `campaign_id`, `adset_id`, `ad_id`, `placement`, `fbclid`, `fbp`, `fbc`, `external_id` (el mismo que usan Píxel y CAPI), `ft_*` (primer toque), `dispositivo`, `url`, `referrer`.
 
-**Variables en Netlify** (Site configuration > Environment variables) y volver a desplegar:
-
-| Variable | Qué es |
-|---|---|
-| `GHL_TOKEN` | Token de una **Integración Privada** de la subcuenta Black Arquitectura (Configuración > Integraciones privadas). Permisos: contactos (lectura/escritura), campos personalizados de la ubicación (lectura/escritura), oportunidades (lectura/escritura). |
-| `GHL_LOCATION_ID` | ID de la subcuenta (Configuración > Perfil del negocio, o en la URL: `/location/XXXX/`). |
-| `GHL_PIPELINE_ID`, `GHL_STAGE_ID` | Opcionales. Sin ellas usa el pipeline cuyo nombre tenga "diagn", "black" o "lead" (si no, el primero) y su primera etapa. |
-
-Probar la conexión sin crear nada: abrir `https://blackarq.netlify.app/.netlify/functions/ghl-lead?check=1` → tiene que decir `"ok":true` y el nombre del pipeline.
-
-En el navegador el envío usa la misma cola que Sheets (`localStorage`): si la red falla se reintenta en la próxima visita, y la función no duplica nota ni oportunidad si el mismo `lead_id` vuelve a entrar.
+`fbc`, `fbp`, `external_id`, email y teléfono quedan en el contacto para que los Workflows de etapa (Schedule, ShowUp, Purchase) los manden a Meta.
 
 ## 1. Parámetros de URL en Meta
 
