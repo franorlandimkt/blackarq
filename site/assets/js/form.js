@@ -5,7 +5,10 @@
    archivo.
 
    Flujo al enviar (califique o no):
-     1. Lead completo a Google Sheets: fetch text/plain + keepalive (sin
+     0. Lead completo a GoHighLevel (subcuenta Black Arquitectura) por la
+        función de Netlify ghl-lead: contacto + todas las respuestas en
+        campos + nota + oportunidad. Misma cola de reintento que Sheets.
+     1. Lead completo a Google Sheets (si sheets.url tiene valor): fetch text/plain + keepalive (sin
         preflight de CORS). No bloquea ni demora nada. Antes de mandarlo se
         guarda en una cola en localStorage; si el envío falla, se reintenta
         en la próxima carga de la página. El script descarta duplicados por
@@ -20,7 +23,7 @@
 
   var F = window.BLACK_FORM;
   var CFG = window.BLACK || {};
-  var APP = window.BLACK_APP || { track: function () {}, pixel: function () {}, getAtribucion: function () { return {}; }, getCta: function () { return "directo"; }, getCtasSesion: function () { return ""; } };
+  var APP = window.BLACK_APP || { track: function () {}, pixel: function () {}, pixelCustom: function () {}, pixelUsuario: function () {}, visitorId: function () { return ""; }, getAtribucion: function () { return {}; }, getCta: function () { return "directo"; }, getCtasSesion: function () { return ""; } };
   var modal = document.getElementById("modal");
   if (!F || !modal) return;
 
@@ -41,6 +44,8 @@
   // d: datos personales. i: índice del paso actual dentro de los visibles.
   var S = cargar() || { r: {}, otros: {}, d: {}, i: 0 };
   var abierto = false, enviado = false, inicioTrackeado = false, ultimaRuta = null;
+  // Pasos ya informados a Meta en este formulario (no se repiten al volver atrás).
+  var pasosMeta = {};
   var abridor = null;
 
   function cargar() {
@@ -166,6 +171,32 @@
     guardarCola(leerCola().filter(function (x) { return x.id !== id; }));
   }
 
+  /* Cola del CRM (GoHighLevel). A diferencia de Sheets, la función de Netlify
+     responde: el envío solo sale de la cola con una respuesta OK. */
+  var COLA_CRM = "black:crm_cola";
+  function leerColaCrm() {
+    try { return JSON.parse(localStorage.getItem(COLA_CRM) || "[]") || []; } catch (e) { return []; }
+  }
+  function guardarColaCrm(c) {
+    try { localStorage.setItem(COLA_CRM, JSON.stringify(c.slice(-20))); } catch (e) { /* sin storage */ }
+  }
+  function mandarACrm(url, item) {
+    if (!url || !window.fetch) return;
+    try {
+      fetch(url, {
+        method: "POST",
+        keepalive: true,
+        headers: { "Content-Type": "application/json" },
+        body: item.body,
+      }).then(function (r) {
+        // 4xx = el envío está mal y reintentar no lo arregla: se descarta.
+        if (r.ok || (r.status >= 400 && r.status < 500)) {
+          guardarColaCrm(leerColaCrm().filter(function (x) { return x.id !== item.id; }));
+        }
+      }, function () { /* queda en la cola */ });
+    } catch (e) { /* queda en la cola */ }
+  }
+
   /** Manda un payload. Si la red falla, queda en la cola para la próxima carga. */
   function mandarASheets(url, item) {
     if (!url || !window.fetch) return;
@@ -181,6 +212,7 @@
   }
 
   function reintentarCola() {
+    if (CFG.crmUrl) leerColaCrm().forEach(function (item) { mandarACrm(CFG.crmUrl, item); });
     var url = (CFG.sheets || {}).url;
     if (!url) return;
     leerCola().forEach(function (item) { mandarASheets(url, item); });
@@ -281,6 +313,30 @@
     }
 
     APP.track("form_step", { step: S.i + 1, question_id: p.id });
+
+    // Meta: un evento por paso alcanzado (paso N = completó los N-1 anteriores).
+    // Sirve para ver en qué pregunta se cae la gente y para armar
+    // conversiones personalizadas (ej. paso >= 5).
+    if (!pasosMeta[p.id]) {
+      pasosMeta[p.id] = true;
+      var datosPaso = {
+        paso: S.i + 1,
+        total_pasos: lista.length,
+        pregunta: p.id,
+        ruta: ruta() || "",
+        es_datos: p.tipo === "datos" ? "si" : "no",
+      };
+      var idPaso = sesionMeta() + "-p" + (S.i + 1);
+      APP.pixelCustom("FormularioPaso", datosPaso, { eventID: idPaso });
+      mandarACapi("FormularioPaso", idPaso, datosPaso);
+    }
+  }
+
+  /** Id de esta apertura del formulario, para los eventID de Meta. */
+  var sesionId = null;
+  function sesionMeta() {
+    if (!sesionId) sesionId = "f-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    return sesionId;
   }
 
   function renderUnica(p, paso) {
@@ -531,6 +587,19 @@
     });
     if (!fields.url) fields.url = location.href.split("#")[0];
 
+    // Para que Meta y el CRM usen los mismos identificadores de navegador.
+    fields.fbp = cookieMeta("_fbp");
+    fields.fbc = cookieMeta("_fbc") || (attr.fbclid ? "fb.1." + Date.now() + "." + attr.fbclid : "");
+
+    // 0. CRM (GoHighLevel). Fuego y olvido, con cola si la red falla.
+    if (CFG.crmUrl) {
+      var itemCrm = { id: leadId, body: JSON.stringify({ token: (CFG.sheets || {}).token || "", hp: honeypot || "", fields: fields }) };
+      var colaCrm = leerColaCrm();
+      colaCrm.push(itemCrm);
+      guardarColaCrm(colaCrm);
+      mandarACrm(CFG.crmUrl, itemCrm);
+    }
+
     // 1. Sheets. Fuego y olvido: nunca demora el paso a WhatsApp.
     var sh = CFG.sheets || {};
     if (sh.url) {
@@ -554,26 +623,45 @@
     try { sessionStorage.removeItem(DRAFT); } catch (e) {}
 
     // 3. Destino.
+    var email = (S.d.email || "").trim();
+    var partes = nombre.split(/\s+/).filter(Boolean);
+    APP.pixelUsuario({ em: email, ph: tel, fn: partes[0] || "", ln: partes.slice(1).join(" ") });
+    var usuario = { nombre: nombre, telefono: tel, email: email, external_id: APP.visitorId() };
+    var datosLead = {
+      content_name: "Diagnóstico Black",
+      ruta: rt || "",
+      zona: porClave.zona || "",
+      presupuesto: porClave.presupuesto || "",
+      plazo: porClave.plazo || "",
+      cta_origen: fields.cta_origen || "",
+    };
     if (cal.ok) {
-      APP.pixel("Lead", { content_name: "Diagnóstico Black" }, { eventID: leadId });
-      mandarACapi(leadId, nombre, tel, (S.d.email || "").trim());
+      APP.pixel("Lead", datosLead, { eventID: leadId });
+      mandarACapi("Lead", leadId, datosLead, usuario);
       var msg = plantilla((F.whatsapp && F.whatsapp.mensaje) || "", porClave);
       var url = "https://wa.me/" + (CFG.whatsapp || "") + "?text=" + encodeURIComponent(msg);
       pantallaFinal("califica", url, nombre);
       irAWhatsApp(url);
     } else {
+      datosLead.motivo = cal.motivo || "";
+      APP.pixelCustom("LeadNoCalifica", datosLead, { eventID: leadId });
+      mandarACapi("LeadNoCalifica", leadId, datosLead, usuario);
       pantallaFinal("noCalifica", CFG.instagram || "https://www.instagram.com/black_arq/", nombre);
     }
   }
 
-  /** Lead por API de Conversiones. keepalive: sobrevive al salto a WhatsApp. */
-  function mandarACapi(leadId, nombre, tel, email) {
+  function cookieMeta(n) {
+    var m = document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)"));
+    return m ? decodeURIComponent(m[1]) : "";
+  }
+
+  /** Evento por API de Conversiones, con el mismo eventID que el Píxel
+      (Meta deduplica). keepalive: sobrevive al salto a WhatsApp.
+      usuario (opcional): { nombre, telefono, email, external_id }. */
+  function mandarACapi(evento, eventId, customData, usuario) {
     if (!CFG.metaPixelId || !CFG.metaCapiUrl) return;
-    function cookie(n) {
-      var m = document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)"));
-      return m ? decodeURIComponent(m[1]) : "";
-    }
-    var fbc = cookie("_fbc");
+    var u = usuario || {};
+    var fbc = cookieMeta("_fbc");
     var fbclid = (APP.getAtribucion() || {}).fbclid;
     if (!fbc && fbclid) fbc = "fb.1." + Date.now() + "." + fbclid;
     try {
@@ -581,8 +669,10 @@
         method: "POST", keepalive: true,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          event_id: leadId, nombre: nombre, telefono: tel, email: email,
-          fbp: cookie("_fbp"), fbc: fbc, url: location.href.split("#")[0],
+          event_name: evento, event_id: eventId, custom_data: customData || {},
+          nombre: u.nombre || "", telefono: u.telefono || "", email: u.email || "",
+          external_id: u.external_id || APP.visitorId(),
+          fbp: cookieMeta("_fbp"), fbc: fbc, url: location.href.split("#")[0],
         }),
       }).catch(function () {});
     } catch (e) {}
@@ -628,6 +718,9 @@
       // Ya envió en esta visita: arranca de cero.
       enviado = false;
       S = { r: {}, otros: {}, d: {}, i: 0 };
+      pasosMeta = {};
+      sesionId = null;
+      inicioTrackeado = false;
     }
     modal.hidden = false;
     document.documentElement.classList.add("modal-abierto");
@@ -640,7 +733,10 @@
     if (!inicioTrackeado) {
       inicioTrackeado = true;
       APP.track("form_start", { cta_id: desde || APP.getCta() });
-      APP.pixel("InitiateCheckout", { content_name: "Diagnóstico Black" });
+      var datosIni = { content_name: "Diagnóstico Black", cta_origen: desde || APP.getCta() };
+      var idIni = sesionMeta() + "-ic";
+      APP.pixel("InitiateCheckout", datosIni, { eventID: idIni });
+      mandarACapi("InitiateCheckout", idIni, datosIni);
     }
     ultimaRuta = ruta();
     pintar(0);

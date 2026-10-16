@@ -36,7 +36,9 @@
     t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
     (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
     /* eslint-enable */
-    window.fbq("init", CFG.metaPixelId);
+    // external_id: id anónimo y estable del visitante (90 días), el mismo que
+    // va por la API de Conversiones. Mejora la coincidencia de eventos.
+    window.fbq("init", CFG.metaPixelId, { external_id: visitorId() });
     window.fbq("track", "PageView");
   }
   /** opts: { eventID } para deduplicar con la API de Conversiones. */
@@ -44,6 +46,33 @@
     if (!window.fbq) return;
     if (opts) window.fbq("track", evento, params || {}, opts);
     else window.fbq("track", evento, params || {});
+  }
+  /** Evento personalizado (FormularioPaso, LeadNoCalifica…). */
+  function pixelCustom(evento, params, opts) {
+    if (!window.fbq) return;
+    window.fbq("trackCustom", evento, params || {}, opts || {});
+  }
+  /** Coincidencia avanzada: con los datos del formulario, antes del Lead.
+      El Píxel los hashea en el navegador; nunca viajan en claro a Meta. */
+  function pixelUsuario(u) {
+    if (!window.fbq || !CFG.metaPixelId) return;
+    var datos = { external_id: visitorId() };
+    if (u.em) datos.em = String(u.em).trim().toLowerCase();
+    if (u.ph) datos.ph = String(u.ph).replace(/\D/g, "");
+    if (u.fn) datos.fn = String(u.fn).trim().toLowerCase();
+    if (u.ln) datos.ln = String(u.ln).trim().toLowerCase();
+    datos.country = "ar";
+    window.fbq("init", CFG.metaPixelId, datos);
+  }
+
+  /** Id anónimo del visitante, 90 días en localStorage. */
+  var VID_KEY = "black:vid";
+  function visitorId() {
+    var v = storageGet("localStorage", VID_KEY);
+    if (v && v.id && v.exp > Date.now()) return v.id;
+    var id = "v-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+    storageSet("localStorage", VID_KEY, { id: id, exp: Date.now() + 90 * 24 * 60 * 60 * 1000 });
+    return id;
   }
 
   /** Profundidad de scroll: 25, 50, 75 y 90 %. Una vez cada uno. */
@@ -147,6 +176,9 @@
   window.BLACK_APP = {
     track: track,
     pixel: pixel,
+    pixelCustom: pixelCustom,
+    pixelUsuario: pixelUsuario,
+    visitorId: visitorId,
     getAtribucion: getAtribucion,
     getCta: getCta,
     getCtasSesion: getCtasSesion,

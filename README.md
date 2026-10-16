@@ -22,6 +22,30 @@ Para probar en local: `cd site && python3 -m http.server 8080` y abrir http://lo
 
 ---
 
+## 0. CRM: GoHighLevel (subcuenta Black Arquitectura)
+
+Cada envío del formulario (califique o no) va a `netlify/functions/ghl-lead.js`, que en GHL:
+
+1. Crea o actualiza el **contacto** (nombre, apellido, email, WhatsApp, origen "Landing Diagnóstico Black · campaña").
+2. Escribe **todas las respuestas** y la atribución en **campos personalizados** del contacto (Situación, Zona, Presupuesto, Plazo, ¿Visitó la propiedad?, Qué busca, Disposición a invertir, Ruta, Califica, Motivo de descalificación, CTA de origen, campaña/conjunto/anuncio y sus IDs, primer toque, dispositivo, fbclid, fbp/fbc, Lead ID, Ref. WhatsApp). Los campos que no existen **se crean solos** la primera vez.
+3. Etiquetas: `lead-web`, `diagnostico-black`, `califica` / `no-califica`, `ruta-compra` / `ruta-reforma`.
+4. **Nota** con el resumen completo (si la misma persona vuelve a completar, queda el historial).
+5. Si califica, **oportunidad** en el pipeline (primera etapa). La venta se registra en GHL marcándola Ganada con su valor, o Perdida.
+
+El `Ref. BLK-XXXXXXXX` del mensaje de WhatsApp está en el campo "Ref. WhatsApp": así se cruza el chat con el contacto.
+
+**Variables en Netlify** (Site configuration > Environment variables) y volver a desplegar:
+
+| Variable | Qué es |
+|---|---|
+| `GHL_TOKEN` | Token de una **Integración Privada** de la subcuenta Black Arquitectura (Configuración > Integraciones privadas). Permisos: contactos (lectura/escritura), campos personalizados de la ubicación (lectura/escritura), oportunidades (lectura/escritura). |
+| `GHL_LOCATION_ID` | ID de la subcuenta (Configuración > Perfil del negocio, o en la URL: `/location/XXXX/`). |
+| `GHL_PIPELINE_ID`, `GHL_STAGE_ID` | Opcionales. Sin ellas usa el pipeline cuyo nombre tenga "diagn", "black" o "lead" (si no, el primero) y su primera etapa. |
+
+Probar la conexión sin crear nada: abrir `https://blackarq.netlify.app/.netlify/functions/ghl-lead?check=1` → tiene que decir `"ok":true` y el nombre del pipeline.
+
+En el navegador el envío usa la misma cola que Sheets (`localStorage`): si la red falla se reintenta en la próxima visita, y la función no duplica nota ni oportunidad si el mismo `lead_id` vuelve a entrar.
+
 ## 1. Parámetros de URL en Meta
 
 En cada anuncio, en **Parámetros de URL**, pegar exactamente:
@@ -80,6 +104,20 @@ Solo fórmulas, sin carga manual: totales; leads, vendidos, tasa de venta y mont
 ## 3. Píxel de Meta
 
 `metaPixelId` en `config.js`. Vacío = no se carga. Con ID: `PageView`, `InitiateCheckout` al abrir el formulario y `Lead` solo en envíos que califican, con `eventID = lead_id` (Meta deduplica con la API de Conversiones).
+
+**Eventos de Meta (Píxel + API de Conversiones, mismo `eventID` en los dos, Meta deduplica):**
+
+| Evento | Cuándo | Parámetros |
+|---|---|---|
+| `PageView` | carga | — |
+| `InitiateCheckout` | abre el formulario | `cta_origen` |
+| `FormularioPaso` (personalizado) | cada paso que alcanza, una vez por paso | `paso`, `total_pasos`, `pregunta`, `ruta`, `es_datos` |
+| `Lead` | envío que **califica** | `ruta`, `zona`, `presupuesto`, `plazo`, `cta_origen` |
+| `LeadNoCalifica` (personalizado) | envío que **no** califica | lo mismo + `motivo` |
+
+Coincidencia de eventos: `external_id` anónimo y estable del visitante en todos los eventos, `_fbp`/`_fbc` (o `fbclid`), IP y user agent por servidor; en el envío, email, teléfono, nombre y apellido (hasheados) por Píxel con coincidencia avanzada y por CAPI.
+
+Para ver dónde se cae la gente o optimizar a mitad de embudo: en el Administrador de eventos, **Conversiones personalizadas** sobre `FormularioPaso` con la regla `paso` ≥ N (ej. ≥ 5 = completó la mitad).
 
 Píxel: `1638281244623196`. **API de Conversiones:** el `Lead` calificado también sale del servidor por `netlify/functions/meta-capi.js` (mismo `event_id`, nombre y teléfono hasheados SHA-256, IP, user agent, `_fbp`/`_fbc`). El token **no está en el repo**: cargarlo en Netlify > Site configuration > Environment variables como `META_CAPI_TOKEN` y volver a desplegar. Opcional: `META_TEST_CODE` con el código de "Probar eventos" del Administrador de eventos para verificar, y borrarlo después.
 

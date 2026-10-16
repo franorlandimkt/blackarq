@@ -1,7 +1,9 @@
 /* ==========================================================================
    API DE CONVERSIONES DE META (lado servidor)
-   Recibe el Lead calificado desde form.js y lo reenvía a Meta con el mismo
-   event_id que el Píxel (Meta deduplica). Nombre, email y teléfono se hashean acá
+   Recibe eventos desde form.js y los reenvía a Meta con el mismo event_id
+   que el Píxel (Meta deduplica): InitiateCheckout (abre el formulario),
+   FormularioPaso (avanza un paso), Lead (envío calificado) y
+   LeadNoCalifica (envío que no califica). Nombre, email y teléfono se hashean acá
    (SHA-256), nunca viajan en claro a Meta.
    Variables de entorno en Netlify (Site configuration > Environment variables):
      META_CAPI_TOKEN   token de acceso de la API de Conversiones (obligatoria)
@@ -14,6 +16,8 @@ const crypto = require("crypto");
 const PIXEL_ID = process.env.META_PIXEL_ID || "1638281244623196";
 const API = "https://graph.facebook.com/v21.0/";
 
+const EVENTOS = ["Lead", "InitiateCheckout", "FormularioPaso", "LeadNoCalifica"];
+
 const sha = (v) => crypto.createHash("sha256").update(String(v).trim().toLowerCase()).digest("hex");
 
 exports.handler = async (event) => {
@@ -24,6 +28,15 @@ exports.handler = async (event) => {
   let d;
   try { d = JSON.parse(event.body || "{}"); } catch (e) { return { statusCode: 400, body: "json" }; }
   if (!d.event_id || typeof d.event_id !== "string") return { statusCode: 400, body: "event_id" };
+  const nombreEvento = d.event_name || "Lead";
+  if (EVENTOS.indexOf(nombreEvento) < 0) return { statusCode: 400, body: "event_name" };
+  const custom = { content_name: "Diagnóstico Black" };
+  if (d.custom_data && typeof d.custom_data === "object") {
+    Object.keys(d.custom_data).slice(0, 15).forEach((k) => {
+      const v = d.custom_data[k];
+      if (typeof v === "string" || typeof v === "number" || typeof v === "boolean") custom[k] = v;
+    });
+  }
 
   const h = event.headers || {};
   const ip = (h["x-nf-client-connection-ip"] || h["x-forwarded-for"] || "").split(",")[0].trim();
@@ -42,17 +55,19 @@ exports.handler = async (event) => {
   const em = String(d.email || "").trim().toLowerCase();
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) user.em = [sha(em)];
   user.country = [sha("ar")];
-  user.external_id = [sha(d.event_id)];
+  // external_id estable por visitante (lead_id una vez enviado; antes, el
+  // id de sesión del formulario) para unir los pasos con el Lead.
+  user.external_id = [sha(d.external_id || d.event_id)];
 
   const payload = {
     data: [{
-      event_name: "Lead",
+      event_name: nombreEvento,
       event_time: Math.floor(Date.now() / 1000),
       event_id: d.event_id,
       action_source: "website",
       event_source_url: String(d.url || ""),
       user_data: user,
-      custom_data: { content_name: "Diagnóstico Black" },
+      custom_data: custom,
     }],
   };
   if (process.env.META_TEST_CODE) payload.test_event_code = process.env.META_TEST_CODE;
