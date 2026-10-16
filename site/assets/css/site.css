@@ -1695,9 +1695,9 @@ h2 + .intro {
   -webkit-user-select: none;
   cursor: ew-resize;
 }
-/* Fotos apaisadas (Amenábar): 4:3, sin zoom de más. */
-.ba.ba-43 {
-  aspect-ratio: 4 / 3;
+/* Fotos apaisadas (Amenábar): 16:9, la foto entera sin recorte. */
+.ba.ba-169 {
+  aspect-ratio: 16 / 9;
 }
 .ba img {
   position: absolute;
