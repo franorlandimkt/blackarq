@@ -24,11 +24,11 @@ window.BLACK = {
      va acá: es la variable META_CAPI_TOKEN en Netlify. Vacío = no se usa. */
   metaCapiUrl: "/.netlify/functions/meta-capi",
 
-  /* --- CRM: GoHighLevel (subcuenta Black Arquitectura) -------------------
-     Cada envío (califique o no) va a la función de Netlify ghl-lead, que crea
-     el contacto con todas las respuestas, la atribución, una nota y la
-     oportunidad. El token de GHL NO va acá: son las variables GHL_TOKEN y
-     GHL_LOCATION_ID en Netlify. Vacío = no se envía.                      */
+  /* --- CRM: Go High Level -----------------------------------------------
+     Cada envío (califique o no) va a la función de Netlify ghl-lead, que lo
+     reenvía al Inbound Webhook del Workflow "Black – Nuevo lead". La URL del
+     webhook NO va acá: es la variable GHL_WEBHOOK_URL en Netlify.
+     Vacío = no se envía.                                                  */
   crmUrl: "/.netlify/functions/ghl-lead",
 
   /* --- Registro de leads en Google Sheets --------------------------------
