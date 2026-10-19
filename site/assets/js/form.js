@@ -317,16 +317,26 @@
     // Meta: un evento por paso alcanzado (paso N = completó los N-1 anteriores).
     // Sirve para ver en qué pregunta se cae la gente y para armar
     // conversiones personalizadas (ej. paso >= 5).
-    if (!pasosMeta[p.id]) {
-      pasosMeta[p.id] = true;
+    // step_name / step_index / form_branch: identificadores del paso, nunca
+    // respuestas ni datos personales. step_name sale de F.stepNames.
+    var stepName = (F.stepNames && F.stepNames[p.id]) || p.id;
+    if (!pasosMeta[stepName]) {
+      pasosMeta[stepName] = true;
+      var rtPaso = ruta();
       var datosPaso = {
+        step_name: stepName,
+        step_index: S.i + 1,
         paso: S.i + 1,
         total_pasos: lista.length,
         pregunta: p.id,
-        ruta: ruta() || "",
+        ruta: rtPaso || "",
         es_datos: p.tipo === "datos" ? "si" : "no",
       };
-      var idPaso = sesionMeta() + "-p" + (S.i + 1);
+      // La rama se conoce recién después de la primera pregunta.
+      if (rtPaso && F.ramas && F.ramas[rtPaso]) datosPaso.form_branch = F.ramas[rtPaso];
+      // Mismo event_id en Píxel y servidor; incluye el step_name para que dos
+      // preguntas distintas en la misma posición no se pisen al deduplicar.
+      var idPaso = sesionMeta() + "-p-" + stepName;
       APP.pixelCustom("FormularioPaso", datosPaso, { eventID: idPaso });
       mandarACapi("FormularioPaso", idPaso, datosPaso);
     }

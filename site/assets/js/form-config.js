@@ -45,6 +45,24 @@ window.BLACK_FORM = {
   // Nombre de cada ruta tal como se escribe en la columna "Ruta".
   rutas: { compra: "Compra", reforma: "Reforma" },
 
+  /* Meta — evento FormularioPaso. step_name fijo por PREGUNTA (no por
+     posición): no cambia si se reordena el formulario. Las conversiones
+     personalizadas de Meta usan estos valores: no los renombres. Si agregás
+     una pregunta, sumale su slug acá (snake_case). */
+  stepNames: {
+    situacion: "situacion",
+    zona: "zona",
+    presupuesto_compra: "presupuesto_compra",
+    presupuesto_reforma: "presupuesto_reforma",
+    plazo: "plazo",
+    visito: "visito_propiedad",
+    objetivos: "objetivos",
+    inversion: "disposicion_inversion",
+    datos: "contacto",
+  },
+  // form_branch que se manda a Meta según la ruta.
+  ramas: { compra: "compra", reforma: "reforma" },
+
   preguntas: [
     /* 1 ------------------------------------------------------------------ */
     {
