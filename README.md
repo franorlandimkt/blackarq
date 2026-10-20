@@ -100,11 +100,15 @@ Solo fórmulas, sin carga manual: totales; leads, vendidos, tasa de venta y mont
 |---|---|---|
 | `PageView` | carga | — |
 | `InitiateCheckout` | abre el formulario | `cta_origen` |
-| `FormularioPaso` (personalizado) | cada paso que alcanza, una vez por paso | `paso`, `total_pasos`, `pregunta`, `ruta`, `es_datos` |
+| `FormularioPaso` (personalizado) | cada paso que alcanza, una vez por paso. El `paso` 1 sale **siempre** junto con `InitiateCheckout`, aunque retome un borrador en un paso posterior | `paso`, `total_pasos`, `pregunta`, `ruta`, `es_datos` |
 | `Lead` | envío que **califica** | `ruta`, `zona`, `presupuesto`, `plazo`, `cta_origen` |
 | `LeadNoCalifica` (personalizado) | envío que **no** califica | lo mismo + `motivo` |
 
 Coincidencia de eventos: `external_id` anónimo y estable del visitante en todos los eventos, `_fbp`/`_fbc` (o `fbclid`), IP y user agent por servidor; en el envío, email, teléfono, nombre y apellido (hasheados) por Píxel con coincidencia avanzada y por CAPI.
+
+**Conversión personalizada de inicio de formulario:** tiene que ser evento `InitiateCheckout` sin reglas de URL ni de parámetros (o `FormularioPaso` con `paso` = 1). Una regla de URL no sirve: abrir el formulario no cambia la URL. Y una conversión personalizada solo cuenta desde el día en que se creó: para rangos anteriores, usar la columna estándar "Pagos iniciados en el sitio web".
+
+**Antes de publicar un cambio en `form.js`, `site.js` o `form-config.js`:** `node scripts/verificar-tracking.mjs` (necesita Playwright). Simula visitas en iPhone con el navegador de Instagram y comprueba que nunca salga un Lead sin inicio, que Píxel y CAPI compartan `eventID`, que no se dupliquen Leads (doble tap, volver de WhatsApp) y que el no calificado no mande Lead. No manda nada a Meta, GHL ni GA4.
 
 Para ver dónde se cae la gente o optimizar a mitad de embudo: en el Administrador de eventos, **Conversiones personalizadas** sobre `FormularioPaso` con la regla `paso` ≥ N (ej. ≥ 5 = completó la mitad).
 

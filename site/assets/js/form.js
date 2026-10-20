@@ -317,19 +317,23 @@
     // Meta: un evento por paso alcanzado (paso N = completó los N-1 anteriores).
     // Sirve para ver en qué pregunta se cae la gente y para armar
     // conversiones personalizadas (ej. paso >= 5).
-    if (!pasosMeta[p.id]) {
-      pasosMeta[p.id] = true;
-      var datosPaso = {
-        paso: S.i + 1,
-        total_pasos: lista.length,
-        pregunta: p.id,
-        ruta: ruta() || "",
-        es_datos: p.tipo === "datos" ? "si" : "no",
-      };
-      var idPaso = sesionMeta() + "-p" + (S.i + 1);
-      APP.pixelCustom("FormularioPaso", datosPaso, { eventID: idPaso });
-      mandarACapi("FormularioPaso", idPaso, datosPaso);
-    }
+    reportarPaso(p, S.i, lista.length);
+  }
+
+  /** FormularioPaso a Meta (Píxel + CAPI, mismo eventID), una vez por paso. */
+  function reportarPaso(p, i, total) {
+    if (!p || pasosMeta[p.id]) return;
+    pasosMeta[p.id] = true;
+    var datosPaso = {
+      paso: i + 1,
+      total_pasos: total,
+      pregunta: p.id,
+      ruta: ruta() || "",
+      es_datos: p.tipo === "datos" ? "si" : "no",
+    };
+    var idPaso = sesionMeta() + "-p" + (i + 1);
+    APP.pixelCustom("FormularioPaso", datosPaso, { eventID: idPaso });
+    mandarACapi("FormularioPaso", idPaso, datosPaso);
   }
 
   /** Id de esta apertura del formulario, para los eventID de Meta. */
@@ -589,7 +593,7 @@
 
     // Para que Meta y el CRM usen los mismos identificadores de navegador.
     fields.fbp = cookieMeta("_fbp");
-    fields.fbc = cookieMeta("_fbc") || (attr.fbclid ? "fb.1." + Date.now() + "." + attr.fbclid : "");
+    fields.fbc = fbcActual();
     // Mismo external_id que Píxel y CAPI: GHL lo reusa en Schedule/ShowUp/Purchase.
     fields.external_id = APP.visitorId();
 
@@ -657,15 +661,24 @@
     return m ? decodeURIComponent(m[1]) : "";
   }
 
+  /** _fbc del Píxel; si todavía no existe, armado con el fbclid y la hora
+      en que llegó ese clic (Meta pide esa hora, no la del evento). */
+  function fbcActual() {
+    var c = cookieMeta("_fbc");
+    if (c) return c;
+    var a = APP.getAtribucion() || {};
+    if (!a.fbclid) return "";
+    var t = Date.parse(a.lt_fecha || "");
+    return "fb.1." + (isNaN(t) ? Date.now() : t) + "." + a.fbclid;
+  }
+
   /** Evento por API de Conversiones, con el mismo eventID que el Píxel
       (Meta deduplica). keepalive: sobrevive al salto a WhatsApp.
       usuario (opcional): { nombre, telefono, email, external_id }. */
   function mandarACapi(evento, eventId, customData, usuario) {
     if (!CFG.metaPixelId || !CFG.metaCapiUrl) return;
     var u = usuario || {};
-    var fbc = cookieMeta("_fbc");
-    var fbclid = (APP.getAtribucion() || {}).fbclid;
-    if (!fbc && fbclid) fbc = "fb.1." + Date.now() + "." + fbclid;
+    var fbc = fbcActual();
     try {
       fetch(CFG.metaCapiUrl, {
         method: "POST", keepalive: true,
@@ -688,7 +701,7 @@
       fue = true;
       location.href = url;
     }
-    APP.track("whatsapp_redirect", { event_callback: go, event_timeout: 300 });
+    APP.track("whatsapp_redirect", { origen: "auto", event_callback: go, event_timeout: 300 });
     setTimeout(go, 300);
   }
 
@@ -703,7 +716,9 @@
       target: esWa ? null : "_blank", rel: esWa ? null : "noopener noreferrer",
     }, [esWa ? svgUse("i-wa") : svgUse("i-ig"), h("span", { text: c.boton || "" })]);
     btn.addEventListener("click", function () {
-      APP.track(esWa ? "whatsapp_redirect" : "instagram_redirect", { origen: "formulario" });
+      // "boton": tocó el botón de la pantalla final (el salto automático ya
+      // se contó como origen "auto"). Así no se suman dos veces.
+      APP.track(esWa ? "whatsapp_redirect" : "instagram_redirect", { origen: esWa ? "boton" : "formulario" });
     });
     var t = h("h2", { id: "form-titulo", tabindex: "-1", text: plantilla(c.titulo || "", { nombre: nombre }) });
     cuerpo.appendChild(h("div", { class: "f-final" }, [t, h("p", { text: c.texto || "" }), btn]));
@@ -739,6 +754,11 @@
       var idIni = sesionMeta() + "-ic";
       APP.pixel("InitiateCheckout", datosIni, { eventID: idIni });
       mandarACapi("InitiateCheckout", idIni, datosIni);
+      // Paso 1 siempre junto con el inicio: si retoma un borrador (recargó la
+      // página a mitad del formulario) abre en el paso N y, sin esto, un
+      // inicio basado en "paso 1" quedaba sin contar aunque después llegue
+      // el Lead.
+      if (S.i > 0) reportarPaso(visibles()[0], 0, visibles().length);
     }
     ultimaRuta = ruta();
     pintar(0);

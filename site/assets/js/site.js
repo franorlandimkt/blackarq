@@ -36,6 +36,10 @@
     t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
     (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
     /* eslint-enable */
+    // El formulario usa el historial (pushState al abrir, back al cerrar) para
+    // que el botón Atrás lo cierre. Sin esto el Píxel lo toma como cambio de
+    // página y puede mandar PageViews de más. La landing no es una SPA.
+    window.fbq.disablePushState = true;
     // external_id: id anónimo y estable del visitante (90 días), el mismo que
     // va por la API de Conversiones. Mejora la coincidencia de eventos.
     window.fbq("init", CFG.metaPixelId, { external_id: visitorId() });
@@ -152,6 +156,9 @@
     a.ft_adset = ft.utm_term || "";
     a.ft_ad = ft.utm_content || "";
     a.ft_fecha = ft.fecha || "";
+    // Cuándo llegó el último fbclid: Meta pide esa hora en el fbc armado a
+    // mano (no la del envío). Uso interno, no va a Sheets ni al CRM.
+    a.lt_fecha = lt.fecha || "";
     a.dispositivo = dispositivo();
     a.url = location.href.split("#")[0];
     a.referrer = referrerExterno();
