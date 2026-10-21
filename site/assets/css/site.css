@@ -3338,3 +3338,168 @@ h2 + .intro {
     font-size: 0.95rem;
   }
 }
+
+/* ======================================================== v5.1 ========= */
+/* ---- Hero: garantía destacada arriba del CTA. Un halo amarillo late
+   detrás de la caja (sale "de atrás del fondo") y un brillo la cruza cada
+   tanto. Solo se anima opacity/transform: liviano en mobile. Sin
+   animación con prefers-reduced-motion: queda el halo fijo. */
+.hg {
+  position: relative;
+  isolation: isolate;
+  max-width: 30rem;
+  margin: 0 auto 1.4rem;
+}
+.hg-halo {
+  position: absolute;
+  inset: -55% -14%;
+  z-index: -2;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 229, 0, 0.75), rgba(255, 229, 0, 0.3) 50%, rgba(255, 229, 0, 0) 100%);
+  filter: blur(18px);
+  opacity: 0.3;
+  transform: scale(0.86);
+  pointer-events: none;
+  animation: hg-latido 2.6s ease-in-out infinite;
+}
+/* Resplandor pegado al borde: se prende y se apaga con el halo. */
+.hg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--r);
+  box-shadow: 0 0 22px 4px rgba(255, 229, 0, 0.7), 0 0 60px 10px rgba(255, 229, 0, 0.35);
+  opacity: 0.15;
+  pointer-events: none;
+  animation: hg-borde 2.6s ease-in-out infinite;
+}
+.hg-caja {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.95rem 1.25rem 1.05rem;
+  border: 1.5px solid var(--acento);
+  border-radius: var(--r);
+  background: rgba(10, 10, 10, 0.82);
+  text-align: center;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+/* Brillo diagonal que cruza la caja. */
+.hg-caja::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 38%;
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0) 0%, rgba(255, 245, 160, 0.28) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: translate3d(-160%, 0, 0) skewX(-18deg);
+  pointer-events: none;
+  animation: hg-brillo 2.6s ease-in-out infinite;
+}
+.hg-sello {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.22rem 0.7rem 0.22rem 0.5rem;
+  border-radius: 999px;
+  background: var(--acento);
+  color: var(--negro);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.hg-sello svg {
+  width: 16px;
+  height: 16px;
+}
+.hg-txt {
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--texto);
+}
+.hg-txt b {
+  font-weight: 700;
+  color: var(--acento);
+  white-space: nowrap;
+  animation: hg-txt 2.6s ease-in-out infinite;
+}
+@keyframes hg-latido {
+  0%, 100% { opacity: 0.3; transform: scale(0.86); }
+  50% { opacity: 0.95; transform: scale(1.06); }
+}
+@keyframes hg-borde {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 1; }
+}
+@keyframes hg-brillo {
+  0%, 30% { transform: translate3d(-160%, 0, 0) skewX(-18deg); }
+  75%, 100% { transform: translate3d(330%, 0, 0) skewX(-18deg); }
+}
+@keyframes hg-txt {
+  0%, 100% { text-shadow: 0 0 0 rgba(255, 229, 0, 0); }
+  50% { text-shadow: 0 0 14px rgba(255, 229, 0, 0.65); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hg-halo,
+  .hg::before,
+  .hg-caja::after,
+  .hg-txt b {
+    animation: none;
+  }
+  .hg-halo {
+    opacity: 0.6;
+    transform: none;
+  }
+  .hg::before {
+    opacity: 0.6;
+  }
+  .hg-caja::after {
+    display: none;
+  }
+}
+.hero-plazos {
+  margin: 0.9rem auto 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--texto-3);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+}
+@media (max-width: 599px) {
+  .hg {
+    margin-bottom: 1.2rem;
+  }
+  .hg-caja {
+    padding: 0.85rem 1rem 0.95rem;
+  }
+  .hg-txt {
+    font-size: 0.95rem;
+  }
+  .hero-plazos {
+    font-size: 0.8125rem;
+  }
+}
+@media (min-width: 1024px) {
+  .hg-txt {
+    font-size: 1.1rem;
+  }
+}
+
+/* ---- Hero: los tres puntos uno abajo del otro también en PC. */
+@media (min-width: 760px) {
+  .hero-bullets {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0.7rem;
+  }
+}

@@ -45,7 +45,7 @@ gtag('js',new Date());var c={};if(/[?&]ga_debug=1/.test(location.search))c.debug
 <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/antonio/v22/gNMEW3NwSYq_9WD3yHQiFQ.woff2" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@600;700&family=Poppins:ital,wght@0,400;0,500;0,600;1,400&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@600;700&family=Poppins:ital,wght@0,400;0,500;0,600;1,400&display=swap"></noscript>
-<link rel="stylesheet" href="assets/css/site.css?v=20261016">
+<link rel="stylesheet" href="assets/css/site.css?v=20261021">
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://blackarquitectura.com/#business","name":"Black Arquitectura","description":"Estudio de arquitectura, obra y desarrollo inmobiliario en Buenos Aires. Diagnóstico Black: un arquitecto y una asesora inmobiliaria analizan la propiedad antes de que ofertes: precio, reforma y negociación.","url":"https://blackarquitectura.com/","telephone":"+54 9 11 6480-3777","image":"https://blackarquitectura.com/assets/brand/og.png","logo":"https://blackarquitectura.com/assets/brand/logo-white.png","sameAs":["https://www.instagram.com/black_arq/","https://maps.google.com/?cid=7365464068826002467"],"areaServed":[{"@type":"AdministrativeArea","name":"CABA"},{"@type":"AdministrativeArea","name":"Zona Norte"},{"@type":"AdministrativeArea","name":"Zona Oeste"}],"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"41"}}
@@ -76,6 +76,7 @@ gtag('js',new Date());var c={};if(/[?&]ga_debug=1/.test(location.search))c.debug
 <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></symbol>
 <symbol id="i-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></symbol>
 <symbol id="i-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+<symbol id="i-escudo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 4.5 5.6v5.9c0 4.6 3.1 8.4 7.5 9.7 4.4-1.3 7.5-5.1 7.5-9.7V5.6L12 2.8Z"/><path d="m8.6 12.1 2.4 2.4 4.4-4.6"/></symbol>
 <pattern id="hatch-d" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V6" stroke="#4a4a47" stroke-width="1"/></pattern>
 <pattern id="hatch-l" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V6" stroke="#a9a8a2" stroke-width="1"/></pattern>
 <pattern id="hatch-y" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="5" height="5" fill="#ffe500"/><path d="M0 0V5" stroke="#0a0a0a" stroke-width=".9"/></pattern>
@@ -114,8 +115,16 @@ gtag('js',new Date());var c={};if(/[?&]ga_debug=1/.test(location.search))c.debug
       <li><svg aria-hidden="true"><use href="#i-ok"/></svg>Argumentos concretos para negociar el precio</li>
     </ul>
     <div class="hero-cta" data-h="2">
+      <!-- Garantía destacada: halo que late detrás y un brillo que la cruza, en loop. -->
+      <div class="hg">
+        <span class="hg-halo" aria-hidden="true"></span>
+        <p class="hg-caja">
+          <span class="hg-sello"><svg aria-hidden="true"><use href="#i-escudo"/></svg>Garantía</span>
+          <span class="hg-txt">Si no encontramos un argumento para que puedas bajar el precio, <b>te devolvemos el dinero</b>.</span>
+        </p>
+      </div>
       <a class="btn btn-1 btn-l btn-lg" href="#diagnostico" data-cta="cta_hero"><span>Quiero analizar mi propiedad</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
-      <p class="hero-garantia"><span>Visita en 72 h · Informe en 7 días</span><span>Si no encontramos ni con qué negociar ni un costo oculto, te lo devolvemos.</span></p>
+      <p class="hero-plazos">Visita en 72 h · Informe en 7 días</p>
     </div>
     <!-- Prueba: quiénes son + reseñas de Google. -->
     <div class="hero-prueba" data-h="3">
