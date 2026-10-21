@@ -3495,3 +3495,154 @@ h2 + .intro {
     gap: 0.7rem;
   }
 }
+
+/* ======================================================== v5.2 ========= */
+/* ---- Hero en mobile y tablet: ocupa la primera pantalla entera y los
+   espacios crecen con el alto disponible (svh). En pantallas bajas quedan
+   los mínimos de antes (el CTA sigue arriba del pliegue); en las altas el
+   contenido respira en vez de amontonarse arriba con un hueco abajo. */
+@media (max-width: 1023px) {
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-top: clamp(2rem, 5vh, 3.25rem);
+    padding-top: clamp(2rem, 5svh, 3.25rem);
+    padding-bottom: clamp(2.5rem, 6vh, 4rem);
+    padding-bottom: clamp(2.5rem, 6svh, 4rem);
+  }
+  .hero-in {
+    width: 100%;
+  }
+  .hero-logo {
+    margin-bottom: clamp(1.5rem, 4.5vh, 2.75rem);
+    margin-bottom: clamp(1.5rem, 4.5svh, 2.75rem);
+  }
+  .hero-bajada {
+    margin-top: clamp(1rem, 2.4vh, 1.5rem);
+    margin-top: clamp(1rem, 2.4svh, 1.5rem);
+  }
+  .hero-bullets {
+    gap: clamp(0.45rem, 1.3vh, 0.8rem);
+    gap: clamp(0.45rem, 1.3svh, 0.8rem);
+    margin-top: clamp(1.1rem, 3.2vh, 2rem);
+    margin-top: clamp(1.1rem, 3.2svh, 2rem);
+  }
+  .hero-cta {
+    margin-top: clamp(1.5rem, 4.2vh, 2.6rem);
+    margin-top: clamp(1.5rem, 4.2svh, 2.6rem);
+  }
+  .hg {
+    margin-bottom: clamp(1rem, 2.4vh, 1.5rem);
+    margin-bottom: clamp(1rem, 2.4svh, 1.5rem);
+  }
+  .hero-plazos {
+    margin-top: clamp(0.9rem, 2vh, 1.25rem);
+    margin-top: clamp(0.9rem, 2svh, 1.25rem);
+  }
+  .hero-prueba {
+    margin-top: clamp(2rem, 5vh, 3.25rem);
+    margin-top: clamp(2rem, 5svh, 3.25rem);
+  }
+}
+
+/* ======================================================== v5.3 ========= */
+/* ---- Slider antes/después: tarjeta limpia. Sin marcas de esquina, control
+   y etiquetas más chicos (no tapan la foto), "Después" en amarillo, línea
+   fina con sombra y una pista de uso debajo. Sigue en 16:9: la foto entera. */
+.ba {
+  border: 0;
+  border-radius: var(--r);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.ba::after {
+  /* Velo arriba para que las etiquetas se lean sobre cualquier foto. */
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 28%;
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.35), rgba(10, 10, 10, 0));
+  pointer-events: none;
+}
+.ba-div {
+  width: 2px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.45);
+}
+.ba-knob {
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  box-shadow:
+    0 0 0 3px rgba(10, 10, 10, 0.35),
+    0 6px 18px rgba(0, 0, 0, 0.5);
+}
+.ba-tag {
+  z-index: 1;
+  top: 0.7rem;
+  padding: 0.24rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 10, 10, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+}
+.ba-tag.a {
+  left: 0.7rem;
+}
+.ba-tag.b {
+  right: 0.7rem;
+  border-color: transparent;
+  background: var(--acento);
+  color: var(--negro);
+}
+.ba-pie {
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--texto-2);
+}
+.ba-ayuda {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+}
+.ba-ayuda svg {
+  color: var(--acento);
+}
+@media (max-width: 599px) {
+  .ba {
+    border-radius: var(--r-s);
+  }
+  .ba-knob {
+    width: 38px;
+    height: 38px;
+  }
+  .ba-knob svg {
+    width: 16px;
+    height: 16px;
+  }
+  .ba-tag {
+    top: 0.55rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.5625rem;
+  }
+  .ba-tag.a {
+    left: 0.55rem;
+  }
+  .ba-tag.b {
+    right: 0.55rem;
+  }
+  .ba-pie {
+    margin-top: 0.85rem;
+    font-size: 0.875rem;
+  }
+}
