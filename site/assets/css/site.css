@@ -3646,3 +3646,13 @@ h2 + .intro {
     font-size: 0.875rem;
   }
 }
+
+/* ---- Garantía: "te devolvemos el dinero" nunca se corta en dos líneas. */
+.garantia-txt h2 {
+  max-width: 28ch;
+  text-wrap: balance;
+}
+.garantia-txt h2 .hl-u,
+.garantia-txt h2 .nw {
+  white-space: nowrap;
+}

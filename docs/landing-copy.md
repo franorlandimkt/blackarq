@@ -28,7 +28,9 @@
 
 **CTA:** Quiero analizar mi propiedad →
 
-**Debajo del CTA:** Visita en 72 h · Informe en 7 días / Si no encontramos ni con qué negociar ni un costo oculto, te lo devolvemos.
+**Arriba del CTA (píldora con brillo):** Si no te damos un argumento para bajar el precio, te devolvemos el dinero.
+
+**Debajo del CTA:** Visita en 72 h · Informe en 7 días
 
 **Prueba:** fotos de Esteban y Carla · Esteban Crimi · Arquitecto y Maestro Mayor de Obras · Carla La Porta · Asesora inmobiliaria · ★★★★★ 5,0 en Google · 41 reseñas
 
@@ -201,9 +203,9 @@ Si después de analizarla creemos que no te conviene, te lo vamos a decir igual.
 
 ## 10. Garantía e inversión
 
-**Subtítulo:** Si no encontramos con qué negociar, te devolvemos el Diagnóstico.
+**Subtítulo:** Si no te damos un argumento para bajar el precio, te devolvemos el dinero.
 
-**Garantía:** si en tu informe no encontramos al menos un argumento objetivo para negociar o un costo que no tenías en el radar, te devolvemos el Diagnóstico.
+**Garantía:** si en tu informe no hay al menos un argumento concreto para bajar el precio, te devolvemos lo que pagaste por el Diagnóstico.
 
 **Y se descuenta:** si después hacés el proyecto o la reforma con Black, el Diagnóstico se descuenta de los honorarios.
 
@@ -238,7 +240,7 @@ CABA, Zona Norte y Zona Oeste del GBA. Otras localidades se evalúan según el c
 Sí. El mismo análisis te dice qué reforma conviene, en qué orden y cuánto cuesta. Elegí "Ya tengo el inmueble" en el formulario.
 
 **"¿Tengo que pagar para que me digan si conviene?"**
-Sí, y es justamente lo que garantiza que nadie gana nada si comprás. Y si no encontramos con qué negociar, te lo devolvemos.
+Sí, y es justamente lo que garantiza que nadie gana nada si comprás. Y si no te damos un argumento para bajar el precio, te devolvemos el dinero.
 
 ---
 
