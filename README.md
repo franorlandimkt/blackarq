@@ -140,10 +140,25 @@ Material visual pendiente (se reemplaza en `index.html`, cada lugar tiene un com
 
 - **Foto de Esteban y Carla juntos en una visita** (sección "Quiénes"). Hoy: los dos retratos individuales (sin marcador visible).
 - **Informe real anonimizado (2–3 páginas)**, con ACM y estrategia de negociación tapados (card "Informe Black de 7 miradas"). Hoy: mockup dibujado en SVG con datos reemplazados por líneas.
-- **Fotos antes/después reales de Lorena (Villa Devoto) y de Amenábar.** Hoy los dos sliders usan las imágenes del sitio anterior (`caso-antes/despues` y `caso2-antes/despues`), que son **el mismo render en blanco y negro y en color**, no un antes y un después reales. Reemplazar los archivos con el mismo nombre (640 y 1000 px, AVIF + WebP).
+- **Foto de la casa de Lorena (Villa Devoto).** El caso no tiene imagen. Amenábar ya tiene fotos reales de antes y después.
 - Del listado del cliente que no tiene lugar en la página: testimonio de la clienta que cerró la compra, apellido de Carla (se usa La Porta), cuántas propiedades entran en el Diagnóstico base.
 
-## 6. Cambios v5 (13/10)
+## 6. Cambios v6 (22/10, auditoría de marketing)
+
+- **Garantía:** una sola frase en hero, sección Garantía y FAQ: «Si no encontramos ni un argumento para negociar, te devolvemos el Diagnóstico.» La píldora del hero late y brilla con menos intensidad (bloque v6 al final de `site.css`).
+- **Prueba:** «97 de 97 clientes lograron negociar el precio» en Pasos y en Garantía.
+- **Copy:** fuera los giros «No vamos solo a mirar…», «No se trata de desconfiar, sino…», «Todo esto tiene solución:», «…no una sola» y la jerga (minuta, cateos, ACM). «6 preguntas» pasó a «7 preguntas» (el formulario tiene 7 + datos).
+- **Color:** sin resaltados amarillos en Qué incluye ni en las tres partes; sin verde (la cifra de Lorena va en amarillo, el «sí» de Para quién en negro).
+- **H1:** la sombra pasó de `text-shadow` a `filter: drop-shadow` (antes se veían rectángulos detrás de cada palabra).
+- **Formulario:** la nota del paso de datos y la pantalla final piden «tocá Enviar en el chat». Se sacó «ni te sumamos a ninguna lista».
+- **SEO:** título y descripción con búsqueda y zona; párrafo de definición arriba de Qué incluye; schema sin `aggregateRating` (Google no acepta puntajes propios ni copiados de Google) y con `Person`, `Service` y `WebSite`; `og.jpg` de 50 KB (la PNG pesaba 384 KB y WhatsApp no la mostraba); `llms.txt`; `/obras` con `noindex` y fuera del sitemap; links de /estudio y /obras a `/`; «Maestro Mayor de Obras» unificado.
+- **Valores en el HTML:** las reseñas publicadas y los `[DATO]` ya completos están escritos en `index.html` (los buscadores y los navegadores sin JS los ven). `site.js` los vuelve a armar desde `reviews.json`/`content.js`: **si cambia una reseña o el puntaje, actualizar también el HTML.**
+- **Privacidad:** página `/privacidad/` (Ley 25.326), enlazada en el footer.
+- **Encabezados:** `X-Content-Type-Options` y `Referrer-Policy` pasaron a `/*` en los dos `netlify.toml` (`/*.html` no matcheaba `/`).
+- **Cola del CRM (`form.js`):** un envío solo sale de la cola con OK o con 400. Antes cualquier 4xx (404 de función no desplegada, 403 de token) lo borraba y el lead se perdía. Cada envío vence a los 7 días.
+- **Funciones (`meta-capi`, `ghl-lead`):** rechazan pedidos que vienen de otro sitio (Origin distinto), limitan pedidos por IP (120/min en CAPI, 12/min en GHL), y no aceptan un `Lead`/`LeadNoCalifica` o un envío a GHL sin WhatsApp de al menos 10 dígitos. Los eventos y datos que se mandan a Meta y a GHL no cambiaron. Si el sitio se publica en otro dominio, agregarlo en la variable `ALLOWED_HOSTS` de Netlify (separados por coma). `node scripts/verificar-tracking.mjs`: 27/27 OK después del cambio.
+
+## 7. Cambios v5 (13/10)
 
 - **Hero:** H1 "¿Estás por comprar una propiedad?" a todo el ancho, sin resaltado (2 líneas en 358–390 px). Bullets y subtítulo nuevos. CTA del hero: "Quiero analizar mi propiedad" (el resto sigue "Quiero mi Diagnóstico Black"). Debajo: "Visita en 72 h · Informe en 7 días" + garantía.
 - **Problema:** H2 del auto usado, tarjetas Auto usado vs Propiedad (sin íconos: el "Sí" malo va en amarillo), texto, puente y pregunta 3 nueva ("¿Puede quedar como la querés?").
@@ -155,7 +170,7 @@ Material visual pendiente (se reemplaza en `index.html`, cada lugar tiene un com
 - **Motion:** sigue siendo el sistema propio (no hay GSAP/Lenis en el proyecto): las tarjetas entran con `data-stagger` y las flechas del mapa se dibujan con `data-draw` (stroke-dashoffset). Con `prefers-reduced-motion`, todo estático.
 - Punto de restauración: tag `restore-pre-cambios-finales`.
 
-## 7. Diseño y motion (v4)
+## 8. Diseño y motion (v4)
 
 - **Dirección:** estudio de arquitectura contemporáneo con lenguaje de plano. Base negro + grises (`--g1` #121212, `--g2` #1A1A1A), blanco cálido (`--hueso` #F4F3EF) solo en "Idea central" y "Para quién". Antonio (títulos) + Poppins (texto) y el amarillo de marca existente (`--acento` #FFE500), solo como acento.
 - **Resaltados** (siempre los mismos tres): `.hl-u` subrayado que se dibuja, `.hl-m` marcador que se pinta, `.hl-y` palabra/cifra en amarillo. Sobre blanco, `.hl-y` pasa a fondo amarillo con texto negro (contraste AA).

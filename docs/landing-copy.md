@@ -28,7 +28,7 @@
 
 **CTA:** Quiero analizar mi propiedad →
 
-**Debajo del CTA:** Visita en 72 h · Informe en 7 días / Si no encontramos ni con qué negociar ni un costo oculto, te lo devolvemos.
+**Debajo del CTA:** Visita en 72 h · Informe en 7 días. Arriba del CTA, la garantía: Si no encontramos ni un argumento para negociar, te devolvemos el Diagnóstico.
 
 **Prueba:** fotos de Esteban y Carla · Esteban Crimi · Arquitecto y Maestro Mayor de Obras · Carla La Porta · Asesora inmobiliaria · ★★★★★ 5,0 en Google · 41 reseñas
 
@@ -56,12 +56,12 @@ Hay tres preguntas que tenés que poder responder antes de ofertar:
 
 Lo que te cuesta una propiedad no es el precio. Es el precio más la reforma que necesita para quedar como la querés.
 
-Una compra tiene tres partes: la **inmobiliaria**, que te dice cuánto vale realmente esa propiedad en el mercado; la **constructiva**, que te dice en qué estado está de verdad y si tiene vicios ocultos; y la **arquitectónica**, que te dice qué potencial tiene para revalorizarse y quedar como la querés. Lo que define si es una buena compra son las tres juntas, no una sola.
+Una compra tiene tres partes: la **inmobiliaria**, que te dice cuánto vale realmente esa propiedad en el mercado; la **constructiva**, que te dice en qué estado está de verdad y si tiene vicios ocultos; y la **arquitectónica**, que te dice qué potencial tiene para revalorizarse y quedar como la querés. Lo que define si es una buena compra son las tres juntas.
 
 **Título:** Casi todos lo hacen al revés.
 Primero compran y después llaman a un arquitecto. Para cuando los dos números se cruzan, ya firmaste.
 
-**Todo esto tiene solución: un asesoramiento de punta a punta, antes de ofertar.**
+**La solución es un asesoramiento de punta a punta, antes de ofertar.**
 
 **Antes de ofertar es el único momento en que todavía podés negociar esta propiedad o elegir otra.**
 
@@ -76,7 +76,7 @@ Primero compran y después llaman a un arquitecto. Para cuando los dos números 
 **Subtítulo:** Todo lo que necesitás saber antes de ofertar, en un solo análisis.
 
 **Visita técnica dentro de las 72 h.**
-Un arquitecto recorre la propiedad entre 45 y 75 minutos: distribución, humedades, instalaciones, estructura visible. No vamos solo a mirar: vamos a analizar.
+Un arquitecto recorre la propiedad entre 45 y 75 minutos: distribución, humedades, instalaciones, estructura visible. Revisamos con instrumental y criterio de obra.
 
 **Cuánto vale de verdad.**
 Comparamos la propiedad contra operaciones cerradas, no solo contra publicaciones. Lo que piden no es lo que vale.
@@ -116,7 +116,7 @@ Todo ordenado en un informe y una reunión de 1 hora donde te lo traducimos a un
 
 **Subtítulo:** Del formulario a tu oferta. Sin sorpresas.
 
-1. **Completás el formulario de admisión.** 6 preguntas para saber si realmente te podemos ayudar.
+1. **Completás el formulario de admisión.** 7 preguntas para saber si realmente te podemos ayudar.
 2. **Nos escribís por WhatsApp.** Al terminar el formulario, te asesoramos por WhatsApp: entendemos tu caso y qué propiedades querés analizar.
 3. **Te pasamos la propuesta.** Qué incluye y su valor según cuántas propiedades sean. Sin compromiso hasta que confirmes.
 4. **Confirmás y nos mandás todo.** Publicación, fotos, videos y, sobre todo, los planos. Empezamos a analizar antes de ir.
@@ -143,7 +143,7 @@ Lorena había encontrado en Devoto una casa con lo que buscaba: algo con espíri
 
 Antes de ofertar, por miedo a equivocarse, nos consultó.
 
-Analizamos la casa desde lo arquitectónico y lo inmobiliario. Con el Análisis Comparativo de Mercado vimos que estaba publicada por encima de su valor. Con esos argumentos armamos su oferta.
+Analizamos la casa desde lo arquitectónico y lo inmobiliario. Comparándola con operaciones cerradas de la zona, vimos que estaba publicada por encima de su valor. Con esos argumentos armamos su oferta.
 
 **Compró a USD 420.000.** Esos USD 40.000 pasaron a ser parte de la inversión para reformar la casa, que después proyectamos y construimos nosotros.
 
@@ -203,7 +203,9 @@ Si después de analizarla creemos que no te conviene, te lo vamos a decir igual.
 
 **Subtítulo:** Si no encontramos con qué negociar, te devolvemos el Diagnóstico.
 
-**Garantía:** si en tu informe no encontramos al menos un argumento objetivo para negociar o un costo que no tenías en el radar, te devolvemos el Diagnóstico.
+**Garantía:** si en tu informe no encontramos ni un argumento objetivo para negociar, te devolvemos el Diagnóstico.
+
+**97 de 97 clientes** que hicieron el Diagnóstico lograron negociar el precio y recuperaron lo que pagaron por él.
 
 **Y se descuenta:** si después hacés el proyecto o la reforma con Black, el Diagnóstico se descuenta de los honorarios.
 
@@ -223,10 +225,10 @@ Una tasación te dice cuánto pedir. Nosotros te decimos cuánto vale, cuánto c
 Es lo que hace casi todo el mundo, y por eso descubren el costo real cuando ya firmaron.
 
 **"Hay otro interesado, no tengo tiempo."**
-Por eso la visita es dentro de las 72 h y la minuta te la llevás en el momento.
+Por eso la visita es dentro de las 72 h y te llevás por escrito lo principal en el momento.
 
 **"¿Detectan todos los problemas ocultos?"**
-Nadie ve detrás de una pared sin romperla. Analizamos con criterio de obra e instrumental y te marcamos qué conviene verificar con cateos o especialistas antes de firmar.
+Nadie ve detrás de una pared sin romperla. Analizamos con criterio de obra e instrumental y te marcamos qué conviene abrir o revisar con un especialista antes de firmar.
 
 **"¿Revisan si tiene deudas o problemas con los papeles?"**
 Nuestro equipo legal hace una revisión preliminar de la documentación y los planos. El estudio de títulos y los libres de deuda los pide el escribano; te damos el checklist de qué pedirle.
@@ -238,7 +240,7 @@ CABA, Zona Norte y Zona Oeste del GBA. Otras localidades se evalúan según el c
 Sí. El mismo análisis te dice qué reforma conviene, en qué orden y cuánto cuesta. Elegí "Ya tengo el inmueble" en el formulario.
 
 **"¿Tengo que pagar para que me digan si conviene?"**
-Sí, y es justamente lo que garantiza que nadie gana nada si comprás. Y si no encontramos con qué negociar, te lo devolvemos.
+Sí, y es justamente lo que garantiza que nadie gana nada si comprás. Y si no encontramos ni un argumento para negociar, te lo devolvemos.
 
 ---
 

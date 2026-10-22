@@ -3646,3 +3646,128 @@ h2 + .intro {
     font-size: 0.875rem;
   }
 }
+
+/* ======================================================== v6 ========= */
+/* Ajustes de la auditoría (22/10). Todo junto acá, al final, para que se
+   lea qué cambió sin tocar los bloques de arriba. */
+
+/* ---- H1: la sombra va sobre el titular entero (filter), no por palabra.
+   Con text-shadow, cada palabra (overflow:hidden por la animación) recortaba
+   su propia sombra y se veían rectángulos oscuros sobre la foto. */
+.hero h1 {
+  text-shadow: none;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.5));
+}
+
+/* ---- Hero: la bajada es el elemento LCP. Entra solo con movimiento, ya
+   visible, así no espera la transición de opacidad para pintarse. */
+.motion [data-hero] .hero-bajada[data-h] {
+  opacity: 1;
+}
+
+/* ---- Garantía del hero: misma píldora, menos intensidad. Halo y borde
+   laten más suave, la luz gira más lento y el texto ya no brilla. */
+@media (prefers-reduced-motion: no-preference) {
+  .hg-halo {
+    animation-name: hg-latido-suave;
+    animation-duration: 3.6s;
+  }
+  .hg::after {
+    animation-name: hg-borde-suave;
+    animation-duration: 3.6s;
+  }
+  .hg-luz {
+    opacity: 0.55;
+    animation-duration: 6s;
+  }
+  .hg-in b {
+    animation: none;
+  }
+}
+@keyframes hg-latido-suave {
+  0%, 100% { opacity: 0.1; transform: scale(0.92); }
+  50% { opacity: 0.38; transform: scale(1); }
+}
+@keyframes hg-borde-suave {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.45; }
+}
+
+/* ---- Sin verde: la cifra del caso va en amarillo (como el resto de las
+   cifras) y el "sí" de Para quién, en negro. Círculos más chicos, para que
+   no pesen más que el título. */
+.hl-v {
+  color: var(--acento);
+}
+.bg-blanco .hl-v {
+  background: var(--acento);
+  color: var(--negro);
+}
+.pq-si .pq-t svg {
+  background: var(--negro);
+  color: #fff;
+}
+.pq-t svg {
+  width: 44px;
+  height: 44px;
+  padding: 9px;
+}
+
+/* ---- Antes/después: tirador de 44 px (mínimo táctil) y rótulos legibles. */
+.ba-knob {
+  width: 44px;
+  height: 44px;
+}
+.ba-tag {
+  font-size: 0.6875rem;
+}
+@media (max-width: 599px) {
+  .ba-knob {
+    width: 44px;
+    height: 44px;
+  }
+  .ba-tag {
+    font-size: 0.6875rem;
+  }
+  /* Comparativa: en mobile las columnas ya se explican arriba; sin las
+     bajadas de 11 px la fila de opciones respira. */
+  .mx-o small {
+    display: none;
+  }
+}
+
+/* ---- Comparativa: la ✕ gris tenía 2,2:1 de contraste (debajo de 3:1). */
+.mx-c.no svg {
+  color: #77756f;
+}
+
+/* ---- Formulario: el círculo/cuadrado de cada opción se veía apenas. */
+.f-op-marca {
+  border-color: #6a6a6a;
+}
+
+/* ---- Desktop: encabezado opaco (translúcido se veía como una banda gris
+   sobre las secciones claras) y bullets del hero un poco más grandes. */
+@media (min-width: 1024px) {
+  .top {
+    background: #0a0a0a;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .hero-bullets li {
+    font-size: 1.0625rem;
+  }
+}
+
+/* ---- Footer: link a la política de privacidad. */
+.footer-legal {
+  margin: 0;
+  font-size: 0.75rem;
+}
+.footer-legal a {
+  color: var(--texto-3);
+  text-underline-offset: 3px;
+}
+.footer-legal a:hover {
+  color: var(--texto);
+}

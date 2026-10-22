@@ -436,6 +436,9 @@
         if (R.url) $$("[data-res-url]", sec).forEach(function (x) { x.href = R.url; });
 
         var items = (R.items || []).filter(function (r) { return preview || r.estado !== "PENDIENTE"; });
+        // El HTML ya trae las reseñas publicadas (para buscadores y sin JS):
+        // se reemplazan por las del JSON, que manda.
+        if (items.length) listaEl.innerHTML = "";
         items.forEach(function (r, i) {
           var pend = r.estado === "PENDIENTE";
           var li = el("li", "res-card" + (pend ? " pendiente" : ""));

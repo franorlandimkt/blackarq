@@ -172,10 +172,18 @@
   }
 
   /* Cola del CRM (GoHighLevel). A diferencia de Sheets, la función de Netlify
-     responde: el envío solo sale de la cola con una respuesta OK. */
+     responde: el envío solo sale de la cola con una respuesta OK, o con un
+     400 (envío mal armado: reintentar no lo arregla). Cualquier otro error
+     (403 token, 404 función no desplegada, 429, 5xx) lo deja en la cola para
+     reintentarlo en la próxima carga. Cada envío vence a los 7 días: la cola
+     guarda nombre, teléfono y email, y no tiene sentido mandar un lead viejo. */
   var COLA_CRM = "black:crm_cola";
+  var VENCE_CRM = 7 * 24 * 60 * 60 * 1000;
   function leerColaCrm() {
-    try { return JSON.parse(localStorage.getItem(COLA_CRM) || "[]") || []; } catch (e) { return []; }
+    var c;
+    try { c = JSON.parse(localStorage.getItem(COLA_CRM) || "[]") || []; } catch (e) { return []; }
+    var ahora = Date.now();
+    return c.filter(function (x) { return x && x.body && (!x.t || ahora - x.t < VENCE_CRM); });
   }
   function guardarColaCrm(c) {
     try { localStorage.setItem(COLA_CRM, JSON.stringify(c.slice(-20))); } catch (e) { /* sin storage */ }
@@ -189,8 +197,8 @@
         headers: { "Content-Type": "application/json" },
         body: item.body,
       }).then(function (r) {
-        // 4xx = el envío está mal y reintentar no lo arregla: se descarta.
-        if (r.ok || (r.status >= 400 && r.status < 500)) {
+        // OK o 400 (envío mal armado): sale de la cola. El resto se reintenta.
+        if (r.ok || r.status === 400) {
           guardarColaCrm(leerColaCrm().filter(function (x) { return x.id !== item.id; }));
         }
       }, function () { /* queda en la cola */ });
@@ -599,7 +607,7 @@
 
     // 0. CRM (GoHighLevel). Fuego y olvido, con cola si la red falla.
     if (CFG.crmUrl) {
-      var itemCrm = { id: leadId, body: JSON.stringify({ token: (CFG.sheets || {}).token || "", hp: honeypot || "", fields: fields }) };
+      var itemCrm = { id: leadId, t: Date.now(), body: JSON.stringify({ token: (CFG.sheets || {}).token || "", hp: honeypot || "", fields: fields }) };
       var colaCrm = leerColaCrm();
       colaCrm.push(itemCrm);
       guardarColaCrm(colaCrm);

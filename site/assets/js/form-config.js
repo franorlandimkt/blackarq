@@ -199,7 +199,7 @@ window.BLACK_FORM = {
         { id: "whatsapp", columna: "WhatsApp", label: "WhatsApp con código de área", tipo: "tel", autocomplete: "tel", placeholder: "11 6480 3777", requerido: true, validar: "telefonoAR" },
         { id: "email", columna: "Email", label: "Email", tipo: "email", autocomplete: "email", placeholder: "nombre@mail.com", requerido: true, validar: "email" },
       ],
-      nota: "Te escribimos solo por este tema. No hacemos llamados automáticos ni te sumamos a ninguna lista.",
+      nota: "Te escribimos solo por este tema. Al terminar se abre WhatsApp con tus respuestas: tocá Enviar en el chat para que te respondamos.",
     },
   ],
 
@@ -234,7 +234,7 @@ window.BLACK_FORM = {
   final: {
     califica: {
       titulo: "Listo, {nombre}.",
-      texto: "Te estamos abriendo WhatsApp con tus respuestas. Si no se abre solo, tocá el botón.",
+      texto: "Te estamos abriendo WhatsApp con tus respuestas. Último paso: tocá Enviar en el chat para que te respondamos. Si no se abre solo, tocá el botón.",
       boton: "Abrir WhatsApp",
     },
     noCalifica: {
