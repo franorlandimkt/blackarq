@@ -180,21 +180,44 @@
   function guardarColaCrm(c) {
     try { localStorage.setItem(COLA_CRM, JSON.stringify(c.slice(-20))); } catch (e) { /* sin storage */ }
   }
+  /** Devuelve una promesa que se resuelve cuando la función respondió (o
+      falló). Solo sale de la cola con OK o con un 4xx (reintentar no lo
+      arregla). */
   function mandarACrm(url, item) {
-    if (!url || !window.fetch) return;
+    if (!url || !window.fetch) return Promise.resolve();
     try {
-      fetch(url, {
+      return fetch(url, {
         method: "POST",
         keepalive: true,
         headers: { "Content-Type": "application/json" },
         body: item.body,
       }).then(function (r) {
-        // 4xx = el envío está mal y reintentar no lo arregla: se descarta.
         if (r.ok || (r.status >= 400 && r.status < 500)) {
           guardarColaCrm(leerColaCrm().filter(function (x) { return x.id !== item.id; }));
         }
       }, function () { /* queda en la cola */ });
-    } catch (e) { /* queda en la cola */ }
+    } catch (e) { return Promise.resolve(); /* queda en la cola */ }
+  }
+
+  /** Reintento de un envío que no se confirmó en su momento: va marcado y
+      con la fecha original, para que GHL no lo tome como un lead nuevo de
+      hoy. Pasados 7 días se descarta (si no llegó, ya no sirve reenviarlo
+      solo: queda en el Píxel/CAPI y en el WhatsApp). */
+  var CRM_TTL = 7 * 24 * 60 * 60 * 1000;
+  function reintentarCrm() {
+    var ahora = Date.now();
+    var vigentes = leerColaCrm().filter(function (it) { return it.t && ahora - it.t < CRM_TTL; });
+    guardarColaCrm(vigentes);
+    vigentes.forEach(function (it) {
+      var body = it.body;
+      try {
+        var d = JSON.parse(it.body);
+        d.fields = d.fields || {};
+        d.fields.reintento = "si";
+        body = JSON.stringify(d);
+      } catch (e) { /* va como estaba */ }
+      mandarACrm(CFG.crmUrl, { id: it.id, body: body });
+    });
   }
 
   /** Manda un payload. Si la red falla, queda en la cola para la próxima carga. */
@@ -212,7 +235,7 @@
   }
 
   function reintentarCola() {
-    if (CFG.crmUrl) leerColaCrm().forEach(function (item) { mandarACrm(CFG.crmUrl, item); });
+    if (CFG.crmUrl) reintentarCrm();
     var url = (CFG.sheets || {}).url;
     if (!url) return;
     leerCola().forEach(function (item) { mandarASheets(url, item); });
@@ -596,14 +619,21 @@
     fields.fbc = fbcActual();
     // Mismo external_id que Píxel y CAPI: GHL lo reusa en Schedule/ShowUp/Purchase.
     fields.external_id = APP.visitorId();
+    // Cuándo completó el formulario (no cuándo llegó a GHL).
+    fields.fecha_envio = new Date().toISOString();
+    fields.reintento = "no";
 
-    // 0. CRM (GoHighLevel). Fuego y olvido, con cola si la red falla.
+    // 0. CRM (GoHighLevel). Con cola si la red falla. El salto a WhatsApp
+    //    espera esta respuesta (máx. 2,5 s): si la página se va antes, el
+    //    envío llega igual (keepalive) pero queda en la cola y se reenviaba
+    //    en la próxima visita, como si fuera un lead nuevo.
+    var crmListo = Promise.resolve();
     if (CFG.crmUrl) {
-      var itemCrm = { id: leadId, body: JSON.stringify({ token: (CFG.sheets || {}).token || "", hp: honeypot || "", fields: fields }) };
+      var itemCrm = { id: leadId, t: Date.now(), body: JSON.stringify({ token: (CFG.sheets || {}).token || "", hp: honeypot || "", fields: fields }) };
       var colaCrm = leerColaCrm();
       colaCrm.push(itemCrm);
       guardarColaCrm(colaCrm);
-      mandarACrm(CFG.crmUrl, itemCrm);
+      crmListo = mandarACrm(CFG.crmUrl, itemCrm);
     }
 
     // 1. Sheets. Fuego y olvido: nunca demora el paso a WhatsApp.
@@ -647,7 +677,7 @@
       var msg = plantilla((F.whatsapp && F.whatsapp.mensaje) || "", porClave);
       var url = "https://wa.me/" + (CFG.whatsapp || "") + "?text=" + encodeURIComponent(msg);
       pantallaFinal("califica", url, nombre);
-      irAWhatsApp(url);
+      irAWhatsApp(url, crmListo);
     } else {
       datosLead.motivo = cal.motivo || "";
       APP.pixelCustom("LeadNoCalifica", datosLead, { eventID: leadId });
@@ -694,15 +724,20 @@
   }
 
   /** Redirige ya. Espera como mucho 300 ms a que GA4 confirme el evento. */
-  function irAWhatsApp(url) {
-    var fue = false;
+  /** Salta a WhatsApp cuando GHL confirmó el lead y GA4 el evento, o a
+      los 2,5 s como mucho (nunca deja a la persona esperando). */
+  function irAWhatsApp(url, crmListo) {
+    var fue = false, ga = false, crm = false;
     function go() {
       if (fue) return;
       fue = true;
       location.href = url;
     }
-    APP.track("whatsapp_redirect", { origen: "auto", event_callback: go, event_timeout: 300 });
-    setTimeout(go, 300);
+    function quizas() { if (ga && crm) go(); }
+    APP.track("whatsapp_redirect", { origen: "auto", event_callback: function () { ga = true; quizas(); }, event_timeout: 300 });
+    setTimeout(function () { ga = true; quizas(); }, 300);
+    (crmListo || Promise.resolve()).then(function () { crm = true; quizas(); }, function () { crm = true; quizas(); });
+    setTimeout(go, 2500);
   }
 
   function pantallaFinal(tipo, url, nombre) {

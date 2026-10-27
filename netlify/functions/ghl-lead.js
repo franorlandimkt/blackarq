@@ -14,6 +14,9 @@
                   que_busca, disposicion_invertir (+ cualquier pregunta nueva,
                   con su `columna` pasada a snake_case)
      lead:        lead_id, ref_whatsapp, ruta, califica, motivo_descalificacion
+                  fecha_envio (cuándo completó el formulario, ISO),
+                  reintento ("no" = envío normal; "si" = reenvío de un envío
+                  que no se confirmó: mismo lead_id, NO es un lead nuevo)
      atribución:  cta_origen, ctas_sesion, utm_source, utm_medium,
                   utm_campaign, utm_term, utm_content, campaign_id, adset_id,
                   ad_id, placement, fbclid, fbp, fbc, external_id,

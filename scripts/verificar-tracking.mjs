@@ -12,6 +12,11 @@
      - Volver de WhatsApp no repite eventos.
      - Retomar el formulario después de recargar vuelve a mandar el paso 1.
      - El fbc armado a mano usa la hora del clic, no la del envío.
+     - Volver a entrar a la landing días después NO reenvía el lead a GHL
+       (antes se reenviaba y GHL lo tomaba como un contacto nuevo de ese día).
+     - Un reenvío real (GHL no confirmó) va marcado reintento = "si" con la
+       fecha_envio original; los pendientes viejos (> 7 días o sin fecha) se
+       descartan.
 
    Uso (con Playwright instalado, local o global):
      node scripts/verificar-tracking.mjs
@@ -241,6 +246,55 @@ console.log("\n6. Abrir, cerrar y volver a abrir sin enviar");
   const fbq = await v.fbq();
   ok(n(fbq, "InitiateCheckout").length === 1, "un solo InitiateCheckout por visita");
   ok(n(fbq, "PageView").length === 1, "un solo PageView (abrir/cerrar no suma páginas)");
+  await v.ctx.close();
+}
+
+// ---------------------------------------------------------------- 7
+console.log("\n7. Completa, va a WhatsApp y días después vuelve a entrar");
+{
+  const v = await visita();
+  const envios = [];
+  // La función de Netlify + GHL tardan ~0,7 s en responder (como en producción).
+  await v.ctx.route("**/.netlify/functions/ghl-lead", async (route) => {
+    envios.push(JSON.parse(route.request().postData() || "{}").fields || {});
+    await new Promise((r) => setTimeout(r, 700));
+    return route.fulfill({ status: 200, body: "" });
+  });
+  await v.page.goto(BASE);
+  await abrirDesdeCta(v.page);
+  await capturarAntesDeSalir(v, () => completar(v.page));
+  await v.page.waitForTimeout(800);
+  ok(envios.length === 1 && envios[0].reintento === "no" && !!envios[0].fecha_envio, "un envío a GHL con fecha_envio y reintento = no");
+  const p2 = await v.ctx.newPage();
+  await p2.goto(BASE);
+  await p2.waitForTimeout(2500);
+  ok(envios.length === 1, "volver a entrar no reenvía el lead a GHL");
+  await v.ctx.close();
+}
+
+// ---------------------------------------------------------------- 8
+console.log("\n8. Pendientes viejos en el celular");
+{
+  const v = await visita();
+  const envios = [];
+  await v.ctx.route("**/.netlify/functions/ghl-lead", (route) => {
+    envios.push(JSON.parse(route.request().postData() || "{}").fields || {});
+    return route.fulfill({ status: 200, body: "" });
+  });
+  await v.page.addInitScript(() => {
+    if (sessionStorage.getItem("seed")) return;
+    sessionStorage.setItem("seed", "1");
+    const body = (id) => JSON.stringify({ token: "x", hp: "", fields: { lead_id: id, reintento: "no" } });
+    localStorage.setItem("black:crm_cola", JSON.stringify([
+      { id: "sin-fecha", body: body("sin-fecha") },                                       // código viejo
+      { id: "viejo", t: Date.now() - 8 * 24 * 3600e3, body: body("viejo") },              // > 7 días
+      { id: "reciente", t: Date.now() - 3600e3, body: body("reciente") },                 // 1 h
+    ]));
+  });
+  await v.page.goto(BASE);
+  await v.page.waitForTimeout(2500);
+  ok(envios.length === 1 && envios[0].lead_id === "reciente", "solo se reintenta el pendiente reciente");
+  ok(envios[0] && envios[0].reintento === "si", "el reintento va marcado reintento = si");
   await v.ctx.close();
 }
 

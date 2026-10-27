@@ -31,6 +31,7 @@ Claves que llegan al webhook (planas, sin tildes, para mapear en el Workflow):
 - **Contacto:** `first_name`, `last_name`, `full_name`, `phone` (+54…), `email`, `country`, `source`, `tags` (`diagnostico-black` + `califica` / `no-califica`).
 - **Respuestas:** `situacion`, `zona`, `presupuesto`, `plazo`, `visito_propiedad`, `que_busca`, `disposicion_invertir`. Una pregunta nueva llega con su `columna` en snake_case.
 - **Lead:** `lead_id`, `ref_whatsapp` (la `Ref. BLK-XXXX` del WhatsApp), `ruta`, `califica` ("Sí"/"No"), `motivo_descalificacion`.
+- **Envío:** `fecha_envio` (cuándo completó el formulario) y `reintento` (`no` / `si`). Un `si` es el mismo lead reenviado porque en su momento no se confirmó (mismo `lead_id`): no es un contacto nuevo. El salto a WhatsApp espera la confirmación de GHL (hasta 2,5 s); los pendientes de más de 7 días se descartan.
 - **Atribución:** `cta_origen`, `ctas_sesion`, `utm_*`, `campaign_id`, `adset_id`, `ad_id`, `placement`, `fbclid`, `fbp`, `fbc`, `external_id` (el mismo que usan Píxel y CAPI), `ft_*` (primer toque), `dispositivo`, `url`, `referrer`.
 
 `fbc`, `fbp`, `external_id`, email y teléfono quedan en el contacto para que los Workflows de etapa (Schedule, ShowUp, Purchase) los manden a Meta.
