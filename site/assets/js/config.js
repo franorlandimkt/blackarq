@@ -19,6 +19,8 @@ window.BLACK = {
      para deduplicar si después se suma la API de Conversiones).
      Meta Business > Administrador de eventos > tu píxel > ID.
      (GA4 está instalado en el <head> de index.html: G-EE9PC274XF.)        */
+  /* El PageView sale desde el <head> de index.html, obras y estudio, con
+     este mismo ID escrito ahí: si lo cambiás, cambialo también en esos 3. */
   metaPixelId: "1638281244623196",
   /* Lead también por API de Conversiones (función de Netlify). El token NO
      va acá: es la variable META_CAPI_TOKEN en Netlify. Vacío = no se usa. */

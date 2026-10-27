@@ -27,8 +27,10 @@
     if (typeof window.gtag === "function") window.gtag("event", evento, params || {});
   }
 
+  /** Respaldo: el Píxel y el PageView ya salen desde el <head> de cada
+      página. Esto solo corre si una página no trae ese bloque. */
   function initPixel() {
-    if (!CFG.metaPixelId) return;
+    if (!CFG.metaPixelId || window.fbq) return;
     /* eslint-disable */
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;

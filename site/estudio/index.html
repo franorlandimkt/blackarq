@@ -8,6 +8,25 @@
 <meta name="theme-color" content="#0A0A0A">
 <link rel="canonical" href="https://blackarquitectura.com/estudio/">
 <script>document.documentElement.className='js'</script>
+<!-- Píxel de Meta, lo primero del <head>. Si esperara a site.js (al final
+     del body), el PageView saldría recién con la página entera cargada y
+     quien se va antes no cuenta como visita a la página de destino.
+     El ID es el mismo de config.js (metaPixelId): si cambia, cambiarlo en
+     los dos. external_id usa la misma clave que site.js (black:vid). -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq.disablePushState=true;
+(function(){var k='black:vid',n=Date.now(),id;
+try{var o=JSON.parse(localStorage.getItem(k)||'null');if(o&&o.id&&o.exp>n)id=o.id;}catch(x){}
+if(!id){id='v-'+n.toString(36)+'-'+Math.random().toString(36).slice(2,10);
+try{localStorage.setItem(k,JSON.stringify({id:id,exp:n+7776e6}));}catch(x){}}
+fbq('init','1638281244623196',{external_id:id});fbq('track','PageView');})();
+</script>
+
 <script>
 (function(){var id='G-EE9PC274XF';window.dataLayer=window.dataLayer||[];
 window.gtag=function(){dataLayer.push(arguments)};
@@ -86,7 +105,7 @@ gtag('js',new Date());gtag('config',id);})();
   </div>
 </footer>
 
-<script src="../assets/js/config.js?v=20261004" defer></script>
-<script src="../assets/js/site.js?v=20261020" defer></script>
+<script src="../assets/js/config.js?v=20261027" defer></script>
+<script src="../assets/js/site.js?v=20261027" defer></script>
 </body>
 </html>
