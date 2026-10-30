@@ -154,7 +154,7 @@ Material visual pendiente (se reemplaza en `index.html`, cada lugar tiene un com
 
 ## 6. Cambios v6 (30/10): cotizador
 
-El formulario pasó de calificar al lead a **cotizar su caso**: 5 preguntas + datos, una carga breve y una pantalla con el rango de precio y el botón a WhatsApp. El lead se captura igual que antes (mismo momento, mismos eventos, mismo envío a GHL). Informe completo con capturas y auditoría: `docs/cambios-v6-cotizador.md`. Punto de restauración: tag `restore-pre-cotizador`.
+El formulario pasó de calificar al lead a **cotizar su caso**: 5 preguntas + datos, una carga breve y una pantalla con el rango de precio y el botón a WhatsApp. El lead se captura igual que antes (mismo momento, mismos eventos, mismo envío a GHL). Informe completo con capturas y auditoría: `docs/cambios-v6-cotizador.md`. Punto de restauración: commit `64c31fb` (el `main` anterior al cotizador).
 
 **Formulario (6 pasos en las dos rutas, `form-config.js`):** momento (define la ruta) → cuántas propiedades (compra) o tipo de reforma (reforma; "Puntual" no califica, como la reforma chica de antes) → zona → dudas (varias; "estado real" marca visita, "planos y documentación" marca revisión documental) → urgencia → datos (nombre y WhatsApp obligatorios, **email opcional**). Encabezado: "Paso {n} de {total} · Cotizando tu caso". Presupuesto, plazo de compra, objetivos y "¿visitó?" salieron del formulario: los pregunta Esteban por WhatsApp.
 

@@ -2,7 +2,7 @@
 
 El formulario dejó de ser una calificación del lead y pasó a ser un **cotizador**: 5 preguntas + datos, una carga de 2 s y una pantalla con el rango de precio del caso y el botón a WhatsApp con Esteban. El lead se captura igual que antes (mismo momento, mismos eventos, mismo envío a GHL). Ya no hay salto automático a WhatsApp.
 
-- Punto de restauración: tag `restore-pre-cotizador` (el estado anterior a cualquier cambio).
+- Punto de restauración: commit `64c31fb` (el `main` anterior a cualquier cambio). Se marcó con el tag `restore-pre-cotizador`, pero el entorno no permite subir tags: si se quiere el tag en GitHub, `git tag restore-pre-cotizador 64c31fb && git push origin restore-pre-cotizador`.
 - Rama: `claude/vigilant-thompson-p0gr2m` (ver "Decisiones").
 - `node scripts/verificar-tracking.mjs`: **en verde** (72 comprobaciones).
 
@@ -91,7 +91,7 @@ Rango estimado: $900.000 – $1.400.000.
 
 En cada envío, `Lead` por Píxel y por CAPI comparten `eventID` = `lead_id`. `CotizacionVista` usa `lead_id-cot` y `Contact` `lead_id-wa`: los tres son distintos entre sí y cada uno es igual en Píxel y CAPI (comprobado en el script y en la prueba de punta a punta).
 
-### 4. Comparación con la línea base (`restore-pre-cotizador`)
+### 4. Comparación con la línea base (`64c31fb`, tag local `restore-pre-cotizador`)
 
 Mismo recorrido en las dos versiones (UTMs + `campaign_id`/`adset_id`/`ad_id`/`placement` + `fbclid`): los campos de atribución del payload a GHL (`cta_origen`, `ctas_sesion`, `utm_*`, IDs de campaña, `placement`, `fbclid`, `ft_*`, `dispositivo`, `url`, `referrer`) son **idénticos** (la `url` solo difiere en el puerto del servidor local). `external_id` es el mismo id de visitante en las dos (`v-…`, igual a `BLACK_APP.visitorId()`), `fbp` con el formato `fb.1.<hora>.<n>` y `fbc` = `fb.1.<hora del clic>.CLICKX` en las dos.
 
