@@ -8,7 +8,7 @@
    {
      id:        identificador único (sin espacios).
      clave:     (opcional) nombre del dato. Dos preguntas excluyentes pueden
-                compartir clave (ej. los dos presupuestos → "presupuesto").
+                compartir clave (ej. una pregunta por ruta con el mismo dato).
                 Si falta, se usa el id. Es lo que se usa en {llaves} del
                 mensaje de WhatsApp.
      columna:   encabezado de la columna en la hoja "Leads" de Google
@@ -51,9 +51,9 @@ window.BLACK_FORM = {
   rutas: { compra: "Compra", reforma: "Reforma" },
 
   /* Cada pregunta existe porque mueve el rango o el alcance. Lo que no lo
-     mueve (presupuesto, plazo de compra, objetivos, si visitó) lo pregunta
-     Esteban por WhatsApp. Orden: momento → propiedades / tipo de reforma →
-     zona → dudas → urgencia → datos (6 pasos en las dos rutas). */
+     mueve lo pregunta Esteban por WhatsApp. Orden: momento → propiedades /
+     tipo de reforma → zona → dudas → urgencia → datos (6 pasos en las dos
+     rutas). */
   preguntas: [
     /* 1 ------------------------------------------------------------------ */
     {
