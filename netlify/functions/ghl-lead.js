@@ -10,9 +10,16 @@
    Claves que llegan al webhook (todas planas, sin tildes ni espacios, para
    mapearlas fácil en el Workflow):
      contacto:    first_name, last_name, full_name, phone, email, source, tags
-     respuestas:  situacion, zona, presupuesto, plazo, visito_propiedad,
-                  que_busca, disposicion_invertir (+ cualquier pregunta nueva,
-                  con su `columna` pasada a snake_case)
+     respuestas:  momento, propiedades (compra), tipo_reforma (reforma),
+                  zona, dudas, urgencia (+ cualquier pregunta nueva, con su
+                  `columna` pasada a snake_case)
+     cotización:  rango ("1"/"2"/"3"; vacío en reforma), rango_nombre,
+                  cotizacion_min, cotizacion_max (números sin formato),
+                  cotizacion_texto ("$500.000 – $900.000"),
+                  necesita_visita, revision_documental ("Sí"/"No")
+     viejas:      presupuesto, plazo, visito_propiedad, que_busca,
+                  disposicion_invertir: llegan vacías (las manda form.js)
+                  para que el Workflow no se rompa si las tenía mapeadas.
      lead:        lead_id, ref_whatsapp, ruta, califica, motivo_descalificacion
                   fecha_envio (cuándo completó el formulario, ISO),
                   reintento ("no" = envío normal; "si" = reenvío de un envío
@@ -29,8 +36,23 @@ const FORM_TOKEN = process.env.FORM_TOKEN || "blk_1c8fdfbb46be0a9ec65a444f";
 // Columnas del formulario con nombre corto conocido. Las demás se pasan a
 // snake_case solas (una pregunta nueva no rompe nada).
 const CLAVES = {
-  "Situación": "situacion",
+  // Cotizador (v6)
+  "Momento": "momento",
+  "Propiedades": "propiedades",
+  "Tipo de reforma": "tipo_reforma",
   "Zona": "zona",
+  "Dudas": "dudas",
+  "Urgencia": "urgencia",
+  rango: "rango",
+  rango_nombre: "rango_nombre",
+  cotizacion_min: "cotizacion_min",
+  cotizacion_max: "cotizacion_max",
+  cotizacion_texto: "cotizacion_texto",
+  necesita_visita: "necesita_visita",
+  revision_documental: "revision_documental",
+  // Formulario anterior: siguen por si llega un reintento de un envío viejo
+  // (la cola del navegador guarda hasta 7 días).
+  "Situación": "situacion",
   "Presupuesto": "presupuesto",
   "Plazo": "plazo",
   "¿Visitó la propiedad?": "visito_propiedad",

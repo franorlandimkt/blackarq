@@ -2,8 +2,10 @@
    API DE CONVERSIONES DE META (lado servidor)
    Recibe eventos desde form.js y los reenvía a Meta con el mismo event_id
    que el Píxel (Meta deduplica): InitiateCheckout (abre el formulario),
-   FormularioPaso (avanza un paso), Lead (envío calificado) y
-   LeadNoCalifica (envío que no califica). Nombre, email y teléfono se hashean acá
+   FormularioPaso (avanza un paso), Lead (envío calificado),
+   LeadNoCalifica (envío que no califica), CotizacionVista (ve la pantalla
+   con su cotización) y Contact (toca el botón de WhatsApp del resultado).
+   Nombre, email y teléfono se hashean acá
    (SHA-256), nunca viajan en claro a Meta.
    Variables de entorno en Netlify (Site configuration > Environment variables):
      META_CAPI_TOKEN   token de acceso de la API de Conversiones (obligatoria)
@@ -16,7 +18,7 @@ const crypto = require("crypto");
 const PIXEL_ID = process.env.META_PIXEL_ID || "1638281244623196";
 const API = "https://graph.facebook.com/v21.0/";
 
-const EVENTOS = ["Lead", "InitiateCheckout", "FormularioPaso", "LeadNoCalifica"];
+const EVENTOS = ["Lead", "InitiateCheckout", "FormularioPaso", "LeadNoCalifica", "CotizacionVista", "Contact"];
 
 const sha = (v) => crypto.createHash("sha256").update(String(v).trim().toLowerCase()).digest("hex");
 
@@ -52,6 +54,8 @@ exports.handler = async (event) => {
   const partes = String(d.nombre || "").trim().split(/\s+/).filter(Boolean);
   if (partes.length) user.fn = [sha(partes[0])];
   if (partes.length > 1) user.ln = [sha(partes.slice(1).join(" "))];
+  // El email es opcional: vacío o mal escrito no se manda (nunca el hash
+  // de un texto vacío).
   const em = String(d.email || "").trim().toLowerCase();
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) user.em = [sha(em)];
   user.country = [sha("ar")];
