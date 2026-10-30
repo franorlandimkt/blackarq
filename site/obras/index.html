@@ -8,15 +8,35 @@
 <meta name="theme-color" content="#0A0A0A">
 <link rel="canonical" href="https://blackarquitectura.com/obras/">
 <script>document.documentElement.className='js'</script>
-<!-- Píxel de Meta, lo primero del <head>. Si esperara a site.js (al final
-     del body), el PageView saldría recién con la página entera cargada y
-     quien se va antes no cuenta como visita a la página de destino.
+<!-- Píxel de Meta, lo primero del <head>.
+     PageView por "píxel de imagen" (el método sin JavaScript de Meta): una
+     sola petición mínima que sale apenas abre la página. Si esperara al
+     script de Meta (fbevents.js + su configuración, ~280 KB que bajan uno
+     detrás del otro), en un celular con señal floja tardaba 4 a 14 s y
+     quien se iba antes no contaba como visita a la página de destino.
+     Las cookies _fbp/_fbc se crean acá con el formato de Meta; el script
+     las reusa, así todos los eventos quedan atados al mismo clic.
+     El script completo carga igual (con prioridad alta) para el resto de
+     los eventos, pero ya no manda PageView: habría dos.
      El ID es el mismo de config.js (metaPixelId): si cambia, cambiarlo en
      los dos. external_id usa la misma clave que site.js (black:vid). -->
 <script>
+(function(w,d,l){var P='1638281244623196',n=Date.now(),h=l.hostname,
+ip=/^[\d.]+$|:/.test(h)||h.indexOf('.')<0,i=ip?1:h.split('.').length-1,
+dom=ip?'':';domain=.'+h,sec=l.protocol==='https:'?';Secure':'',
+ck=function(c){var m=d.cookie.match('(?:^|; )'+c+'=([^;]*)');return m?m[1]:''},
+pon=function(c,v){d.cookie=c+'='+v+';path=/;max-age=7776000;SameSite=Lax'+dom+sec},
+fbp=ck('_fbp'),fbc=ck('_fbc'),cl=(l.search.match(/[?&]fbclid=([^&#]*)/)||[])[1],
+eid='pv-'+n.toString(36)+'-'+Math.random().toString(36).slice(2,8),q;
+if(!fbp){fbp='fb.'+i+'.'+n+'.'+Math.floor(1e9+Math.random()*9e9);pon('_fbp',fbp);}
+if(cl&&fbc.split('.').slice(3).join('.')!==cl){fbc='fb.'+i+'.'+n+'.'+cl;pon('_fbc',fbc);}
+q='id='+P+'&ev=PageView&eid='+eid+'&dl='+encodeURIComponent(l.href)+'&rl='+encodeURIComponent(d.referrer)+
+'&if=false&ts='+n+'&sw='+screen.width+'&sh='+screen.height+'&fbp='+encodeURIComponent(fbp)+(fbc?'&fbc='+encodeURIComponent(fbc):'');
+w.__blackPV=eid;(new Image()).src='https://www.facebook.com/tr/?'+q;
+})(window,document,location);
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.fetchPriority='high';
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
 (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq.disablePushState=true;
@@ -24,19 +44,18 @@ fbq.disablePushState=true;
 try{var o=JSON.parse(localStorage.getItem(k)||'null');if(o&&o.id&&o.exp>n)id=o.id;}catch(x){}
 if(!id){id='v-'+n.toString(36)+'-'+Math.random().toString(36).slice(2,10);
 try{localStorage.setItem(k,JSON.stringify({id:id,exp:n+7776e6}));}catch(x){}}
-fbq('init','1638281244623196',{external_id:id});fbq('track','PageView');})();
+fbq('init','1638281244623196',{external_id:id});})();
 </script>
 
 <script>
 (function(){var id='G-EE9PC274XF';window.dataLayer=window.dataLayer||[];
 window.gtag=function(){dataLayer.push(arguments)};
 var h=location.hostname,local=location.protocol==='file:'||/^(localhost|127\.|\[::1\]|.*\.localhost$|.*\.test$)/.test(h);
-if(!local){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(s);}
+if(!local){var cargar=function(){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(s);};if(document.readyState==='complete')cargar();else addEventListener('load',function(){setTimeout(cargar,0)});}
 gtag('js',new Date());gtag('config',id);})();
 </script>
 <link rel="icon" href="../assets/brand/icon-512.png" type="image/png">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/antonio/v22/gNMEW3NwSYq_9WD3yHQiFQ.woff2" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap"></noscript>
 <link rel="stylesheet" href="../assets/css/paginas.css?v=20261007">

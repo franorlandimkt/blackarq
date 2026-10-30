@@ -63,12 +63,14 @@ const browser = await chromium.launch({ headless: true });
 
 async function visita() {
   const ctx = await browser.newContext({ ...devices["iPhone 13"], userAgent: UA });
-  const v = { ctx, capi: [], crm: 0 };
+  const v = { ctx, capi: [], crm: 0, pvImg: 0 };
   await ctx.route("**/*", (route) => {
     const u = route.request().url();
     if (u.includes("/.netlify/functions/meta-capi")) { v.capi.push(JSON.parse(route.request().postData() || "{}")); return route.fulfill({ status: 200, body: "ok" }); }
     if (u.includes("/.netlify/functions/ghl-lead")) { v.crm++; return route.fulfill({ status: 200, body: "" }); }
     if (u.startsWith("https://wa.me/")) return route.fulfill({ status: 200, contentType: "text/html", body: "<html><body>WhatsApp</body></html>" });
+    // PageView por píxel de imagen (sale desde el <head>, sin fbevents.js).
+    if (u.startsWith("https://www.facebook.com/tr") && /[?&]ev=PageView/.test(u)) v.pvImg++;
     if (u.startsWith(BASE)) return route.continue();
     return route.abort(); // fbevents, fuentes, etc.: sin red
   });
@@ -245,7 +247,7 @@ console.log("\n6. Abrir, cerrar y volver a abrir sin enviar");
   await abrirDesdeCta(v.page);
   const fbq = await v.fbq();
   ok(n(fbq, "InitiateCheckout").length === 1, "un solo InitiateCheckout por visita");
-  ok(n(fbq, "PageView").length === 1, "un solo PageView (abrir/cerrar no suma páginas)");
+  ok(v.pvImg === 1 && n(fbq, "PageView").length === 0, "un solo PageView, por píxel de imagen (abrir/cerrar no suma páginas)");
   await v.ctx.close();
 }
 

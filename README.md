@@ -95,7 +95,7 @@ Solo fórmulas, sin carga manual: totales; leads, vendidos, tasa de venta y mont
 
 `metaPixelId` en `config.js`. Vacío = no se carga. Con ID: `PageView`, `InitiateCheckout` al abrir el formulario y `Lead` solo en envíos que califican, con `eventID = lead_id` (Meta deduplica con la API de Conversiones).
 
-**El `PageView` sale desde el `<head>`** de `index.html`, `obras/` y `estudio/` (el Píxel se carga ahí, con el ID escrito a mano), no desde `site.js`: así se registra la visita aunque la persona se vaya antes de que termine de cargar la página, y sube la tasa de visitas a la página de destino en Meta. Si cambia el ID del Píxel, cambiarlo en `config.js` y en esas 3 páginas.
+**El `PageView` sale desde el `<head>` por píxel de imagen** (una petición a `facebook.com/tr` sin esperar a `fbevents.js`) en `index.html`, `obras/` y `estudio/`. Antes dependía de que bajaran `fbevents.js` y su configuración (~280 KB, uno detrás del otro): con señal floja el PageView salía a los 4–14 s y quien se iba antes no contaba como visita a la página de destino; ahora sale en 0,2–0,4 s. El mismo bloque crea `_fbp`/`_fbc` con el formato de Meta y el script los reusa, así todos los eventos quedan atados al mismo clic. `fbevents.js` carga igual (prioridad alta) para el resto de los eventos, pero ya no manda PageView. GA4 (`gtag.js`, ~180 KB) carga recién con la página completa para no competir. Si cambia el ID del Píxel, cambiarlo en `config.js` y en esas 3 páginas.
 
 **Eventos de Meta (Píxel + API de Conversiones, mismo `eventID` en los dos, Meta deduplica):**
 
