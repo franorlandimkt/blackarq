@@ -3711,6 +3711,12 @@ h2 + .intro {
   .hero-plazos {
     font-size: 0.8125rem;
   }
+  .hero-plazos .hp-1 {
+    display: block;
+  }
+  .hero-plazos .hp-sep {
+    display: none;
+  }
 }
 @media (min-width: 1024px) {
   .hg-in {

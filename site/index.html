@@ -161,7 +161,9 @@ gtag('js',new Date());var c={};if(/[?&]ga_debug=1/.test(location.search))c.debug
         <p class="hg-caja"><span class="hg-luz" aria-hidden="true"></span><span class="hg-in"><svg class="hg-ico" width="14" height="14" aria-hidden="true"><use href="#i-escudo"/></svg> Si no te damos un argumento para bajar el precio, <b>te devolvemos el dinero.</b></span></p>
       </div>
       <a class="btn btn-1 btn-l btn-lg" href="#diagnostico" data-cta="cta_hero"><span>Cotizá tu Diagnóstico</span><svg width="20" height="20" aria-hidden="true"><use href="#i-flecha"/></svg></a>
-      <p class="hero-plazos">Cotización en 1 minuto · Visita en 72 h · Informe en 7 días</p>
+      <!-- En mobile, "Cotización en 1 minuto" va en su propia línea siempre:
+           así el corte no cambia cuando carga Poppins (sin salto de diseño). -->
+      <p class="hero-plazos"><span class="hp-1">Cotización en 1 minuto</span><span class="hp-sep"> · </span>Visita en 72 h · Informe en 7 días</p>
     </div>
     <!-- Prueba: quiénes son + reseñas de Google. -->
     <div class="hero-prueba" data-h="3">
