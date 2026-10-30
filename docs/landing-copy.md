@@ -1,15 +1,15 @@
 # COPY FINAL — Diagnóstico Black (usar literal)
 
-> Fuente única del copy de la landing (`site/index.html`). Versión 2 (8/10): ajustes de Franco sobre la v1 publicada (hero nuevo, sin rótulos de sección, sin iceberg ni contador, para quién reescrito, garantía sin "qué incluye"). Es copy final: no se reescribe, no se resume, no se agregan frases. Las líneas de "Ilustración", "Material" y "Por qué" son indicaciones de diseño, no texto publicado. Los marcadores `[DATO: …]` se completan en `site/assets/js/content.js`.
+> Fuente única del copy de la landing (`site/index.html`). Versión 6 (30/10, cotizador): CTAs "Cotizá tu Diagnóstico", línea del hero, pasos 1 y 3, inversión y FAQ "¿Cuánto sale?". El copy del formulario-cotizador vive en `site/assets/js/form-config.js`. Versión 2 (8/10): ajustes de Franco sobre la v1 publicada (hero nuevo, sin rótulos de sección, sin iceberg ni contador, para quién reescrito, garantía sin "qué incluye"). Es copy final: no se reescribe, no se resume, no se agregan frases. Las líneas de "Ilustración", "Material" y "Por qué" son indicaciones de diseño, no texto publicado. Los marcadores `[DATO: …]` se completan en `site/assets/js/content.js`.
 
 ## Estrategia
 
 - **Qué se vende:** Diagnóstico Black — precio, reforma y negociación. Un arquitecto y una asesora inmobiliaria analizan la propiedad antes de que ofertes. Visita en 72 h, informe en 7 días.
-- **Público (uno):** quien encontró una o varias propiedades en CABA, Zona Norte o Zona Oeste y está por ofertar. El que ya compró tiene una línea propia y entra por el formulario ("Ya tengo el inmueble").
+- **Público (uno):** quien encontró una o varias propiedades en CABA, Zona Norte o Zona Oeste y está por ofertar. El que ya compró tiene una línea propia y entra por el formulario ("Ya es mía y quiero reformarla").
 - **Ángulo:** negociación con argumentos. Motor: deseo de pagar lo justo; contracara, miedo a pagar de más.
 - **Promesa central:** antes de ofertar, sabé cuánto vale la propiedad, cuánto te cuesta dejarla como la querés y hasta dónde negociar.
-- **Precio:** no aparece en ninguna parte de la página.
-- **Conversión:** formulario multipaso existente → WhatsApp (sin cambios).
+- **Precio:** no aparece en la página; lo muestra el cotizador (formulario), con el rango de cada caso.
+- **Conversión:** cotizador (5 preguntas + datos) → pantalla de resultado con el rango → WhatsApp con Esteban (botón, sin salto automático).
 - **Anuncio de origen:** Ángulo 14 (Lorena, USD 40.000). También recibe tráfico de los Ángulos 1, 4, 9 y 13.
 - **Formato:** solo texto + ilustraciones, sin video.
 
@@ -26,11 +26,11 @@
 - Presupuesto estimado para dejarla como la querés
 - Argumentos concretos para negociar el precio
 
-**CTA:** Quiero analizar mi propiedad →
+**CTA:** Cotizá tu Diagnóstico →
 
 **Arriba del CTA (píldora con brillo):** Si no te damos un argumento para bajar el precio, te devolvemos el dinero.
 
-**Debajo del CTA:** Visita en 72 h · Informe en 7 días
+**Debajo del CTA:** Cotización en 1 minuto · Visita en 72 h · Informe en 7 días
 
 **Prueba:** fotos de Esteban y Carla · Esteban Crimi · Arquitecto y Maestro Mayor de Obras · Carla La Porta · Asesora inmobiliaria · ★★★★★ 5,0 en Google · 41 reseñas
 
@@ -118,9 +118,9 @@ Todo ordenado en un informe y una reunión de 1 hora donde te lo traducimos a un
 
 **Subtítulo:** Del formulario a tu oferta. Sin sorpresas.
 
-1. **Completás el formulario de admisión.** 6 preguntas para saber si realmente te podemos ayudar.
+1. **Completás 5 preguntas y ves cuánto sale para tu caso.**
 2. **Nos escribís por WhatsApp.** Al terminar el formulario, te asesoramos por WhatsApp: entendemos tu caso y qué propiedades querés analizar.
-3. **Te pasamos la propuesta.** Qué incluye y su valor según cuántas propiedades sean. Sin compromiso hasta que confirmes.
+3. **Confirmás el alcance con Esteban por WhatsApp.** Qué incluye y su valor según cuántas propiedades sean. Sin compromiso hasta que confirmes.
 4. **Confirmás y nos mandás todo.** Publicación, fotos, videos y, sobre todo, los planos. Empezamos a analizar antes de ir.
 5. **Visita técnica dentro de las 72 h.** Te llevás la minuta en el momento.
 6. **Analizamos mercado y reforma.** Valor real, inversión estimada por etapas y rango de negociación.
@@ -209,11 +209,16 @@ Si después de analizarla creemos que no te conviene, te lo vamos a decir igual.
 
 **Y se descuenta:** si después hacés el proyecto o la reforma con Black, el Diagnóstico se descuenta de los honorarios.
 
-El valor depende de cuántas propiedades analicemos. Te lo pasamos por WhatsApp apenas completás el formulario.
+El valor depende de cuántas propiedades analicemos y del alcance. Cotizalo en un minuto.
+
+**CTA:** Cotizá tu Diagnóstico
 
 ---
 
 ## 11. Preguntas frecuentes
+
+**"¿Cuánto sale?"**
+Depende de tu caso: cuántas propiedades, con o sin visita, con o sin revisión documental. Cotizalo acá en un minuto; después Esteban te confirma el valor exacto por WhatsApp.
 
 **"La inmobiliaria me dijo que está todo perfecto."**
 Puede ser. Pero la inmobiliaria cobra si firmás; nosotros cobramos lo mismo si comprás o no. Un diagnóstico vale más cuando quien lo da no gana con la operación.
@@ -237,7 +242,7 @@ Nuestro equipo legal hace una revisión preliminar de la documentación y los pl
 CABA, Zona Norte y Zona Oeste del GBA. Otras localidades se evalúan según el caso.
 
 **"Ya tengo la propiedad. ¿Me sirve?"**
-Sí. El mismo análisis te dice qué reforma conviene, en qué orden y cuánto cuesta. Elegí "Ya tengo el inmueble" en el formulario.
+Sí. El mismo análisis te dice qué reforma conviene, en qué orden y cuánto cuesta. Elegí "Ya es mía y quiero reformarla" en el formulario.
 
 **"¿Tengo que pagar para que me digan si conviene?"**
 Sí, y es justamente lo que garantiza que nadie gana nada si comprás. Y si no te damos un argumento para bajar el precio, te devolvemos el dinero.
@@ -250,17 +255,26 @@ Sí, y es justamente lo que garantiza que nadie gana nada si comprás. Y si no t
 
 **Bajada:** *"Quiero estar tranquilo de que estoy tomando una buena decisión."* Esa tranquilidad empieza antes de la oferta.
 
-**CTA:** Quiero mi Diagnóstico Black
+**CTA:** Cotizá tu Diagnóstico
 
 **Debajo del CTA:** Visita en 72 h · Informe en 7 días · Garantía de devolución.
+
+**Todos los botones que abren el formulario** (encabezado, hero, intermedios, cierre y CTA fijo de mobile): **Cotizá tu Diagnóstico**.
 
 **Footer:** zonas de cobertura (sin mapa ni dirección). Sin Instagram ni email.
 
 ---
 
-## Formulario y Sheets
+## Formulario-cotizador (v6)
 
-Sin cambios: se mantiene el formulario actual, su lógica condicional, la página de gracias, el mensaje de WhatsApp, la integración con Google Sheets y el tracking.
+El copy del formulario está en `site/assets/js/form-config.js` (preguntas, opciones, montos y textos de la pantalla de resultado). Resumen:
+
+- **Intro:** No es lo mismo analizar una propiedad que tres, ni con visita que por planos. Contanos tu caso en 5 preguntas y te decimos cuánto sale el Diagnóstico para vos. · *Menos de un minuto. Sin compromiso.*
+- **Pasos:** momento → cuántas propiedades (compra) o tipo de reforma (reforma) → zona → dudas → urgencia → datos (email opcional). "Paso {n} de {total} · Cotizando tu caso".
+- **Carga:** Leyendo tu caso… → Definiendo el alcance… → Armando tu cotización…
+- **Resultado (compra):** "Listo, {nombre}. Para tu caso, el Diagnóstico Black sale entre {min} y {max}." + alcance + tres rangos (Análisis por planos $300.000 – $500.000 · Con visita técnica $500.000 – $900.000 · Comparativo $900.000 – $1.400.000), el del caso resaltado ("Tu caso") + "Fuera de CABA, los traslados se cotizan aparte." (si aplica) + "Se descuenta entero de los honorarios si después hacés el proyecto o la reforma con Black. Y si en el informe no encontramos ningún argumento para negociar, te lo devolvemos." + "En el caso de Lorena (Devoto), fue una fracción mínima de los USD 40.000 que dejó de pagar." + botón **Hablá con Esteban y empezá a resolver tu propiedad** + "Te responde él, en el día. Si preferís, te escribimos nosotros." + "Cotizar otro caso".
+- **Resultado (reforma):** "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles." + el mismo párrafo y el mismo botón.
+- **No califica:** sin cambios (Instagram).
 
 ---
 
