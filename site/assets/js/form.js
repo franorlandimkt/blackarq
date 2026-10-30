@@ -14,8 +14,12 @@
         en la próxima carga de la página. El script descarta duplicados por
         lead_id.
      2. Eventos de GA4 (+ Lead de Meta solo si califica, con eventID =
-        lead_id para deduplicar con la API de Conversiones).
-     3. Califica → WhatsApp con el mensaje prellenado.
+        lead_id para deduplicar con la API de Conversiones). El Lead sale
+        acá, antes de mostrar la cotización.
+     3. Califica → pantalla de carga (~2 s) → pantalla de resultado con la
+        cotización (ruta compra) o sin rango (ruta reforma), con el botón a
+        WhatsApp. No hay salto automático: solo se va a WhatsApp si toca
+        el botón (y ahí espera la confirmación de GHL, hasta 2,5 s).
         No califica → pantalla final con el Instagram.
    ========================================================================== */
 (function () {
@@ -42,23 +46,52 @@
   /* ---------------------------------------------------------- estado --- */
   // r: respuestas por id de pregunta (string o array). otros: texto de "Otro".
   // d: datos personales. i: índice del paso actual dentro de los visibles.
-  var S = cargar() || { r: {}, otros: {}, d: {}, i: 0 };
+  var preguntas = F.preguntas || [];
+  var primera = preguntas[0];
+
+  var S = cargar() || nuevoEstado();
   var abierto = false, enviado = false, inicioTrackeado = false, ultimaRuta = null;
+  // Después de enviar: lo que se muestra si cierra y vuelve a abrir el
+  // formulario (pantalla de resultado), y cuándo envió (a los 30 min, o con
+  // "Cotizar otro caso", arranca de cero).
+  var final = null, enviadoEn = 0;
+  var REINICIO = 30 * 60 * 1000;
   // Pasos ya informados a Meta en este formulario (no se repiten al volver atrás).
   var pasosMeta = {};
   var abridor = null;
 
+  function nuevoEstado() { return { r: {}, otros: {}, d: {}, i: 0 }; }
+
+  /** Borrador de esta pestaña. Si tiene respuestas que ya no existen (por
+      ejemplo, de las preguntas anteriores al cotizador), se descarta. */
   function cargar() {
-    try { return JSON.parse(sessionStorage.getItem(DRAFT) || "null"); } catch (e) { return null; }
+    var b = null;
+    try { b = JSON.parse(sessionStorage.getItem(DRAFT) || "null"); } catch (e) { b = null; }
+    if (!b) return null;
+    if (!borradorValido(b)) {
+      try { sessionStorage.removeItem(DRAFT); } catch (e) { /* sin storage */ }
+      return null;
+    }
+    return b;
+  }
+  function borradorValido(b) {
+    if (typeof b !== "object" || !b.r || typeof b.r !== "object" || typeof b.i !== "number") return false;
+    b.otros = b.otros || {};
+    b.d = b.d || {};
+    return Object.keys(b.r).every(function (id) {
+      var p = preguntas.filter(function (x) { return x.id === id; })[0];
+      if (!p) return false;
+      var v = b.r[id];
+      if (p.tipo === "multiple") return Array.isArray(v) && v.every(function (x) { return !!opcion(p, x); });
+      if (p.tipo === "unica") return !!opcion(p, v);
+      return typeof v === "string";
+    });
   }
   function guardar() {
     try { sessionStorage.setItem(DRAFT, JSON.stringify(S)); } catch (e) { /* sin storage */ }
   }
 
   /* ---------------------------------------------------------- lógica --- */
-
-  var preguntas = F.preguntas || [];
-  var primera = preguntas[0];
 
   function opcion(p, valor) {
     var ops = p.opciones || [];
@@ -94,7 +127,7 @@
   function clave(p) { return p.clave || p.id; }
 
   /** Texto final de una respuesta (multiple → unido; "Otro" → con su texto). */
-  function valorTexto(p) {
+  function valorTexto(p, sep) {
     var v = S.r[p.id];
     if (v == null) return "";
     if (p.tipo !== "multiple") return String(v);
@@ -102,7 +135,43 @@
       var o = opcion(p, x);
       if (o && o.abreTexto && S.otros[p.id]) return x + ": " + S.otros[p.id].trim();
       return x;
-    }).join(" · ");
+    }).join(sep || " · ");
+  }
+
+  /** Flags marcados en las opciones elegidas (visibles): { visita, docs }. */
+  function flags() {
+    var f = {};
+    visibles().forEach(function (p) {
+      var v = S.r[p.id];
+      if (v == null) return;
+      (Array.isArray(v) ? v : [v]).forEach(function (x) {
+        var o = opcion(p, x);
+        if (o && o.flag) f[o.flag] = true;
+      });
+    });
+    return f;
+  }
+
+  /** $300.000: punto de miles, sin decimales. */
+  function pesos(n) {
+    return "$" + String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  /** Cotización del caso según form-config.js (bloque `cotizacion`).
+      Ruta compra → { rango, ... }. Ruta reforma → rango null. */
+  function cotizar() {
+    var C = F.cotizacion || {};
+    var f = flags();
+    var out = { rango: null, visita: !!f.visita, docs: !!f.docs };
+    if (ruta() !== "compra" || typeof C.asignar !== "function") return out;
+    var n = C.asignar({ propiedades: S.r.propiedades, visita: !!f.visita, docs: !!f.docs });
+    var r = (C.rangos || []).filter(function (x) { return x.n === n; })[0];
+    if (!r) return out;
+    out.rango = r;
+    out.visita = out.visita || !!r.visita;
+    out.docs = out.docs || !!r.docs;
+    out.texto = pesos(r.min) + " – " + pesos(r.max);
+    return out;
   }
 
   /** Califica si ninguna opción elegida (en preguntas visibles) tiene noCalifica. */
@@ -571,6 +640,7 @@
 
   function enviar(pDatos, honeypot, btn) {
     enviado = true;
+    enviadoEn = Date.now();
     var span = $("span", btn);
     if (span) span.textContent = T.enviando || "Enviando…";
     btn.disabled = true;
@@ -578,6 +648,7 @@
     var lista = visibles();
     var cal = calificacion();
     var rt = ruta();
+    var cot = cotizar();
     var attr = APP.getAtribucion();
     var leadId = nuevoLeadId();
     var nombre = (S.d.nombre || "").trim();
@@ -587,15 +658,28 @@
     // usan la `columna` de cada pregunta (form-config.js).
     var fields = { lead_id: leadId, ref_whatsapp: refCorta(leadId) };
     var porClave = { nombre: nombre, lead_id: refCorta(leadId) };
+    // Para el mensaje de WhatsApp: las múltiples van separadas por ", ".
+    var paraWa = { nombre: nombre, lead_id: refCorta(leadId) };
     lista.forEach(function (p) {
       if (p.tipo === "datos") return;
       var txt = valorTexto(p);
       if (p.columna) fields[p.columna] = txt;
       porClave[clave(p)] = txt;
+      paraWa[clave(p)] = valorTexto(p, ", ");
     });
     fields.ruta = (F.rutas && F.rutas[rt]) || rt || "";
     fields.califica = cal.ok ? "Sí" : "No";
     fields.motivo_descalificacion = cal.motivo;
+    // Cotización (vacía en la ruta reforma).
+    var rg = cot.rango;
+    fields.rango = rg ? String(rg.n) : "";
+    fields.rango_nombre = rg ? rg.nombre : "";
+    fields.cotizacion_min = rg ? String(rg.min) : "";
+    fields.cotizacion_max = rg ? String(rg.max) : "";
+    fields.cotizacion_texto = rg ? cot.texto : "";
+    fields.necesita_visita = cot.visita ? "Sí" : "No";
+    fields.revision_documental = cot.docs ? "Sí" : "No";
+    paraWa.cotizacion_texto = fields.cotizacion_texto;
     lista.forEach(function (p) {
       if (p.tipo !== "datos") return;
       (p.campos || []).forEach(function (c) {
@@ -603,6 +687,7 @@
         if (c.validar === "telefonoAR") v = "+" + tel;
         fields[c.id] = v;
         porClave[c.id] = v;
+        paraWa[c.id] = v;
       });
     });
     fields.cta_origen = APP.getCta();
@@ -623,20 +708,24 @@
     fields.fecha_envio = new Date().toISOString();
     fields.reintento = "no";
 
-    // 0. CRM (GoHighLevel). Con cola si la red falla. El salto a WhatsApp
+    // 0. CRM (GoHighLevel). Con cola si la red falla. El botón de WhatsApp
     //    espera esta respuesta (máx. 2,5 s): si la página se va antes, el
     //    envío llega igual (keepalive) pero queda en la cola y se reenviaba
     //    en la próxima visita, como si fuera un lead nuevo.
     var crmListo = Promise.resolve();
     if (CFG.crmUrl) {
-      var itemCrm = { id: leadId, t: Date.now(), body: JSON.stringify({ token: (CFG.sheets || {}).token || "", hp: honeypot || "", fields: fields }) };
+      // Claves del Workflow viejo, vacías (ver ghlClavesViejas en form-config.js).
+      var fieldsCrm = {};
+      (F.ghlClavesViejas || []).forEach(function (k) { fieldsCrm[k] = ""; });
+      Object.keys(fields).forEach(function (k) { fieldsCrm[k] = fields[k]; });
+      var itemCrm = { id: leadId, t: Date.now(), body: JSON.stringify({ token: (CFG.sheets || {}).token || "", hp: honeypot || "", fields: fieldsCrm }) };
       var colaCrm = leerColaCrm();
       colaCrm.push(itemCrm);
       guardarColaCrm(colaCrm);
       crmListo = mandarACrm(CFG.crmUrl, itemCrm);
     }
 
-    // 1. Sheets. Fuego y olvido: nunca demora el paso a WhatsApp.
+    // 1. Sheets. Fuego y olvido: nunca demora nada.
     var sh = CFG.sheets || {};
     if (sh.url) {
       var item = { id: leadId, body: JSON.stringify({ token: sh.token || "", hp: honeypot || "", fields: fields }) };
@@ -658,7 +747,7 @@
 
     try { sessionStorage.removeItem(DRAFT); } catch (e) {}
 
-    // 3. Destino.
+    // 3. Lead a Meta (sale acá, antes de mostrar la cotización) y destino.
     var email = (S.d.email || "").trim();
     var partes = nombre.split(/\s+/).filter(Boolean);
     APP.pixelUsuario({ em: email, ph: tel, fn: partes[0] || "", ln: partes.slice(1).join(" ") });
@@ -667,22 +756,30 @@
       content_name: "Diagnóstico Black",
       ruta: rt || "",
       zona: porClave.zona || "",
-      presupuesto: porClave.presupuesto || "",
-      plazo: porClave.plazo || "",
+      propiedades: porClave.propiedades || "",
+      rango: fields.rango,
+      urgencia: porClave.urgencia || "",
       cta_origen: fields.cta_origen || "",
     };
     if (cal.ok) {
       APP.pixel("Lead", datosLead, { eventID: leadId });
       mandarACapi("Lead", leadId, datosLead, usuario);
-      var msg = plantilla((F.whatsapp && F.whatsapp.mensaje) || "", porClave);
-      var url = "https://wa.me/" + (CFG.whatsapp || "") + "?text=" + encodeURIComponent(msg);
-      pantallaFinal("califica", url, nombre);
-      irAWhatsApp(url, crmListo);
+      var W = F.whatsapp || {};
+      var msg = plantilla((rg ? W.mensaje : W.mensajeReforma || W.mensaje) || "", paraWa);
+      final = {
+        tipo: rg ? "cotizacion" : "reforma",
+        url: "https://wa.me/" + (CFG.whatsapp || "") + "?text=" + encodeURIComponent(msg),
+        nombre: nombre, cot: cot, ruta: rt || "", zona: porClave.zona || "", propiedades: S.r.propiedades || "",
+        leadId: leadId, usuario: usuario, crmListo: crmListo, cta: fields.cta_origen || "",
+        visto: false, contacto: false,
+      };
+      pantallaCarga();
     } else {
       datosLead.motivo = cal.motivo || "";
       APP.pixelCustom("LeadNoCalifica", datosLead, { eventID: leadId });
       mandarACapi("LeadNoCalifica", leadId, datosLead, usuario);
-      pantallaFinal("noCalifica", CFG.instagram || "https://www.instagram.com/black_arq/", nombre);
+      final = { tipo: "noCalifica", url: CFG.instagram || "https://www.instagram.com/black_arq/", nombre: nombre };
+      pantallaFinal();
     }
   }
 
@@ -723,57 +820,281 @@
     } catch (e) {}
   }
 
-  /** Redirige ya. Espera como mucho 300 ms a que GA4 confirme el evento. */
-  /** Salta a WhatsApp cuando GHL confirmó el lead y GA4 el evento, o a
-      los 2,5 s como mucho (nunca deja a la persona esperando). */
+  /** Va a WhatsApp cuando GHL confirmó el lead y GA4 el evento, o a los
+      2,5 s como mucho. Solo con el toque en el botón: no hay salto solo. */
+  var yendo = false;
   function irAWhatsApp(url, crmListo) {
+    if (yendo) return;
+    yendo = true;
     var fue = false, ga = false, crm = false;
     function go() {
       if (fue) return;
       fue = true;
+      yendo = false;
       location.href = url;
     }
     function quizas() { if (ga && crm) go(); }
-    APP.track("whatsapp_redirect", { origen: "auto", event_callback: function () { ga = true; quizas(); }, event_timeout: 300 });
+    APP.track("whatsapp_redirect", { origen: "boton", event_callback: function () { ga = true; quizas(); }, event_timeout: 300 });
     setTimeout(function () { ga = true; quizas(); }, 300);
     (crmListo || Promise.resolve()).then(function () { crm = true; quizas(); }, function () { crm = true; quizas(); });
     setTimeout(go, 2500);
   }
 
-  function pantallaFinal(tipo, url, nombre) {
-    var c = (F.final && F.final[tipo]) || {};
+  /** Deja el modal listo para una pantalla final (carga o resultado). */
+  function limpiarCuerpo() {
     barra.style.width = "100%";
     etiquetaPaso.textContent = "";
     cuerpo.innerHTML = "";
-    var esWa = tipo === "califica";
-    var btn = h("a", {
-      class: "btn btn-1 btn-lg", href: url,
-      target: esWa ? null : "_blank", rel: esWa ? null : "noopener noreferrer",
-    }, [esWa ? svgUse("i-wa") : svgUse("i-ig"), h("span", { text: c.boton || "" })]);
-    btn.addEventListener("click", function () {
-      // "boton": tocó el botón de la pantalla final (el salto automático ya
-      // se contó como origen "auto"). Así no se suman dos veces.
-      APP.track(esWa ? "whatsapp_redirect" : "instagram_redirect", { origen: esWa ? "boton" : "formulario" });
+    panel.scrollTop = 0;
+  }
+
+  function enfocar(el) {
+    try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }
+  }
+
+  /* ------------------------------------------------- pantalla de carga --- */
+  /* ~2 s con la barra al 100 %, un plano que se dibuja y tres mensajes que
+     rotan. Con movimiento reducido: un mensaje fijo, mismo tiempo. El
+     resultado no espera a GHL (crmListo sigue en segundo plano). */
+
+  var DUR_CARGA = 2000, PASO_CARGA = 650;
+  var timersCarga = [];
+  function cortarCarga() {
+    timersCarga.forEach(clearTimeout);
+    timersCarga = [];
+  }
+
+  function svgCarga() {
+    var NS = "http://www.w3.org/2000/svg";
+    var s = document.createElementNS(NS, "svg");
+    s.setAttribute("viewBox", "0 0 96 72");
+    s.setAttribute("aria-hidden", "true");
+    s.setAttribute("class", "f-carga-plano");
+    // Planta simple: muros, tabiques, puerta y, en amarillo, la cota.
+    [
+      ["s", "M14 8H82V56H14V8"],
+      ["s2", "M46 8V32H62"],
+      ["s2", "M14 34H32"],
+      ["s2", "M70 56V44a12 12 0 0 0-12-12"],
+      ["y", "M14 66H82M14 62v8M82 62v8"],
+    ].forEach(function (d, i) {
+      var p = document.createElementNS(NS, "path");
+      p.setAttribute("class", d[0]);
+      p.setAttribute("d", d[1]);
+      p.setAttribute("pathLength", "1");
+      p.style.setProperty("--k", i);
+      s.appendChild(p);
     });
-    var t = h("h2", { id: "form-titulo", tabindex: "-1", text: plantilla(c.titulo || "", { nombre: nombre }) });
-    cuerpo.appendChild(h("div", { class: "f-final" }, [t, h("p", { text: c.texto || "" }), btn]));
-    try { t.focus({ preventScroll: true }); } catch (e) { t.focus(); }
+    return s;
+  }
+
+  function pantallaCarga() {
+    cortarCarga();
+    limpiarCuerpo();
+    var msgs = T.carga && T.carga.length ? T.carga : [""];
+    var reduce = !document.documentElement.classList.contains("motion");
+    var msg = h("p", {
+      class: "f-carga-msg", id: "form-titulo", "aria-live": "polite", tabindex: "-1",
+      text: reduce ? msgs[msgs.length - 1] : msgs[0],
+    });
+    cuerpo.appendChild(h("div", { class: "f-carga" }, [svgCarga(), msg]));
+    enfocar(msg);
+    if (!reduce) {
+      msgs.slice(1).forEach(function (t, k) {
+        timersCarga.push(setTimeout(function () {
+          msg.classList.add("sale");
+          timersCarga.push(setTimeout(function () { msg.textContent = t; msg.classList.remove("sale"); }, 180));
+        }, PASO_CARGA * (k + 1)));
+      });
+    }
+    timersCarga.push(setTimeout(function () {
+      cortarCarga();
+      // Si cerró el formulario durante la carga, el resultado se pinta (y
+      // se cuenta como visto) cuando lo vuelva a abrir.
+      if (abierto) pantallaFinal();
+    }, DUR_CARGA));
+  }
+
+  /* ---------------------------------------------- pantallas finales ----- */
+
+  /** Título con {min} y {max} en amarillo (.hl-y). */
+  function tituloCotizacion(txt, datos) {
+    var t = h("h2", { id: "form-titulo", tabindex: "-1" });
+    String(txt || "").split(/(\{\w+\})/).forEach(function (parte) {
+      var m = parte.match(/^\{(\w+)\}$/);
+      if (!m) { if (parte) t.appendChild(document.createTextNode(parte)); return; }
+      var v = datos[m[1]] != null ? String(datos[m[1]]) : "";
+      if (m[1] === "min" || m[1] === "max") t.appendChild(h("span", { class: "hl-y", text: v }));
+      else t.appendChild(document.createTextNode(v));
+    });
+    return t;
+  }
+
+  function linkOtroCaso(texto) {
+    var b = h("button", { type: "button", class: "f-otro-caso", text: texto });
+    b.addEventListener("click", function () {
+      reiniciar();
+      iniciar(APP.getCta());
+      pintar(0);
+    });
+    return b;
+  }
+
+  function botonWhatsApp(c) {
+    var btn = h("a", { class: "btn btn-1 btn-lg", href: final.url }, [svgUse("i-wa"), h("span", { text: c.boton || "" })]);
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      // Contact a Meta: una vez por lead, aunque toque dos veces o vuelva.
+      if (!final.contacto) {
+        final.contacto = true;
+        var datos = {
+          content_name: "Diagnóstico Black", ruta: final.ruta,
+          rango: final.cot && final.cot.rango ? String(final.cot.rango.n) : "", cta_origen: final.cta,
+        };
+        var idWa = final.leadId + "-wa";
+        APP.pixel("Contact", datos, { eventID: idWa });
+        mandarACapi("Contact", idWa, datos, final.usuario);
+      }
+      irAWhatsApp(final.url, final.crmListo);
+    });
+    return btn;
+  }
+
+  /** Pinta la pantalla final que corresponde a `final` (cotización,
+      reforma o no califica). CotizacionVista sale una sola vez por lead,
+      aunque cierre y vuelva a abrir. */
+  function pantallaFinal() {
+    cortarCarga();
+    limpiarCuerpo();
+    var Fz = F.final || {};
+    var c = Fz.cotizacion || {};
+    var cont = h("div", { class: "f-final" });
+    var t;
+
+    if (final.tipo === "noCalifica") {
+      var n = Fz.noCalifica || {};
+      var ig = h("a", { class: "btn btn-1 btn-lg", href: final.url, target: "_blank", rel: "noopener noreferrer" },
+        [svgUse("i-ig"), h("span", { text: n.boton || "" })]);
+      ig.addEventListener("click", function () { APP.track("instagram_redirect", { origen: "formulario" }); });
+      t = h("h2", { id: "form-titulo", tabindex: "-1", text: plantilla(n.titulo || "", { nombre: final.nombre }) });
+      cont.appendChild(t);
+      cont.appendChild(h("p", { text: n.texto || "" }));
+      cont.appendChild(ig);
+      cont.appendChild(linkOtroCaso(c.otroCaso || ""));
+      cuerpo.appendChild(cont);
+      enfocar(t);
+      return;
+    }
+
+    var cot = final.cot || {};
+    var rg = cot.rango;
+    var C = F.cotizacion || {};
+    if (rg) {
+      cont.className += " f-cot";
+      t = tituloCotizacion(c.titulo, { nombre: final.nombre, min: pesos(rg.min), max: pesos(rg.max) });
+      cont.appendChild(t);
+
+      // Alcance: solo lo que aplica.
+      var pProp = preguntas.filter(function (p) { return p.id === "propiedades"; })[0];
+      var oProp = pProp && opcion(pProp, final.propiedades);
+      var chips = [oProp ? (oProp.chip || oProp.valor) : "", final.zona, cot.visita ? c.conVisita : "", cot.docs ? c.conDocs : ""]
+        .filter(Boolean);
+      if (chips.length) {
+        cont.appendChild(h("ul", { class: "f-chips", "aria-label": "Alcance" }, chips.map(function (x) { return h("li", { text: x }); })));
+      }
+
+      // Los tres rangos, con el del caso resaltado. Entran con el stagger
+      // de la landing y después se resalta el del caso (300 ms). Sin
+      // motion, ya aparecen resaltados.
+      var motion = document.documentElement.classList.contains("motion");
+      var lista = h("ul", { class: "f-rangos", "data-stagger": motion ? true : null });
+      var mio = null;
+      (C.rangos || []).forEach(function (r, i) {
+        var esMio = r.n === rg.n;
+        var li = h("li", { class: "f-rango" + (esMio && !motion ? " mio" : ""), "aria-current": esMio ? "true" : null }, [
+          esMio ? h("span", { class: "f-rango-tu", text: c.tuCaso || "" }) : null,
+          h("p", { class: "f-rango-n", text: r.nombre }),
+          h("p", { class: "f-rango-m", text: pesos(r.min) + " – " + pesos(r.max) }),
+          h("p", { class: "f-rango-i", text: r.incluye }),
+        ]);
+        li.style.setProperty("--i", i);
+        if (esMio) mio = li;
+        lista.appendChild(li);
+      });
+      cont.appendChild(lista);
+      if (motion) {
+        requestAnimationFrame(function () { requestAnimationFrame(function () { lista.classList.add("is-in"); }); });
+        setTimeout(function () { if (mio) mio.classList.add("mio"); }, 800);
+      }
+
+      if (final.zona && final.zona !== "CABA" && C.trasladoFueraCaba) {
+        cont.appendChild(h("p", { class: "f-traslado", text: C.trasladoFueraCaba }));
+      }
+    } else {
+      t = h("h2", { id: "form-titulo", tabindex: "-1", text: plantilla((Fz.reforma || {}).titulo || "", { nombre: final.nombre }) });
+      cont.appendChild(t);
+    }
+
+    cont.appendChild(h("p", { class: "f-ancla", text: c.ancla || "" }));
+    if (rg && c.contexto) cont.appendChild(h("p", { class: "f-contexto", text: c.contexto }));
+    cont.appendChild(botonWhatsApp(c));
+    if (c.secundario) cont.appendChild(h("p", { class: "f-secundario", text: c.secundario }));
+    cont.appendChild(linkOtroCaso(c.otroCaso || ""));
+    cuerpo.appendChild(cont);
+    enfocar(t);
+
+    // CotizacionVista (Píxel + CAPI con el mismo eventID, y GA4): una vez.
+    if (rg && !final.visto) {
+      final.visto = true;
+      var datosCot = {
+        rango: String(rg.n), cotizacion_min: rg.min, cotizacion_max: rg.max,
+        zona: final.zona, propiedades: final.propiedades, cta_origen: final.cta,
+      };
+      var idCot = final.leadId + "-cot";
+      APP.pixelCustom("CotizacionVista", datosCot, { eventID: idCot });
+      mandarACapi("CotizacionVista", idCot, datosCot, final.usuario);
+      APP.track("cotizacion_vista", datosCot);
+    }
   }
 
   /* ---------------------------------------------------- abrir/cerrar --- */
+
+  /** Formulario nuevo: después de "Cotizar otro caso" o pasados 30 min
+      del envío. Vuelve a contar el inicio (InitiateCheckout + paso 1). */
+  function reiniciar() {
+    cortarCarga();
+    enviado = false;
+    final = null;
+    S = nuevoEstado();
+    try { sessionStorage.removeItem(DRAFT); } catch (e) { /* sin storage */ }
+    pasosMeta = {};
+    sesionId = null;
+    inicioTrackeado = false;
+  }
+
+  /** Inicio del formulario: InitiateCheckout + FormularioPaso 1, una vez. */
+  function iniciar(desde) {
+    if (inicioTrackeado) return;
+    inicioTrackeado = true;
+    APP.track("form_start", { cta_id: desde || APP.getCta() });
+    var datosIni = { content_name: "Diagnóstico Black", cta_origen: desde || APP.getCta() };
+    var idIni = sesionMeta() + "-ic";
+    APP.pixel("InitiateCheckout", datosIni, { eventID: idIni });
+    mandarACapi("InitiateCheckout", idIni, datosIni);
+    // Paso 1 siempre junto con el inicio: si retoma un borrador (recargó la
+    // página a mitad del formulario) abre en el paso N y, sin esto, un
+    // inicio basado en "paso 1" quedaba sin contar aunque después llegue
+    // el Lead.
+    if (S.i > 0) reportarPaso(visibles()[0], 0, visibles().length);
+  }
 
   function abrir(desde) {
     if (abierto) return;
     abierto = true;
     abridor = document.activeElement;
-    if (enviado) {
-      // Ya envió en esta visita: arranca de cero.
-      enviado = false;
-      S = { r: {}, otros: {}, d: {}, i: 0 };
-      pasosMeta = {};
-      sesionId = null;
-      inicioTrackeado = false;
-    }
+    // Ya envió en esta visita: vuelve a ver su resultado. A los 30 min,
+    // arranca de cero.
+    if (enviado && Date.now() - enviadoEn > REINICIO) reiniciar();
     modal.hidden = false;
     document.documentElement.classList.add("modal-abierto");
     document.documentElement.style.overflow = "hidden";
@@ -782,19 +1103,12 @@
       if (!history.state || !history.state.blkForm) history.pushState({ blkForm: 1 }, "");
     } catch (e) { /* WebViews sin history */ }
 
-    if (!inicioTrackeado) {
-      inicioTrackeado = true;
-      APP.track("form_start", { cta_id: desde || APP.getCta() });
-      var datosIni = { content_name: "Diagnóstico Black", cta_origen: desde || APP.getCta() };
-      var idIni = sesionMeta() + "-ic";
-      APP.pixel("InitiateCheckout", datosIni, { eventID: idIni });
-      mandarACapi("InitiateCheckout", idIni, datosIni);
-      // Paso 1 siempre junto con el inicio: si retoma un borrador (recargó la
-      // página a mitad del formulario) abre en el paso N y, sin esto, un
-      // inicio basado en "paso 1" quedaba sin contar aunque después llegue
-      // el Lead.
-      if (S.i > 0) reportarPaso(visibles()[0], 0, visibles().length);
+    if (enviado && final) {
+      // Si cerró durante la carga, ve el resultado directo.
+      pantallaFinal();
+      return;
     }
+    iniciar(desde);
     ultimaRuta = ruta();
     pintar(0);
   }

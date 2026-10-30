@@ -2693,6 +2693,238 @@ h2 + .intro {
   margin-top: 1.75rem;
 }
 
+/* ---- Cotizador (v6): pantalla de carga y de resultado ------------------ */
+
+/* Carga: planta que se dibuja (trazo 1,5 px a 120 px de ancho: 1,2 en el
+   viewBox de 96; amarillo solo en la cota) y
+   tres mensajes con fundido. Con movimiento reducido queda dibujada. */
+.f-carga {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  min-height: 55vh;
+  text-align: center;
+}
+.f-carga-plano {
+  width: 120px;
+  height: auto;
+  overflow: visible;
+}
+.f-carga-plano path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  animation: carga-traza 0.6s var(--e-out) forwards;
+  animation-delay: calc(var(--k, 0) * 280ms);
+}
+.f-carga-plano .s {
+  stroke: var(--blanco);
+  stroke-width: 1.2;
+}
+.f-carga-plano .s2 {
+  stroke: var(--gris);
+  stroke-width: 1.2;
+}
+.f-carga-plano .y {
+  stroke: var(--acento);
+  stroke-width: 1.4;
+}
+@keyframes carga-traza {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.f-carga-msg {
+  font-family: var(--display);
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--blanco);
+  transition: opacity 0.18s ease;
+}
+.f-carga-msg.sale {
+  opacity: 0;
+}
+.f-carga-msg:focus,
+.f-final h2:focus {
+  outline: none;
+}
+
+/* Resultado: H2 + alcance + tres rangos (el del caso en amarillo) + ancla
+   + CTA. Pensado para 360 px: todo en un scroll corto como mucho. */
+.f-final.f-cot {
+  padding-top: 0;
+}
+.f-final.f-cot h2 {
+  max-width: none;
+  margin-top: 0;
+  font-size: clamp(1.5rem, 1.3rem + 1.1vw, 2rem);
+  line-height: 1.12;
+  text-wrap: pretty;
+}
+.f-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.875rem;
+  padding: 0;
+  list-style: none;
+}
+.f-chips li {
+  padding: 0.2rem 0.625rem;
+  border: 1px solid var(--linea-2);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--texto-3);
+}
+.f-rangos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.375rem;
+  margin-top: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+.f-rango {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem 0.45rem 0.65rem;
+  border: 1.5px solid var(--linea-2);
+  border-radius: var(--r-s);
+  background: var(--g2);
+  color: var(--gris);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+.f-rango.mio {
+  border-color: var(--acento);
+  background: var(--acento);
+  color: var(--negro);
+}
+.f-rangos .f-rango-n {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: inherit;
+}
+.f-rangos .f-rango-m {
+  margin-top: 0.3rem;
+  font-family: var(--display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: inherit;
+}
+.f-rangos .f-rango-i {
+  margin-top: 0.4rem;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  color: inherit;
+}
+.f-rango-tu {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  padding: 0.1rem 0.5rem;
+  border: 1px solid var(--acento);
+  border-radius: 999px;
+  background: var(--negro);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--acento);
+}
+.f-final .f-traslado,
+.f-final .f-contexto,
+.f-final .f-secundario {
+  font-size: var(--t-micro);
+  line-height: 1.5;
+  color: var(--gris);
+}
+.f-final .f-traslado {
+  margin-top: 0.75rem;
+}
+.f-final .f-ancla {
+  margin-top: 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--texto-3);
+}
+.f-final .f-contexto {
+  margin-top: 0.5rem;
+}
+.f-final.f-cot .btn {
+  margin-top: 1.25rem;
+}
+.f-final .btn span {
+  text-wrap: balance;
+}
+@media (max-width: 439px) {
+  .f-final .btn {
+    gap: 0.625rem;
+    padding-inline: 1rem;
+    font-size: 1rem;
+  }
+}
+.f-final .f-secundario {
+  margin-top: 0.75rem;
+  text-align: center;
+}
+.f-otro-caso {
+  display: block;
+  min-height: 44px;
+  margin: 0.5rem auto 0;
+  padding: 0 0.75rem;
+  font-size: var(--t-micro);
+  color: var(--gris);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.f-otro-caso:hover {
+  color: var(--blanco);
+}
+/* Entrada: el stagger de la landing; el resaltado del caso llega después. */
+.motion .f-rangos[data-stagger] > .f-rango {
+  transition:
+    opacity 0.6s var(--e-out),
+    transform 0.6s var(--e-out),
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+  transition-delay: calc(var(--i, 0) * 70ms), calc(var(--i, 0) * 70ms), 0s, 0s, 0s;
+}
+@media (min-width: 640px) {
+  .f-rangos {
+    gap: 0.625rem;
+  }
+  .f-rango {
+    padding: 1.1rem 0.875rem 1rem;
+  }
+  .f-rangos .f-rango-n {
+    font-size: 1rem;
+  }
+  .f-rangos .f-rango-m {
+    font-size: 1.0625rem;
+  }
+  .f-rangos .f-rango-i {
+    font-size: 0.75rem;
+  }
+}
+
 @media (min-width: 640px) {
   .modal {
     align-items: center;

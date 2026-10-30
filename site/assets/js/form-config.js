@@ -22,13 +22,18 @@
                 ruta: { compra: "...", reforma: "..." }.
      mostrarSi: (opcional) { ruta: "compra" } o { ruta: "reforma" }.
                 Sin esto, la pregunta se muestra siempre.
-     opciones:  [{ valor, ruta?, noCalifica?, motivo?, abreTexto? }]
+     opciones:  [{ valor, ruta?, noCalifica?, motivo?, abreTexto?, flag?, chip? }]
                 ruta:       "compra" | "reforma". La primera pregunta define
                             la ruta de las siguientes.
                 noCalifica: true → el lead no califica (no va a WhatsApp).
                 motivo:     texto que se guarda en "Motivo de descalificación".
                 abreTexto:  true → al marcarla aparece un campo de texto
                             (lo que se escribe se guarda como "Otro: ...").
+                flag:       "visita" | "docs". Marca que el caso necesita
+                            visita técnica o revisión documental (mueve el
+                            rango de la cotización).
+                chip:       cómo se nombra la opción en la línea de alcance
+                            de la pantalla de resultado (ej. "1 propiedad").
    }
 
    Para agregar una pregunta: copiá un bloque, cambiá id/columna/titulo/
@@ -38,32 +43,65 @@
 window.BLACK_FORM = {
   intro: {
     titulo:
-      "Estás por tomar una decisión importante y queremos entender en qué instancia estás para saber si nuestro Diagnóstico puede ayudarte.",
-    micro: "Completá estas preguntas. Nos lleva menos de un minuto.",
+      "No es lo mismo analizar una propiedad que tres, ni con visita que por planos. Contanos tu caso en 5 preguntas y te decimos cuánto sale el Diagnóstico para vos.",
+    micro: "Menos de un minuto. Sin compromiso.",
   },
 
   // Nombre de cada ruta tal como se escribe en la columna "Ruta".
   rutas: { compra: "Compra", reforma: "Reforma" },
 
+  /* Cada pregunta existe porque mueve el rango o el alcance. Lo que no lo
+     mueve (presupuesto, plazo de compra, objetivos, si visitó) lo pregunta
+     Esteban por WhatsApp. Orden: momento → propiedades / tipo de reforma →
+     zona → dudas → urgencia → datos (6 pasos en las dos rutas). */
   preguntas: [
     /* 1 ------------------------------------------------------------------ */
     {
-      id: "situacion",
-      columna: "Situación",
+      id: "momento",
+      columna: "Momento",
       tipo: "unica",
-      titulo: "¿En qué situación estás actualmente?",
+      titulo: "¿En qué momento estás?",
       opciones: [
-        { valor: "Ya encontré una propiedad y estoy evaluando si comprarla", ruta: "compra" },
-        { valor: "Estoy comparando entre 2 o más propiedades", ruta: "compra" },
-        { valor: "Estoy buscando activamente una propiedad", ruta: "compra" },
-        { valor: "Estoy en proceso de negociar el precio", ruta: "compra" },
-        { valor: "Ya reservé una propiedad y quiero evaluarla antes de avanzar", ruta: "compra" },
-        { valor: "Ya tengo el inmueble y quiero evaluar una reforma", ruta: "reforma" },
-        { valor: "Todavía estoy investigando y no tengo una propiedad concreta", ruta: "compra" },
+        { valor: "Encontré una propiedad y estoy por ofertar o ya reservé", ruta: "compra" },
+        { valor: "Estoy comparando entre dos o más", ruta: "compra" },
+        { valor: "Estoy buscando, todavía sin una propiedad concreta", ruta: "compra" },
+        { valor: "Ya es mía y quiero reformarla", ruta: "reforma" },
       ],
     },
 
-    /* 2 ------------------------------------------------------------------ */
+    /* 2 (compra) ---------------------------------------------------------- */
+    {
+      id: "propiedades",
+      columna: "Propiedades",
+      tipo: "unica",
+      mostrarSi: { ruta: "compra" },
+      titulo: "¿Cuántas propiedades querés analizar?",
+      opciones: [
+        { valor: "Una", chip: "1 propiedad" },
+        { valor: "Dos", chip: "2 propiedades" },
+        { valor: "Tres", chip: "3 propiedades" },
+        { valor: "Cuatro o más", chip: "4 o más propiedades" },
+        { valor: "Todavía no sé, quiero que me asesoren", chip: "a definir cuántas" },
+      ],
+    },
+
+    /* 2 (reforma) --------------------------------------------------------- */
+    {
+      id: "tipo_reforma",
+      columna: "Tipo de reforma",
+      tipo: "unica",
+      mostrarSi: { ruta: "reforma" },
+      titulo: "¿Qué tipo de reforma tenés en mente?",
+      opciones: [
+        // Mantiene el corte de la reforma chica. Para sacarlo, borrar
+        // noCalifica y motivo.
+        { valor: "Puntual (baño, cocina, un ambiente)", noCalifica: true, motivo: "Reforma puntual" },
+        { valor: "Varios ambientes" },
+        { valor: "Integral o ampliación" },
+      ],
+    },
+
+    /* 3 ------------------------------------------------------------------ */
     {
       id: "zona",
       columna: "Zona",
@@ -74,122 +112,40 @@ window.BLACK_FORM = {
         { valor: "Zona Norte" },
         { valor: "Zona Oeste" },
         { valor: "Zona Sur" },
-        { valor: "Otra localidad" },
-      ],
-    },
-
-    /* 3A ----------------------------------------------------------------- */
-    {
-      id: "presupuesto_compra",
-      clave: "presupuesto",
-      columna: "Presupuesto",
-      tipo: "unica",
-      mostrarSi: { ruta: "compra" },
-      titulo: "¿Cuál es el presupuesto total que tenés para destinar a tu nueva propiedad?",
-      opciones: [
-        { valor: "Menos de USD 70.000" },
-        { valor: "USD 70.000 – 120.000" },
-        { valor: "USD 120.000 – 180.000" },
-        { valor: "USD 180.000 – 250.000" },
-        { valor: "USD 250.000 – 400.000" },
-        { valor: "Más de USD 400.000" },
-        { valor: "Todavía no tengo una propiedad definida" },
-      ],
-    },
-
-    /* 3B ----------------------------------------------------------------- */
-    {
-      id: "presupuesto_reforma",
-      clave: "presupuesto",
-      columna: "Presupuesto",
-      tipo: "unica",
-      mostrarSi: { ruta: "reforma" },
-      titulo: "¿Cuál es el presupuesto total que tenés para destinar a la reforma de tu propiedad?",
-      opciones: [
-        { valor: "Menos de USD 15.000", noCalifica: true, motivo: "Presupuesto de reforma menor a USD 15.000" },
-        { valor: "USD 15.000 – 30.000" },
-        { valor: "USD 30.000 – 50.000" },
-        { valor: "USD 50.000 – 80.000" },
-        { valor: "USD 80.000 – 150.000" },
-        { valor: "USD 150.000 – 300.000" },
-        { valor: "Más de USD 300.000" },
+        { valor: "Otra zona" },
       ],
     },
 
     /* 4 ------------------------------------------------------------------ */
     {
-      id: "plazo",
-      columna: "Plazo",
-      tipo: "unica",
-      titulo: {
-        compra: "¿En qué plazo te gustaría concretar la compra?",
-        reforma: "¿En qué plazo te gustaría concretar la reforma?",
-      },
+      id: "dudas",
+      columna: "Dudas",
+      tipo: "multiple",
+      titulo: "¿Qué dudas tenés hoy?",
+      ayuda: "Podés elegir más de una.",
       opciones: [
-        { valor: "Esta semana" },
-        { valor: "Dentro de los próximos 30 días" },
-        { valor: "Entre 1 y 3 meses" },
-        { valor: "Entre 3 y 6 meses" },
-        { valor: "Más adelante" },
-        { valor: "Todavía no lo tengo definido" },
+        { valor: "No sé en qué estado real está (humedades, instalaciones, estructura)", flag: "visita" },
+        { valor: "No sé si el precio que piden es el correcto" },
+        { valor: "No sé si los planos y la documentación están en regla", flag: "docs" },
+        { valor: "Quiero saber qué reforma admite y cuánto me costaría" },
+        { valor: "No sé, prefiero que me recomienden el alcance" },
       ],
     },
 
-    /* 5 ------------------------------------------------------------------
-       Se muestra en las dos rutas. Si querés saltearla para quien ya tiene
-       el inmueble, agregá:  mostrarSi: { ruta: "compra" },               */
+    /* 5 ------------------------------------------------------------------ */
     {
-      id: "visito",
-      columna: "¿Visitó la propiedad?",
+      id: "urgencia",
+      columna: "Urgencia",
       tipo: "unica",
-      titulo: "¿Ya visitaste personalmente la propiedad?",
+      titulo: "¿Para cuándo lo necesitás?",
       opciones: [
-        { valor: "Sí, y estoy seriamente interesado/a" },
-        { valor: "Sí, pero todavía tengo dudas" },
-        { valor: "Todavía no, pero ya tengo coordinada una visita" },
-        { valor: "No" },
+        { valor: "Tengo que ofertar esta semana" },
+        { valor: "En los próximos 15 días" },
+        { valor: "Sin apuro todavía" },
       ],
     },
 
     /* 6 ------------------------------------------------------------------ */
-    {
-      id: "objetivos",
-      columna: "Qué busca",
-      tipo: "multiple",
-      titulo: "¿Qué te gustaría obtener del Diagnóstico?",
-      ayuda: "Podés elegir más de una.",
-      opciones: [
-        { valor: "Saber si compraríamos o no esa propiedad" },
-        { valor: "Evaluar su estado arquitectónico y constructivo" },
-        { valor: "Detectar posibles problemas antes de comprar" },
-        { valor: "Entender qué reformas se pueden realizar" },
-        { valor: "Tener una estimación inicial de la inversión necesaria" },
-        { valor: "Analizar si el precio publicado tiene sentido" },
-        { valor: "Tener argumentos para negociar el precio" },
-        { valor: "Compararla con otra propiedad" },
-        { valor: "Evaluar su potencial como inversión" },
-        { valor: "Otro", abreTexto: true, placeholder: "Contanos qué buscás" },
-      ],
-    },
-
-    /* 7 ------------------------------------------------------------------
-       Funciona como filtro. Alineado con el FAQ de la landing ("¿Cuánto
-       cuesta?"): el valor se pasa por WhatsApp, no se publica en el sitio. */
-    {
-      id: "inversion",
-      columna: "Disposición a invertir",
-      tipo: "unica",
-      titulo:
-        "El Diagnóstico es un servicio pago: el valor depende de la propiedad y del alcance, y te lo pasamos por WhatsApp. Si avanzás con el proyecto, se descuenta entero de los honorarios. ¿Estás dispuesto/a a invertir en este asesoramiento?",
-      opciones: [
-        { valor: "Sí, quiero avanzar" },
-        { valor: "Sí, también quisiera que visiten mi propiedad" },
-        { valor: "Sí, pero antes quisiera entender exactamente qué incluye" },
-        { valor: "No, por el momento busco únicamente información gratuita", noCalifica: true, motivo: "Busca información gratuita" },
-      ],
-    },
-
-    /* 8 ------------------------------------------------------------------ */
     {
       id: "datos",
       tipo: "datos",
@@ -197,18 +153,59 @@ window.BLACK_FORM = {
       campos: [
         { id: "nombre", columna: "Nombre", label: "Nombre y apellido", tipo: "text", autocomplete: "name", requerido: true },
         { id: "whatsapp", columna: "WhatsApp", label: "WhatsApp con código de área", tipo: "tel", autocomplete: "tel", placeholder: "11 6480 3777", requerido: true, validar: "telefonoAR" },
-        { id: "email", columna: "Email", label: "Email", tipo: "email", autocomplete: "email", placeholder: "nombre@mail.com", requerido: true, validar: "email" },
+        { id: "email", columna: "Email", label: "Email (opcional, para mandarte la propuesta)", tipo: "email", autocomplete: "email", placeholder: "nombre@mail.com", requerido: false, validar: "email" },
       ],
-      nota: "Te escribimos solo por este tema. No hacemos llamados automáticos ni te sumamos a ninguna lista.",
+      nota: "Te mandamos la cotización por WhatsApp. No te sumamos a ninguna lista.",
     },
   ],
 
+  /* Claves que el Workflow "Black – Nuevo lead" de GHL tenía mapeadas con
+     las preguntas anteriores. Se mandan vacías para que el Workflow no se
+     rompa. Se pueden borrar cuando Franco actualice el Workflow. */
+  ghlClavesViejas: ["presupuesto", "plazo", "visito_propiedad", "que_busca", "disposicion_invertir"],
+
+  /* ------------------------------------------------------------------------
+     COTIZACIÓN. Todo lo que define el rango vive acá: form.js solo lo lee.
+     Montos en pesos, sin formato (se muestran como $300.000).
+     visita / docs: si ese rango incluye visita técnica o revisión
+     documental (se usa en la línea de alcance y en el CRM).
+     ------------------------------------------------------------------------ */
+  cotizacion: {
+    moneda: "ARS",
+    vigencia: "2026-10-30",
+    rangos: [
+      { n: 1, nombre: "Análisis por planos",
+        incluye: "Valor de mercado, reforma e inversión estimada, estrategia de negociación, informe y reunión. Sin visita.",
+        min: 300000, max: 500000, visita: false, docs: false },
+      { n: 2, nombre: "Con visita técnica",
+        incluye: "Lo anterior más la visita técnica de Esteban, ficha y minuta de la propiedad.",
+        min: 500000, max: 900000, visita: true, docs: false },
+      { n: 3, nombre: "Comparativo",
+        incluye: "Varias propiedades bajo el mismo criterio, matriz comparativa, visitas y revisión documental.",
+        min: 900000, max: 1400000, visita: true, docs: true },
+    ],
+    trasladoFueraCaba: "Fuera de CABA, los traslados se cotizan aparte.",
+
+    /* Regla de asignación (solo ruta compra), en este orden.
+       c.propiedades: la opción elegida. c.visita / c.docs: si marcó alguna
+       duda con ese flag. Devuelve el n del rango. */
+    asignar: function (c) {
+      var p = c.propiedades;
+      if (p === "Cuatro o más" || ((p === "Dos" || p === "Tres") && c.docs)) return 3;
+      if (p === "Una" && !c.visita && !c.docs) return 1;
+      return 2; // todo lo demás, incluido "Todavía no sé"
+    },
+  },
+
   textos: {
-    paso: "Paso {n} de {total}",
+    paso: "Paso {n} de {total} · Cotizando tu caso",
     siguiente: "Siguiente",
     atras: "Atrás",
     enviar: "Enviar",
     enviando: "Enviando…",
+    // Pantalla de carga: rotan cada ~650 ms. Con movimiento reducido queda
+    // fijo el último.
+    carga: ["Leyendo tu caso…", "Definiendo el alcance…", "Armando tu cotización…"],
     errores: {
       unica: "Elegí una opción para seguir.",
       multiple: "Elegí al menos una opción.",
@@ -223,19 +220,35 @@ window.BLACK_FORM = {
   },
 
   /* Mensaje prellenado de WhatsApp (solo leads que califican).
-     {llaves}: cualquier `clave` o `id` de pregunta, más {nombre} y {lead_id}
-     ({lead_id} acá es la referencia corta, BLK-XXXXXXXX: el comienzo del
-     lead_id completo, que figura en la columna ref_whatsapp de la hoja). */
+     {llaves}: cualquier `clave` o `id` de pregunta, más {nombre},
+     {cotizacion_texto} y {lead_id} ({lead_id} acá es la referencia corta,
+     BLK-XXXXXXXX: el comienzo del lead_id completo, que figura en la columna
+     ref_whatsapp de la hoja). Las respuestas múltiples van separadas por ", ". */
   whatsapp: {
     mensaje:
-      "Hola, soy {nombre}. Completé el formulario del Diagnóstico Black.\nSituación: {situacion}.\nZona: {zona}.\nPresupuesto: {presupuesto}.\nPlazo: {plazo}.\n(Ref. {lead_id})",
+      "Hola Esteban, soy {nombre}. Hice el cotizador del Diagnóstico Black.\nMomento: {momento}.\nPropiedades: {propiedades}.\nZona: {zona}.\nDudas: {dudas}.\nUrgencia: {urgencia}.\nRango estimado: {cotizacion_texto}.\n(Ref. {lead_id})",
+    mensajeReforma:
+      "Hola Esteban, soy {nombre}. Hice el cotizador del Diagnóstico Black.\nMomento: {momento}.\nReforma: {tipo_reforma}.\nZona: {zona}.\nDudas: {dudas}.\nUrgencia: {urgencia}.\n(Ref. {lead_id})",
   },
 
   final: {
-    califica: {
-      titulo: "Listo, {nombre}.",
-      texto: "Te estamos abriendo WhatsApp con tus respuestas. Si no se abre solo, tocá el botón.",
-      boton: "Abrir WhatsApp",
+    // Ruta compra. {min} y {max} se escriben en amarillo.
+    cotizacion: {
+      titulo: "Listo, {nombre}. Para tu caso, el Diagnóstico Black sale entre {min} y {max}.",
+      tuCaso: "Tu caso",
+      ancla:
+        "Se descuenta entero de los honorarios si después hacés el proyecto o la reforma con Black. Y si en el informe no encontramos ningún argumento para negociar, te lo devolvemos.",
+      contexto: "En el caso de Lorena (Devoto), fue una fracción mínima de los USD 40.000 que dejó de pagar.",
+      boton: "Hablá con Esteban y empezá a resolver tu propiedad",
+      secundario: "Te responde él, en el día. Si preferís, te escribimos nosotros.",
+      otroCaso: "Cotizar otro caso",
+      // Alcance: así se nombran visita y revisión documental en los chips.
+      conVisita: "con visita técnica",
+      conDocs: "con revisión documental",
+    },
+    // Ruta reforma (califica): sin rango.
+    reforma: {
+      titulo: "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles.",
     },
     noCalifica: {
       titulo: "Gracias por tu tiempo.",
