@@ -41,9 +41,14 @@
    ========================================================================== */
 
 window.BLACK_FORM = {
+  // Primer paso: qué va a pasar. `pasos` se ve como lista numerada.
   intro: {
-    titulo:
-      "No es lo mismo analizar una propiedad que tres, ni con visita que por planos. Contanos tu caso en 5 preguntas y te decimos cuánto sale el Diagnóstico para vos.",
+    titulo: "¿Querés saber cuánto sale el Diagnóstico adaptado a tu caso? Así funciona:",
+    pasos: [
+      "Respondés 5 preguntas sobre tu caso.",
+      "Ves tu cotización estimada en pantalla.",
+      "La confirmás con Esteban por WhatsApp.",
+    ],
     micro: "Menos de un minuto. Sin compromiso.",
   },
 
@@ -155,7 +160,6 @@ window.BLACK_FORM = {
         { id: "whatsapp", columna: "WhatsApp", label: "WhatsApp con código de área", tipo: "tel", autocomplete: "tel", placeholder: "11 6480 3777", requerido: true, validar: "telefonoAR" },
         { id: "email", columna: "Email", label: "Email (opcional, para mandarte la propuesta)", tipo: "email", autocomplete: "email", placeholder: "nombre@mail.com", requerido: false, validar: "email" },
       ],
-      nota: "Te mandamos la cotización por WhatsApp. No te sumamos a ninguna lista.",
     },
   ],
 
@@ -167,21 +171,22 @@ window.BLACK_FORM = {
   /* ------------------------------------------------------------------------
      COTIZACIÓN. Todo lo que define el rango vive acá: form.js solo lo lee.
      Montos en pesos, sin formato (se muestran como $300.000).
+     incluye: la línea corta que se ve debajo del precio.
      visita / docs: si ese rango incluye visita técnica o revisión
-     documental (se usa en la línea de alcance y en el CRM).
+     documental (va al CRM).
      ------------------------------------------------------------------------ */
   cotizacion: {
     moneda: "ARS",
     vigencia: "2026-10-30",
     rangos: [
       { n: 1, nombre: "Análisis por planos",
-        incluye: "Valor de mercado, reforma e inversión estimada, estrategia de negociación, informe y reunión. Sin visita.",
+        incluye: "Análisis por planos, sin visita.",
         min: 300000, max: 500000, visita: false, docs: false },
       { n: 2, nombre: "Con visita técnica",
-        incluye: "Lo anterior más la visita técnica de Esteban, ficha y minuta de la propiedad.",
+        incluye: "Incluye la visita técnica.",
         min: 500000, max: 900000, visita: true, docs: false },
       { n: 3, nombre: "Comparativo",
-        incluye: "Varias propiedades bajo el mismo criterio, matriz comparativa, visitas y revisión documental.",
+        incluye: "Incluye visitas y revisión documental.",
         min: 900000, max: 1400000, visita: true, docs: true },
     ],
     trasladoFueraCaba: "Fuera de CABA, los traslados se cotizan aparte.",
@@ -203,7 +208,7 @@ window.BLACK_FORM = {
     atras: "Atrás",
     enviar: "Enviar",
     enviando: "Enviando…",
-    // Pantalla de carga: rotan cada ~650 ms. Con movimiento reducido queda
+    // Pantalla de carga: rotan cada ~850 ms. Con movimiento reducido queda
     // fijo el último.
     carga: ["Leyendo tu caso…", "Definiendo el alcance…", "Armando tu cotización…"],
     errores: {
@@ -232,21 +237,15 @@ window.BLACK_FORM = {
   },
 
   final: {
-    // Ruta compra. {min} y {max} se escriben en amarillo.
+    // Ruta compra: el precio de su caso ({min} y {max} en amarillo), una
+    // línea con lo que incluye (`incluye` del rango) y el botón. Nada más:
+    // los otros rangos no se muestran.
     cotizacion: {
-      titulo: "Listo, {nombre}. Para tu caso, el Diagnóstico Black sale entre {min} y {max}.",
-      tuCaso: "Tu caso",
-      ancla:
-        "Se descuenta entero de los honorarios si después hacés el proyecto o la reforma con Black. Y si en el informe no encontramos ningún argumento para negociar, te lo devolvemos.",
-      contexto: "En el caso de Lorena (Devoto), fue una fracción mínima de los USD 40.000 que dejó de pagar.",
-      boton: "Hablá con Esteban y empezá a resolver tu propiedad",
-      secundario: "Te responde él, en el día. Si preferís, te escribimos nosotros.",
+      titulo: "Listo, {nombre}. En tu caso, el Diagnóstico Black sale entre {min} y {max}.",
+      boton: "Hablá con Esteban y resolvé tu propiedad",
       otroCaso: "Cotizar otro caso",
-      // Alcance: así se nombran visita y revisión documental en los chips.
-      conVisita: "con visita técnica",
-      conDocs: "con revisión documental",
     },
-    // Ruta reforma (califica): sin rango.
+    // Ruta reforma (califica): sin rango. Mismo botón.
     reforma: {
       titulo: "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles.",
     },

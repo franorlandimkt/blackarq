@@ -2063,36 +2063,6 @@ h2 + .intro {
   display: grid;
   gap: 1.5rem;
 }
-.sello-wrap {
-  position: relative;
-  isolation: isolate;
-  width: 9rem;
-  margin-inline: auto;
-}
-.sello .sello-txt {
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  fill: var(--texto);
-}
-.sello .s {
-  stroke-width: 1.5;
-}
-.sello-giro {
-  transform-box: view-box;
-  transform-origin: 100px 100px;
-}
-.motion .sello-giro {
-  animation: gira 28s linear infinite;
-}
-@keyframes gira {
-  to {
-    transform: rotate(360deg);
-  }
-}
-.sello-wrap .glow {
-  width: 210%;
-}
 .alcance {
   max-width: var(--medida);
   margin-top: 2rem;
@@ -2130,11 +2100,6 @@ h2 + .intro {
     grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
     gap: 4.5rem;
     align-items: center;
-  }
-  .sello-wrap {
-    width: 100%;
-    max-width: 16rem;
-    margin: 0 auto;
   }
 }
 
@@ -2449,6 +2414,39 @@ h2 + .intro {
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.86);
 }
+.f-intro-pasos {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.625rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: paso;
+}
+.f-intro-pasos li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--blanco);
+  counter-increment: paso;
+}
+.f-intro-pasos li::before {
+  content: counter(paso);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 50%;
+  background: var(--acento);
+  font-family: var(--display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--negro);
+  transform: translateY(0.2rem);
+}
 .f-intro-micro {
   display: flex;
   align-items: center;
@@ -2696,8 +2694,8 @@ h2 + .intro {
 /* ---- Cotizador (v6): pantalla de carga y de resultado ------------------ */
 
 /* Carga: planta que se dibuja (trazo 1,5 px a 120 px de ancho: 1,2 en el
-   viewBox de 96; amarillo solo en la cota) y
-   tres mensajes con fundido. Con movimiento reducido queda dibujada. */
+   viewBox de 96; amarillo solo en la cota), tres mensajes con fundido y
+   una barra que se llena. Con movimiento reducido queda todo dibujado. */
 .f-carga {
   display: flex;
   flex-direction: column;
@@ -2749,125 +2747,52 @@ h2 + .intro {
 .f-carga-msg.sale {
   opacity: 0;
 }
+/* Barra que se llena durante la carga (la duración la pone form.js). */
+.f-carga-barra {
+  display: block;
+  width: min(220px, 70%);
+  height: 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--linea);
+}
+.f-carga-barra i {
+  display: block;
+  height: 100%;
+  background: var(--acento);
+  transform-origin: left;
+  animation: carga-barra var(--dur, 2.6s) cubic-bezier(0.3, 0.1, 0.3, 1) forwards;
+}
+@keyframes carga-barra {
+  from {
+    transform: scaleX(0);
+  }
+}
 .f-carga-msg:focus,
 .f-final h2:focus {
   outline: none;
 }
 
-/* Resultado: H2 + alcance + tres rangos (el del caso en amarillo) + ancla
-   + CTA. Pensado para 360 px: todo en un scroll corto como mucho. */
+/* Resultado: H2 con el precio del caso, una línea con lo que incluye y el
+   botón. Corto a propósito: entra en una pantalla de 360 px. */
 .f-final.f-cot {
   padding-top: 0;
 }
 .f-final.f-cot h2 {
   max-width: none;
   margin-top: 0;
-  font-size: clamp(1.5rem, 1.3rem + 1.1vw, 2rem);
-  line-height: 1.12;
+  font-size: clamp(1.75rem, 1.45rem + 1.4vw, 2.25rem);
+  line-height: 1.1;
   text-wrap: pretty;
 }
-.f-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
+.f-final .f-incluye {
   margin-top: 0.875rem;
-  padding: 0;
-  list-style: none;
-}
-.f-chips li {
-  padding: 0.2rem 0.625rem;
-  border: 1px solid var(--linea-2);
-  border-radius: 999px;
-  font-size: 0.75rem;
-  line-height: 1.4;
-  color: var(--texto-3);
-}
-.f-rangos {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.375rem;
-  margin-top: 1.5rem;
-  padding: 0;
-  list-style: none;
-}
-.f-rango {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 0.8rem 0.45rem 0.65rem;
-  border: 1.5px solid var(--linea-2);
-  border-radius: var(--r-s);
-  background: var(--g2);
-  color: var(--gris);
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    color 0.3s ease;
-}
-.f-rango.mio {
-  border-color: var(--acento);
-  background: var(--acento);
-  color: var(--negro);
-}
-.f-rangos .f-rango-n {
-  margin: 0;
-  font-family: var(--display);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  line-height: 1.15;
-  color: inherit;
-}
-.f-rangos .f-rango-m {
-  margin-top: 0.3rem;
-  font-family: var(--display);
-  font-size: 0.875rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: inherit;
-}
-.f-rangos .f-rango-i {
-  margin-top: 0.4rem;
-  font-size: 0.6875rem;
-  line-height: 1.35;
-  color: inherit;
-}
-.f-rango-tu {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -55%);
-  padding: 0.1rem 0.5rem;
-  border: 1px solid var(--acento);
-  border-radius: 999px;
-  background: var(--negro);
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--acento);
-}
-.f-final .f-traslado,
-.f-final .f-contexto,
-.f-final .f-secundario {
-  font-size: var(--t-micro);
+  font-size: 1rem;
   line-height: 1.5;
-  color: var(--gris);
-}
-.f-final .f-traslado {
-  margin-top: 0.75rem;
-}
-.f-final .f-ancla {
-  margin-top: 1.25rem;
-  font-size: 0.9375rem;
-  line-height: 1.55;
   color: var(--texto-3);
-}
-.f-final .f-contexto {
-  margin-top: 0.5rem;
 }
 .f-final.f-cot .btn {
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
 }
 .f-final .btn span {
   text-wrap: balance;
@@ -2878,10 +2803,6 @@ h2 + .intro {
     padding-inline: 1rem;
     font-size: 1rem;
   }
-}
-.f-final .f-secundario {
-  margin-top: 0.75rem;
-  text-align: center;
 }
 .f-otro-caso {
   display: block;
@@ -2897,34 +2818,6 @@ h2 + .intro {
 .f-otro-caso:hover {
   color: var(--blanco);
 }
-/* Entrada: el stagger de la landing; el resaltado del caso llega después. */
-.motion .f-rangos[data-stagger] > .f-rango {
-  transition:
-    opacity 0.6s var(--e-out),
-    transform 0.6s var(--e-out),
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    color 0.3s ease;
-  transition-delay: calc(var(--i, 0) * 70ms), calc(var(--i, 0) * 70ms), 0s, 0s, 0s;
-}
-@media (min-width: 640px) {
-  .f-rangos {
-    gap: 0.625rem;
-  }
-  .f-rango {
-    padding: 1.1rem 0.875rem 1rem;
-  }
-  .f-rangos .f-rango-n {
-    font-size: 1rem;
-  }
-  .f-rangos .f-rango-m {
-    font-size: 1.0625rem;
-  }
-  .f-rangos .f-rango-i {
-    font-size: 0.75rem;
-  }
-}
-
 @media (min-width: 640px) {
   .modal {
     align-items: center;
@@ -3572,129 +3465,6 @@ h2 + .intro {
 }
 
 /* ======================================================== v5.1 ========= */
-/* ---- Hero: garantía en una píldora finita arriba del CTA.
-   - Borde: una luz amarilla lo recorre en loop (gradiente cónico que gira
-     detrás del interior negro; solo transform).
-   - Halo: un resplandor amarillo late detrás de la píldora (opacity/transform).
-   - "te devolvemos el dinero." en amarillo, con un brillo que acompaña.
-   Con prefers-reduced-motion: quieta, borde amarillo fijo y halo suave. */
-.hg {
-  position: relative;
-  isolation: isolate;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0 auto 1rem;
-}
-.hg-halo {
-  position: absolute;
-  inset: -60% 4%;
-  z-index: -1;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 229, 0, 0.6), rgba(255, 229, 0, 0.18) 60%, rgba(255, 229, 0, 0) 100%);
-  filter: blur(10px);
-  opacity: 0.2;
-  transform: scale(0.9);
-  pointer-events: none;
-  animation: hg-latido 2.8s ease-in-out infinite;
-}
-.hg-caja {
-  position: relative;
-  overflow: hidden;
-  margin: 0;
-  padding: 1.5px; /* grosor del borde */
-  border-radius: 999px;
-  background: rgba(255, 229, 0, 0.42);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
-}
-/* Resplandor del borde: se prende y se apaga, al ritmo del halo. */
-.hg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: 999px;
-  box-shadow: 0 0 12px 1px rgba(255, 229, 0, 0.6), 0 0 34px 4px rgba(255, 229, 0, 0.28);
-  opacity: 0.1;
-  pointer-events: none;
-  animation: hg-borde 2.8s ease-in-out infinite;
-}
-.hg-luz {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 150%;
-  height: 0;
-  padding-bottom: 150%; /* cuadrado: cubre el borde en cualquier ángulo */
-  background: conic-gradient(rgba(255, 229, 0, 0) 0deg, rgba(255, 229, 0, 0) 170deg, rgba(255, 229, 0, 0.45) 260deg, #ffe500 320deg, #ffffff 352deg, rgba(255, 229, 0, 0) 360deg);
-  transform: translate(-50%, -50%) rotate(0deg);
-  pointer-events: none;
-  animation: hg-giro 3.2s linear infinite;
-}
-.hg-in {
-  position: relative;
-  display: block;
-  padding: 0.5rem 1.1rem;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #19170e 0%, #0c0c0b 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: 0.005em;
-  text-align: center;
-  text-wrap: balance;
-  color: var(--texto);
-}
-.hg-ico {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  margin-right: 0.15rem;
-  vertical-align: -2px;
-  color: var(--acento);
-}
-.hg-in b {
-  font-weight: 700;
-  color: var(--acento);
-  white-space: nowrap;
-  animation: hg-txt 2.8s ease-in-out infinite;
-}
-@keyframes hg-giro {
-  to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-@keyframes hg-latido {
-  0%, 100% { opacity: 0.2; transform: scale(0.9); }
-  50% { opacity: 0.85; transform: scale(1.04); }
-}
-@keyframes hg-borde {
-  0%, 100% { opacity: 0.1; }
-  50% { opacity: 1; }
-}
-@keyframes hg-txt {
-  0%, 100% { text-shadow: 0 0 0 rgba(255, 229, 0, 0); }
-  50% { text-shadow: 0 0 10px rgba(255, 229, 0, 0.55); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hg-halo,
-  .hg::after,
-  .hg-luz,
-  .hg-in b {
-    animation: none;
-  }
-  .hg::after {
-    opacity: 0.5;
-  }
-  .hg-luz {
-    display: none;
-  }
-  .hg-caja {
-    background: rgba(255, 229, 0, 0.75);
-  }
-  .hg-halo {
-    opacity: 0.45;
-    transform: none;
-  }
-}
 .hero-plazos {
   margin: 0.9rem auto 0;
   font-size: 0.875rem;
@@ -3704,10 +3474,6 @@ h2 + .intro {
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
 }
 @media (max-width: 599px) {
-  .hg-in {
-    padding: 0.55rem 1.25rem;
-    font-size: 0.8125rem;
-  }
   .hero-plazos {
     font-size: 0.8125rem;
   }
@@ -3716,12 +3482,6 @@ h2 + .intro {
   }
   .hero-plazos .hp-sep {
     display: none;
-  }
-}
-@media (min-width: 1024px) {
-  .hg-in {
-    padding: 0.55rem 1.25rem;
-    font-size: 0.9375rem;
   }
 }
 
@@ -3771,10 +3531,6 @@ h2 + .intro {
   .hero-cta {
     margin-top: clamp(1.5rem, 4.2vh, 2.6rem);
     margin-top: clamp(1.5rem, 4.2svh, 2.6rem);
-  }
-  .hg {
-    margin-bottom: clamp(1rem, 2.4vh, 1.5rem);
-    margin-bottom: clamp(1rem, 2.4svh, 1.5rem);
   }
   .hero-plazos {
     margin-top: clamp(0.9rem, 2vh, 1.25rem);
@@ -3885,12 +3641,16 @@ h2 + .intro {
   }
 }
 
-/* ---- Garantía: "te devolvemos el dinero" nunca se corta en dos líneas. */
+/* ---- Inversión (ex garantía): una columna, ancho de lectura. */
 .garantia-txt h2 {
   max-width: 28ch;
   text-wrap: balance;
 }
-.garantia-txt h2 .hl-u,
-.garantia-txt h2 .nw {
-  white-space: nowrap;
+.garantia-solo .garantia-txt {
+  max-width: var(--medida);
+}
+@media (min-width: 960px) {
+  .garantia.garantia-solo {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

@@ -366,6 +366,9 @@
     if (S.i === 0 && F.intro) {
       cuerpo.appendChild(h("div", { class: "f-intro" }, [
         h("p", { class: "f-intro-t", text: F.intro.titulo }),
+        F.intro.pasos && F.intro.pasos.length
+          ? h("ol", { class: "f-intro-pasos" }, F.intro.pasos.map(function (x) { return h("li", { text: x }); }))
+          : null,
         F.intro.micro ? h("p", { class: "f-intro-micro", text: F.intro.micro }) : null,
       ]));
     }
@@ -853,11 +856,12 @@
   }
 
   /* ------------------------------------------------- pantalla de carga --- */
-  /* ~2 s con la barra al 100 %, un plano que se dibuja y tres mensajes que
-     rotan. Con movimiento reducido: un mensaje fijo, mismo tiempo. El
-     resultado no espera a GHL (crmListo sigue en segundo plano). */
+  /* ~2,6 s: un plano que se dibuja, una barra que se llena y tres mensajes
+     que rotan, para que se sienta que se arma la cotización. Con movimiento
+     reducido: un mensaje fijo y la barra llena, mismo tiempo. El resultado
+     no espera a GHL (crmListo sigue en segundo plano). */
 
-  var DUR_CARGA = 2000, PASO_CARGA = 650;
+  var DUR_CARGA = 2600, PASO_CARGA = 850;
   var timersCarga = [];
   function cortarCarga() {
     timersCarga.forEach(clearTimeout);
@@ -897,7 +901,9 @@
       class: "f-carga-msg", id: "form-titulo", "aria-live": "polite", tabindex: "-1",
       text: reduce ? msgs[msgs.length - 1] : msgs[0],
     });
-    cuerpo.appendChild(h("div", { class: "f-carga" }, [svgCarga(), msg]));
+    var barraCarga = h("span", { class: "f-carga-barra", "aria-hidden": "true" }, [h("i")]);
+    barraCarga.style.setProperty("--dur", DUR_CARGA + "ms");
+    cuerpo.appendChild(h("div", { class: "f-carga" }, [svgCarga(), msg, barraCarga]));
     enfocar(msg);
     if (!reduce) {
       msgs.slice(1).forEach(function (t, k) {
@@ -993,52 +999,15 @@
       cont.className += " f-cot";
       t = tituloCotizacion(c.titulo, { nombre: final.nombre, min: pesos(rg.min), max: pesos(rg.max) });
       cont.appendChild(t);
-
-      // Alcance: solo lo que aplica.
-      var pProp = preguntas.filter(function (p) { return p.id === "propiedades"; })[0];
-      var oProp = pProp && opcion(pProp, final.propiedades);
-      var chips = [oProp ? (oProp.chip || oProp.valor) : "", final.zona, cot.visita ? c.conVisita : "", cot.docs ? c.conDocs : ""]
-        .filter(Boolean);
-      if (chips.length) {
-        cont.appendChild(h("ul", { class: "f-chips", "aria-label": "Alcance" }, chips.map(function (x) { return h("li", { text: x }); })));
-      }
-
-      // Los tres rangos, con el del caso resaltado. Entran con el stagger
-      // de la landing y después se resalta el del caso (300 ms). Sin
-      // motion, ya aparecen resaltados.
-      var motion = document.documentElement.classList.contains("motion");
-      var lista = h("ul", { class: "f-rangos", "data-stagger": motion ? true : null });
-      var mio = null;
-      (C.rangos || []).forEach(function (r, i) {
-        var esMio = r.n === rg.n;
-        var li = h("li", { class: "f-rango" + (esMio && !motion ? " mio" : ""), "aria-current": esMio ? "true" : null }, [
-          esMio ? h("span", { class: "f-rango-tu", text: c.tuCaso || "" }) : null,
-          h("p", { class: "f-rango-n", text: r.nombre }),
-          h("p", { class: "f-rango-m", text: pesos(r.min) + " – " + pesos(r.max) }),
-          h("p", { class: "f-rango-i", text: r.incluye }),
-        ]);
-        li.style.setProperty("--i", i);
-        if (esMio) mio = li;
-        lista.appendChild(li);
-      });
-      cont.appendChild(lista);
-      if (motion) {
-        requestAnimationFrame(function () { requestAnimationFrame(function () { lista.classList.add("is-in"); }); });
-        setTimeout(function () { if (mio) mio.classList.add("mio"); }, 800);
-      }
-
-      if (final.zona && final.zona !== "CABA" && C.trasladoFueraCaba) {
-        cont.appendChild(h("p", { class: "f-traslado", text: C.trasladoFueraCaba }));
-      }
+      // Una sola línea: qué incluye su rango (+ traslados fuera de CABA).
+      var linea = [rg.incluye, final.zona && final.zona !== "CABA" ? C.trasladoFueraCaba : ""].filter(Boolean).join(" ");
+      if (linea) cont.appendChild(h("p", { class: "f-incluye", text: linea }));
     } else {
       t = h("h2", { id: "form-titulo", tabindex: "-1", text: plantilla((Fz.reforma || {}).titulo || "", { nombre: final.nombre }) });
       cont.appendChild(t);
     }
 
-    cont.appendChild(h("p", { class: "f-ancla", text: c.ancla || "" }));
-    if (rg && c.contexto) cont.appendChild(h("p", { class: "f-contexto", text: c.contexto }));
     cont.appendChild(botonWhatsApp(c));
-    if (c.secundario) cont.appendChild(h("p", { class: "f-secundario", text: c.secundario }));
     cont.appendChild(linkOtroCaso(c.otroCaso || ""));
     cuerpo.appendChild(cont);
     enfocar(t);
