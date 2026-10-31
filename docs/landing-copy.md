@@ -270,7 +270,7 @@ El copy del formulario está en `site/assets/js/form-config.js` (preguntas, opci
 - **Primer paso (intro):** ¿Querés saber cuánto sale el Diagnóstico adaptado a tu caso? Así funciona: 1. Respondés 5 preguntas sobre tu caso. 2. Ves tu cotización estimada en pantalla. 3. La confirmás con Esteban por WhatsApp. · *Menos de un minuto. Sin compromiso.*
 - **Pasos:** momento → cuántas propiedades (compra) o tipo de reforma (reforma) → zona → dudas → urgencia → datos (email opcional, sin nota al pie). "Paso {n} de {total} · Cotizando tu caso".
 - **Carga (~2,6 s, con barra que se llena):** Leyendo tu caso… → Definiendo el alcance… → Armando tu cotización…
-- **Resultado (compra), corto y solo su caso:** "Listo, {nombre}. En tu caso, el Diagnóstico Black sale entre {min} y {max}." + una línea de qué incluye ("Análisis por planos, sin visita." / "Incluye la visita técnica." / "Incluye visitas y revisión documental.", + "Fuera de CABA, los traslados se cotizan aparte." si aplica) + botón **Hablá con Esteban y resolvé tu propiedad** + "Cotizar otro caso". No se muestran los otros rangos.
+- **Resultado (compra), corto y solo su caso:** "Listo, {nombre}. En tu caso, el Diagnóstico Black sale entre {min} y {max}." + una línea de qué incluye ("Análisis por planos, sin visita." / "Incluye la visita técnica." / "Incluye visitas y revisión documental.", + "Fuera de CABA, los traslados se cotizan aparte." si aplica) + botón **Hablá con Esteban y resolvé tu propiedad** No se muestran los otros rangos ni la opción de cotizar otro caso.
 - **Resultado (reforma):** "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles." + el mismo botón.
 - **No califica:** sin cambios (Instagram).
 

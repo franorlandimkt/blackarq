@@ -31,8 +31,8 @@
      - Email vacío: el envío pasa, GHL recibe email "" y la función de CAPI
        no manda el hash de un texto vacío.
      - El payload a GHL trae las claves del cotizador y las viejas vacías.
-     - Cerrar y volver a abrir muestra el resultado (sin eventos nuevos);
-       "Cotizar otro caso" arranca de cero. Un borrador con las preguntas
+     - Cerrar y volver a abrir muestra el resultado (sin eventos nuevos) y
+       no hay forma de cotizar otro caso. Un borrador con las preguntas
        anteriores se descarta.
 
    Uso (con Playwright instalado, local o global):
@@ -394,7 +394,7 @@ console.log("\n9. Rango de la cotización según la regla");
     const pesos = (x) => "$" + String(x).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const montos = [...new Set(((await v.page.locator(".modal-body").innerText()).match(/\$[\d.]+\d/g) || []))].sort();
     const texto = await v.page.locator(".modal-body").innerText();
-    ok(montos.join(" ") === [pesos(c.min), pesos(c.max)].sort().join(" ") && !/Lorena|devolvemos|Te responde/.test(texto),
+    ok(montos.join(" ") === [pesos(c.min), pesos(c.max)].sort().join(" ") && !/Lorena|devolvemos|Te responde|otro caso/i.test(texto),
       c.nombre + ": muestra solo su rango (" + montos.join(" y ") + " · " + mio + ")");
     ok(cot && cot.data.rango === c.rango && cot.data.cotizacion_min === c.min && cot.data.cotizacion_max === c.max
       && cotCapi && cotCapi.custom_data.rango === c.rango && cotCapi.event_id === cot.id
@@ -484,10 +484,8 @@ console.log("\n12. Cerrar y volver a abrir después de enviar");
   await v.page.waitForTimeout(300);
   ok(await v.page.locator(".f-incluye").count() === 1, "vuelve a ver su cotización");
   ok((await v.fbq()).length === antes && v.capi.length === antesCapi, "sin eventos nuevos (ni InitiateCheckout ni CotizacionVista)");
-  await v.page.locator(".f-otro-caso").click();
-  await v.page.waitForTimeout(300);
-  ok(/Paso 1 de 6/.test(await v.page.textContent("[data-form-paso]")), "\"Cotizar otro caso\" arranca de cero");
-  ok(n(await v.fbq(), "InitiateCheckout").length === 2, "y cuenta un inicio nuevo");
+  ok(!/otro caso/i.test(await v.page.locator(".modal-body").innerText()) && (await v.page.locator(".f-final button").count()) === 0,
+    "no hay opción de cotizar otro caso");
   await v.ctx.close();
 }
 

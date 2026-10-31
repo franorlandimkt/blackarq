@@ -17,7 +17,6 @@ El formulario dejó de ser una calificación del lead y pasó a ser un **cotizad
    - "Listo, {nombre}. En tu caso, el Diagnóstico Black sale entre **$500.000** y **$900.000**." (montos en amarillo)
    - Una línea: "Incluye la visita técnica." (o "Análisis por planos, sin visita." / "Incluye visitas y revisión documental."), + "Fuera de CABA, los traslados se cotizan aparte." si corresponde.
    - Botón: **Hablá con Esteban y resolvé tu propiedad**.
-   - Link chico: "Cotizar otro caso".
    - **No se muestran los otros rangos.** [360](cambios-v6-cotizador/resultado-360.jpg) · [430](cambios-v6-cotizador/resultado-430.jpg)
 6. **Reforma:** "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles." + el mismo botón. [Captura](cambios-v6-cotizador/e2e-reforma-califica.jpg)
 7. **No califica** (reforma puntual): igual que antes, Instagram. [Captura](cambios-v6-cotizador/e2e-reforma-no-califica.jpg)
@@ -48,7 +47,7 @@ El formulario dejó de ser una calificación del lead y pasó a ser un **cotizad
 | Archivo | Cambio |
 |---|---|
 | `site/assets/js/form-config.js` | Primer paso con el proceso, preguntas nuevas, encabezado "Cotizando tu caso", mensajes de la carga, bloque `cotizacion` (montos, línea de qué incluye, vigencia, traslados, regla), mensajes de WhatsApp (compra y reforma), textos del resultado y `ghlClavesViejas`. |
-| `site/assets/js/form.js` | Cálculo del rango, campos nuevos del payload, `Lead` con `propiedades`/`rango`/`urgencia`, carga, resultado (compra, reforma, no califica), `CotizacionVista` y `Contact`, sin salto automático, volver a abrir muestra el resultado (30 min o "Cotizar otro caso" reinician), descarte de borradores viejos. |
+| `site/assets/js/form.js` | Cálculo del rango, campos nuevos del payload, `Lead` con `propiedades`/`rango`/`urgencia`, carga, resultado (compra, reforma, no califica), `CotizacionVista` y `Contact`, sin salto automático, volver a abrir muestra el resultado (a los 30 min arranca de cero; no hay opción de cotizar otro caso), descarte de borradores viejos. |
 | `site/assets/css/site.css` | Lista del primer paso, carga (planta + barra), resultado. Se borraron los estilos de la píldora y del sello de garantía. |
 | `site/index.html` | 11 CTA "Quiero saber cuánto sale"; hero "Cotización en 1 minuto · Visita en 72 h · Informe en 7 días" sin píldora; pasos 1 y 3; sección 10 sin garantía; FAQ "¿Cuánto sale?" primera; FAQ y cierre sin devolución; schema `FAQPage` igual a lo visible. |
 | `docs/landing-copy.md` | Los mismos cambios de copy + resumen del copy del cotizador. |
@@ -72,7 +71,7 @@ Siguen todas las reglas anteriores: InitiateCheckout + paso 1 al abrir (Píxel y
 - Reforma: Lead sí, CotizacionVista no, sin montos; WhatsApp con "Reforma: …".
 - Email vacío: el envío pasa; la función de CAPI no manda `em`.
 - Payload a GHL con las claves del cotizador, las viejas vacías y la atribución completa.
-- Cerrar y volver a abrir: ve su cotización sin eventos nuevos; "Cotizar otro caso" arranca de cero. Cerrar durante la carga: CotizacionVista sale recién cuando la ve.
+- Cerrar y volver a abrir: ve su cotización sin eventos nuevos y no hay opción de cotizar otro caso (pasados 30 minutos, el formulario arranca de cero). Cerrar durante la carga: CotizacionVista sale recién cuando la ve.
 - Borrador con las preguntas anteriores: se descarta sin errores.
 - Landing: los 11 CTA existen con su ID y el texto nuevo; un CTA intermedio (`cta_garantia`) abre el formulario y llega como `cta_origen`; ninguna mención a la devolución en el HTML (texto ni schema).
 
@@ -150,7 +149,7 @@ Retoma en "Paso 4 de 6" con las preguntas nuevas y el Lead llega igual. Un borra
 - **Línea de qué incluye** (una por rango): "Análisis por planos, sin visita.", "Incluye la visita técnica.", "Incluye visitas y revisión documental.".
 - **Sección 10 sin garantía:** el título pasó a ser "El valor depende de cuántas propiedades analicemos y del alcance." (frase que ya estaba en la sección). Se mantienen el id `#garantia` y el CTA `cta_garantia` para no cortar la comparación de CTA en la planilla.
 - **Traslados fuera de CABA:** se mantiene, en la misma línea de qué incluye (es parte del precio).
-- **"Cotizar otro caso"** queda como link chico en todas las pantallas finales.
+- **Sin "Cotizar otro caso"** (pedido de Franco): ninguna pantalla final ofrece volver a cotizar. Si cierra y vuelve a abrir, ve su resultado; a los 30 minutos (o recargando la página) el formulario arranca de cero.
 - **Dudas:** en el WhatsApp separadas por ", "; en GHL y Sheets por " · " (una opción tiene comas adentro).
 - **`necesita_visita` / `revision_documental`:** "Sí" si el rango lo incluye o si marcó esa duda.
 - **`vigencia`** se guarda pero no se muestra ni se aplica.

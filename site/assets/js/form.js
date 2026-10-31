@@ -52,8 +52,8 @@
   var S = cargar() || nuevoEstado();
   var abierto = false, enviado = false, inicioTrackeado = false, ultimaRuta = null;
   // Después de enviar: lo que se muestra si cierra y vuelve a abrir el
-  // formulario (pantalla de resultado), y cuándo envió (a los 30 min, o con
-  // "Cotizar otro caso", arranca de cero).
+  // formulario (pantalla de resultado), y cuándo envió (a los 30 min
+  // arranca de cero). No hay botón para cotizar otro caso.
   var final = null, enviadoEn = 0;
   var REINICIO = 30 * 60 * 1000;
   // Pasos ya informados a Meta en este formulario (no se repiten al volver atrás).
@@ -936,16 +936,6 @@
     return t;
   }
 
-  function linkOtroCaso(texto) {
-    var b = h("button", { type: "button", class: "f-otro-caso", text: texto });
-    b.addEventListener("click", function () {
-      reiniciar();
-      iniciar(APP.getCta());
-      pintar(0);
-    });
-    return b;
-  }
-
   function botonWhatsApp(c) {
     var btn = h("a", { class: "btn btn-1 btn-lg", href: final.url }, [svgUse("i-wa"), h("span", { text: c.boton || "" })]);
     btn.addEventListener("click", function (e) {
@@ -986,7 +976,6 @@
       cont.appendChild(t);
       cont.appendChild(h("p", { text: n.texto || "" }));
       cont.appendChild(ig);
-      cont.appendChild(linkOtroCaso(c.otroCaso || ""));
       cuerpo.appendChild(cont);
       enfocar(t);
       return;
@@ -1008,7 +997,6 @@
     }
 
     cont.appendChild(botonWhatsApp(c));
-    cont.appendChild(linkOtroCaso(c.otroCaso || ""));
     cuerpo.appendChild(cont);
     enfocar(t);
 
@@ -1028,8 +1016,8 @@
 
   /* ---------------------------------------------------- abrir/cerrar --- */
 
-  /** Formulario nuevo: después de "Cotizar otro caso" o pasados 30 min
-      del envío. Vuelve a contar el inicio (InitiateCheckout + paso 1). */
+  /** Formulario nuevo: pasados 30 min del envío. Vuelve a contar el
+      inicio (InitiateCheckout + paso 1). */
   function reiniciar() {
     cortarCarga();
     enviado = false;

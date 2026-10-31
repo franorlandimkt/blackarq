@@ -175,7 +175,7 @@ Ruta reforma: no se calcula rango.
 - reforma: "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles." + el mismo botón;
 - no califica: igual que antes (Instagram).
 
-**Fin del salto automático a WhatsApp.** Solo se va a WhatsApp tocando el botón (misma pestaña, espera a GHL hasta 2,5 s). El mensaje prellenado lleva momento, propiedades (o reforma), zona, dudas, urgencia, rango estimado y la referencia. Si cierra el formulario y lo vuelve a abrir, ve su resultado otra vez; a los 30 minutos, o con "Cotizar otro caso", arranca de cero (y cuenta un inicio nuevo). Un borrador guardado con las preguntas anteriores se descarta.
+**Fin del salto automático a WhatsApp.** Solo se va a WhatsApp tocando el botón (misma pestaña, espera a GHL hasta 2,5 s). El mensaje prellenado lleva momento, propiedades (o reforma), zona, dudas, urgencia, rango estimado y la referencia. Si cierra el formulario y lo vuelve a abrir, ve su resultado otra vez; no hay opción de cotizar otro caso. A los 30 minutos arranca de cero (y cuenta un inicio nuevo). Un borrador guardado con las preguntas anteriores se descarta.
 
 **Tracking:** nuevos `CotizacionVista` (Píxel + CAPI + GA4 `cotizacion_vista`) y `Contact` (Píxel + CAPI; GA4 `whatsapp_redirect` con `origen: "boton"`). El `Lead` ahora lleva `propiedades`, `rango` y `urgencia` en lugar de `presupuesto` y `plazo`. `meta-capi.js` acepta los dos eventos nuevos.
 

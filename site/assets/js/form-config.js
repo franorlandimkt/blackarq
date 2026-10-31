@@ -243,7 +243,6 @@ window.BLACK_FORM = {
     cotizacion: {
       titulo: "Listo, {nombre}. En tu caso, el Diagnóstico Black sale entre {min} y {max}.",
       boton: "Hablá con Esteban y resolvé tu propiedad",
-      otroCaso: "Cotizar otro caso",
     },
     // Ruta reforma (califica): sin rango. Mismo botón.
     reforma: {

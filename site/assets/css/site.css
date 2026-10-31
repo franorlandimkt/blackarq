@@ -2804,20 +2804,6 @@ h2 + .intro {
     font-size: 1rem;
   }
 }
-.f-otro-caso {
-  display: block;
-  min-height: 44px;
-  margin: 0.5rem auto 0;
-  padding: 0 0.75rem;
-  font-size: var(--t-micro);
-  color: var(--gris);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color 0.2s;
-}
-.f-otro-caso:hover {
-  color: var(--blanco);
-}
 @media (min-width: 640px) {
   .modal {
     align-items: center;
