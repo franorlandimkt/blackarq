@@ -19,9 +19,10 @@
        descartan.
    Cotizador (v6):
      - Después del envío (ruta compra): pantalla de carga y después la de
-       resultado. CotizacionVista sale una vez, Píxel y CAPI con el mismo
-       eventID (lead_id + "-cot"), con el rango que dice la regla (se prueban
-       las 5 combinaciones).
+       resultado, que muestra SOLO el rango del caso (ningún otro monto).
+       CotizacionVista sale una vez, Píxel y CAPI con el mismo eventID
+       (lead_id + "-cot"), con el rango que dice la regla (se prueban las 5
+       combinaciones).
      - Contact sale solo al tocar el botón de WhatsApp, una vez aunque se
        toque dos veces (eventID lead_id + "-wa"). Nunca se va a wa.me sin
        ese toque.
@@ -192,7 +193,7 @@ console.log("\n1. Visita desde anuncio → completa → califica → toca WhatsA
   await completar(v.page);
   const hayCarga = await v.page.waitForSelector(".f-carga", { timeout: 2000 }).then(() => true, () => false);
   const enCarga = await v.fbq();
-  ok(hayCarga, "pantalla de carga después del envío");
+  ok(hayCarga && (await v.page.locator(".f-carga-barra").count()) === 1, "pantalla de carga (con barra) después del envío");
   ok(n(enCarga, "Lead").length === 1 && n(enCarga, "CotizacionVista").length === 0, "el Lead sale en el envío, antes de la cotización");
   await esperarResultado(v.page);
   await v.page.waitForTimeout(300);
@@ -387,12 +388,19 @@ console.log("\n9. Rango de la cotización según la regla");
     const cotCapi = n(v.capi, "CotizacionVista")[0];
     const ga = n(await v.ga(), "cotizacion_vista")[0];
     const f = (v.crmBodies[0] || {}).fields || {};
-    const mio = await v.page.locator('.f-rango[aria-current="true"] .f-rango-n').textContent();
+    const mio = await v.page.locator(".f-incluye").textContent();
+    // Solo su rango: en pantalla tienen que aparecer su mínimo y su máximo y
+    // ningún otro monto (los otros packs no se muestran).
+    const pesos = (x) => "$" + String(x).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const montos = [...new Set(((await v.page.locator(".modal-body").innerText()).match(/\$[\d.]+\d/g) || []))].sort();
+    const texto = await v.page.locator(".modal-body").innerText();
+    ok(montos.join(" ") === [pesos(c.min), pesos(c.max)].sort().join(" ") && !/Lorena|devolvemos|Te responde/.test(texto),
+      c.nombre + ": muestra solo su rango (" + montos.join(" y ") + " · " + mio + ")");
     ok(cot && cot.data.rango === c.rango && cot.data.cotizacion_min === c.min && cot.data.cotizacion_max === c.max
       && cotCapi && cotCapi.custom_data.rango === c.rango && cotCapi.event_id === cot.id
       && ga && ga.p.rango === c.rango
       && f.rango === c.rango && f.cotizacion_min === String(c.min) && f.cotizacion_max === String(c.max),
-      c.nombre + " → rango " + c.rango + " (Píxel, CAPI, GA4 y GHL; resaltado: " + mio + ")");
+      c.nombre + " → rango " + c.rango + " (Píxel, CAPI, GA4 y GHL)");
     await v.ctx.close();
   }
 }
@@ -410,7 +418,7 @@ console.log("\n10. Ruta reforma");
   ok(n(fbq, "Lead").length === 1 && n(v.capi, "Lead").length === 1, "manda Lead");
   ok(n(fbq, "CotizacionVista").length === 0 && n(v.capi, "CotizacionVista").length === 0, "sin CotizacionVista");
   const txt = await v.page.locator(".modal-body").innerText();
-  ok(!/\$\s?\d/.test(txt) && (await v.page.locator(".f-rango").count()) === 0, "la pantalla no muestra montos ni tarjetas");
+  ok(!/\$\s?\d/.test(txt) && (await v.page.locator(".f-incluye").count()) === 0, "la pantalla no muestra montos");
   const f = (v.crmBodies[0] || {}).fields || {};
   ok(f.rango === "" && f.cotizacion_texto === "" && f["Tipo de reforma"] === "Integral o ampliación", "GHL: rango vacío y tipo de reforma");
   await v.page.locator(".f-final a.btn").click();
@@ -441,7 +449,7 @@ console.log("\n11. Email vacío y payload a GHL");
   ok(viejas.every((k) => f[k] === ""), "GHL trae las claves viejas vacías");
   ok(["utm_source", "utm_campaign", "campaign_id", "adset_id", "ad_id", "placement", "fbclid", "fbp", "fbc", "external_id", "cta_origen", "ctas_sesion"].every((k) => k in f)
     && f.campaign_id === "11" && /CLK$/.test(f.fbc), "atribución completa en el payload");
-  ok(await v.page.locator(".f-traslado").count() === 1, "fuera de CABA muestra la línea de traslados");
+  ok(/traslados se cotizan aparte/.test(await v.page.locator(".f-incluye").textContent()), "fuera de CABA suma la línea de traslados");
   await v.ctx.close();
 
   // La función de CAPI con email vacío: no manda `em` (ni el hash de "").
@@ -474,7 +482,7 @@ console.log("\n12. Cerrar y volver a abrir después de enviar");
   await v.page.waitForSelector("#modal[hidden]", { state: "attached" });
   await abrirDesdeCta(v.page);
   await v.page.waitForTimeout(300);
-  ok(await v.page.locator(".f-rango").count() === 3, "vuelve a ver su cotización");
+  ok(await v.page.locator(".f-incluye").count() === 1, "vuelve a ver su cotización");
   ok((await v.fbq()).length === antes && v.capi.length === antesCapi, "sin eventos nuevos (ni InitiateCheckout ni CotizacionVista)");
   await v.page.locator(".f-otro-caso").click();
   await v.page.waitForTimeout(300);
@@ -496,7 +504,7 @@ console.log("\n13. Cierra durante la carga");
   ok(n(await v.fbq(), "CotizacionVista").length === 0, "sin CotizacionVista si no la vio");
   await abrirDesdeCta(v.page);
   await v.page.waitForTimeout(300);
-  ok(n(await v.fbq(), "CotizacionVista").length === 1 && await v.page.locator(".f-rango").count() === 3, "al volver a abrir ve la cotización y sale CotizacionVista");
+  ok(n(await v.fbq(), "CotizacionVista").length === 1 && await v.page.locator(".f-incluye").count() === 1, "al volver a abrir ve la cotización y sale CotizacionVista");
   await v.ctx.close();
 }
 
@@ -520,6 +528,27 @@ console.log("\n14. Borrador con las preguntas anteriores");
   await completar(v.page);
   await esperarResultado(v.page);
   ok(errores.length === 0 && n(v.capi, "Lead").length === 1, "el envío funciona sin errores");
+  await v.ctx.close();
+}
+
+// ---------------------------------------------------------------- 15
+console.log("\n15. Landing: CTA de atribución y sin garantía de devolución");
+{
+  const v = await visita();
+  await v.page.goto(BASE);
+  await v.page.waitForFunction(() => !!window.BlackForm);
+  const ctas = await v.page.evaluate(() => [...document.querySelectorAll("[data-cta]")].map((a) => a.getAttribute("data-cta") + ":" + a.textContent.trim()));
+  const ids = ["cta_header", "cta_hero", "cta_problema", "cta_solucion", "cta_incluye", "cta_pasos", "cta_casos", "cta_garantia", "cta_faq", "cta_cierre", "cta_sticky"];
+  ok(ids.every((id) => ctas.some((c) => c === id + ":Quiero saber cuánto sale")) && ctas.length === ids.length, "los 11 CTA con su ID y \"Quiero saber cuánto sale\"");
+  const html = await v.page.content();
+  ok(!/devolvemos|devoluci[oó]n/i.test(html), "ninguna mención a la devolución del dinero (texto ni schema)");
+  // Cada CTA abre el formulario y deja su ID como cta_origen.
+  await v.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
+  await v.page.waitForTimeout(400);
+  await v.page.locator('[data-cta="cta_garantia"]').click();
+  await v.page.waitForSelector("#modal:not([hidden])");
+  const ic = n(v.capi, "InitiateCheckout")[0];
+  ok(ic && ic.custom_data.cta_origen === "cta_garantia", "un CTA intermedio abre el formulario con su cta_origen");
   await v.ctx.close();
 }
 
