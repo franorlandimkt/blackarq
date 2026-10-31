@@ -25,6 +25,24 @@
 
   function track(evento, params) {
     if (typeof window.gtag === "function") window.gtag("event", evento, params || {});
+    clarityEvento(evento, params || {});
+  }
+
+  /** Los mismos eventos a Microsoft Clarity, para armar el embudo del
+      formulario y filtrar grabaciones (form_start, form_step_1…6,
+      form_submit, cotizacion_vista, whatsapp_redirect…). Los pasos van con
+      su número en el nombre; ruta, califica y rango, como etiquetas de la
+      sesión. Si Clarity falla o no cargó, no afecta nada más. */
+  function clarityEvento(evento, p) {
+    if (typeof window.clarity !== "function") return;
+    try {
+      var nombre = evento;
+      if (evento === "form_step" && p.step) nombre = "form_step_" + p.step;
+      if (evento === "form_route" && p.route) window.clarity("set", "ruta", String(p.route));
+      if (evento === "form_submit") window.clarity("set", "califica", p.qualified ? "si" : "no");
+      if (evento === "cotizacion_vista" && p.rango) window.clarity("set", "rango", String(p.rango));
+      window.clarity("event", nombre);
+    } catch (e) { /* Clarity nunca rompe el tracking */ }
   }
 
   /** Respaldo: el Píxel y el PageView ya salen desde el <head> de cada

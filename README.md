@@ -123,6 +123,8 @@ Para ver dónde se cae la gente o optimizar a mitad de embudo: en el Administrad
 
 Píxel: `1638281244623196`. **API de Conversiones:** el `Lead` calificado también sale del servidor por `netlify/functions/meta-capi.js` (mismo `event_id`, nombre y teléfono hasheados SHA-256, IP, user agent, `_fbp`/`_fbc`). El token **no está en el repo**: cargarlo en Netlify > Site configuration > Environment variables como `META_CAPI_TOKEN` y volver a desplegar. Opcional: `META_TEST_CODE` con el código de "Probar eventos" del Administrador de eventos para verificar, y borrarlo después.
 
+**Microsoft Clarity** (proyecto `z62mevs5ey`, mapas de calor y grabaciones) está en el `<head>` de `index.html`, `obras/` y `estudio/`, async. Recibe los mismos eventos que GA4 (desde `track()` en `site.js`) para armar el embudo del formulario: `cta_click`, `form_start`, `form_step_1` … `form_step_6`, `form_route`, `form_submit`, `cotizacion_vista`, `whatsapp_redirect`, `instagram_redirect`; y etiquetas de sesión `ruta`, `califica` y `rango` para filtrar grabaciones. Clarity enmascara por defecto lo que se escribe en los campos (nombre, WhatsApp, email). Si Clarity no carga, no afecta al resto del tracking.
+
 GA4 (`G-EE9PC274XF`) está en el `<head>` de `index.html`. Eventos: `cta_click`, `form_start`, `form_step`, `form_route`, `form_submit`, `cotizacion_vista` (mismos parámetros que `CotizacionVista`), `whatsapp_redirect` (`origen: "boton"`; el `origen: "auto"` dejó de existir con el salto automático), `instagram_redirect`, `faq_open`, `case_slider_used`, `reviews_more`, `scroll_depth`. (`muro_hotspot` dejó de existir con la sección del corte de muro.)
 
 ---

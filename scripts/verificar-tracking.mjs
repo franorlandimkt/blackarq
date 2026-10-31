@@ -94,6 +94,13 @@ async function visita() {
     return route.abort(); // fbevents, fuentes, etc.: sin red
   });
   v.page = await ctx.newPage();
+  // Clarity: se define antes que el snippet (que respeta un clarity ya
+  // existente) para registrar cada llamada.
+  await v.page.addInitScript(() => {
+    window.__clarity = [];
+    window.clarity = function () { window.__clarity.push([].slice.call(arguments)); };
+  });
+  v.clarity = () => v.page.evaluate(() => window.__clarity.map((a) => a.join(":")));
   // Copia de cada llamada a fbq, que sobrevive a la cola interna del Píxel.
   await v.page.addInitScript(() => {
     window.__fbq = [];
@@ -213,7 +220,10 @@ console.log("\n1. Visita desde anuncio → completa → califica → toca WhatsA
   ok(n(await v.fbq(), "Contact").length === 0 && n(v.capi, "Contact").length === 0, "sin Contact antes del toque");
 
   await v.page.locator(".f-final a.btn").click();
+  const cl = await v.clarity().catch(() => []); // antes de que salga a WhatsApp
   await v.page.waitForURL(/wa\.me/, { timeout: 4000 }).catch(() => {});
+  ok(["event:cta_click", "event:form_start", "event:form_step_1", "event:form_step_6", "event:form_submit", "event:cotizacion_vista", "event:whatsapp_redirect", "set:rango:2", "set:califica:si"].every((e) => cl.includes(e)),
+    "Clarity recibe el embudo del formulario (inicio, pasos 1–6, envío, cotización, WhatsApp) y las etiquetas");
   ok(/wa\.me/.test(v.page.url()), "el botón lleva a WhatsApp");
   const contactCapi = n(v.capi, "Contact");
   ok(contactCapi.length === 1 && contactCapi[0].event_id === leadsPx[0].id + "-wa", "Contact por CAPI con eventID lead_id-wa");

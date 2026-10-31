@@ -54,6 +54,16 @@ var h=location.hostname,local=location.protocol==='file:'||/^(localhost|127\.|\[
 if(!local){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(s);}
 gtag('js',new Date());gtag('config',id);})();
 </script>
+
+<!-- Microsoft Clarity (mapas de calor y grabaciones de sesión). Carga async:
+     no frena la página. Proyecto z62mevs5ey. -->
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "z62mevs5ey");
+</script>
 <link rel="icon" href="../assets/brand/icon-512.png" type="image/png">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
