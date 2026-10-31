@@ -1,6 +1,6 @@
 # COPY FINAL — Diagnóstico Black (usar literal)
 
-> Fuente única del copy de la landing (`site/index.html`). Versión 6 (30/10, cotizador): CTAs "Cotizá tu Diagnóstico", línea del hero, pasos 1 y 3, inversión y FAQ "¿Cuánto sale?". El copy del formulario-cotizador vive en `site/assets/js/form-config.js`. Versión 2 (8/10): ajustes de Franco sobre la v1 publicada (hero nuevo, sin rótulos de sección, sin iceberg ni contador, para quién reescrito, garantía sin "qué incluye"). Es copy final: no se reescribe, no se resume, no se agregan frases. Las líneas de "Ilustración", "Material" y "Por qué" son indicaciones de diseño, no texto publicado. Los marcadores `[DATO: …]` se completan en `site/assets/js/content.js`.
+> Fuente única del copy de la landing (`site/index.html`). Versión 6 (30–31/10, cotizador): CTAs "Quiero saber cuánto sale", línea del hero, pasos 1 y 3, inversión, FAQ "¿Cuánto sale?" y **sin garantía de devolución en toda la página**. El copy del formulario-cotizador vive en `site/assets/js/form-config.js`. Versión 2 (8/10): ajustes de Franco sobre la v1 publicada (hero nuevo, sin rótulos de sección, sin iceberg ni contador, para quién reescrito, garantía sin "qué incluye"). Es copy final: no se reescribe, no se resume, no se agregan frases. Las líneas de "Ilustración", "Material" y "Por qué" son indicaciones de diseño, no texto publicado. Los marcadores `[DATO: …]` se completan en `site/assets/js/content.js`.
 
 ## Estrategia
 
@@ -26,9 +26,7 @@
 - Presupuesto estimado para dejarla como la querés
 - Argumentos concretos para negociar el precio
 
-**CTA:** Cotizá tu Diagnóstico →
-
-**Arriba del CTA (píldora con brillo):** Si no te damos un argumento para bajar el precio, te devolvemos el dinero.
+**CTA:** Quiero saber cuánto sale →
 
 **Debajo del CTA:** Cotización en 1 minuto · Visita en 72 h · Informe en 7 días
 
@@ -201,17 +199,15 @@ Si después de analizarla creemos que no te conviene, te lo vamos a decir igual.
 
 ---
 
-## 10. Garantía e inversión
+## 10. Inversión
 
-**Subtítulo:** Si no te damos un argumento para bajar el precio, te devolvemos el dinero.
-
-**Garantía:** si en tu informe no hay al menos un argumento concreto para bajar el precio, te devolvemos lo que pagaste por el Diagnóstico.
+**Subtítulo:** El valor depende de cuántas propiedades analicemos y del alcance.
 
 **Y se descuenta:** si después hacés el proyecto o la reforma con Black, el Diagnóstico se descuenta de los honorarios.
 
-El valor depende de cuántas propiedades analicemos y del alcance. Cotizalo en un minuto.
+Cotizalo en un minuto.
 
-**CTA:** Cotizá tu Diagnóstico
+**CTA:** Quiero saber cuánto sale
 
 ---
 
@@ -245,7 +241,7 @@ CABA, Zona Norte y Zona Oeste del GBA. Otras localidades se evalúan según el c
 Sí. El mismo análisis te dice qué reforma conviene, en qué orden y cuánto cuesta. Elegí "Ya es mía y quiero reformarla" en el formulario.
 
 **"¿Tengo que pagar para que me digan si conviene?"**
-Sí, y es justamente lo que garantiza que nadie gana nada si comprás. Y si no te damos un argumento para bajar el precio, te devolvemos el dinero.
+Sí, y es justamente lo que garantiza que nadie gana nada si comprás.
 
 ---
 
@@ -255,11 +251,13 @@ Sí, y es justamente lo que garantiza que nadie gana nada si comprás. Y si no t
 
 **Bajada:** *"Quiero estar tranquilo de que estoy tomando una buena decisión."* Esa tranquilidad empieza antes de la oferta.
 
-**CTA:** Cotizá tu Diagnóstico
+**CTA:** Quiero saber cuánto sale
 
-**Debajo del CTA:** Visita en 72 h · Informe en 7 días · Garantía de devolución.
+**Debajo del CTA:** Visita en 72 h · Informe en 7 días
 
-**Todos los botones que abren el formulario** (encabezado, hero, intermedios, cierre y CTA fijo de mobile): **Cotizá tu Diagnóstico**.
+**Todos los botones que abren el formulario** (encabezado, hero, intermedios, cierre y CTA fijo de mobile): **Quiero saber cuánto sale**.
+
+**Sin garantía de devolución** en ninguna parte de la página (hero, sección 10, FAQ, cierre ni schema).
 
 **Footer:** zonas de cobertura (sin mapa ni dirección). Sin Instagram ni email.
 
@@ -269,11 +267,11 @@ Sí, y es justamente lo que garantiza que nadie gana nada si comprás. Y si no t
 
 El copy del formulario está en `site/assets/js/form-config.js` (preguntas, opciones, montos y textos de la pantalla de resultado). Resumen:
 
-- **Intro:** No es lo mismo analizar una propiedad que tres, ni con visita que por planos. Contanos tu caso en 5 preguntas y te decimos cuánto sale el Diagnóstico para vos. · *Menos de un minuto. Sin compromiso.*
-- **Pasos:** momento → cuántas propiedades (compra) o tipo de reforma (reforma) → zona → dudas → urgencia → datos (email opcional). "Paso {n} de {total} · Cotizando tu caso".
-- **Carga:** Leyendo tu caso… → Definiendo el alcance… → Armando tu cotización…
-- **Resultado (compra):** "Listo, {nombre}. Para tu caso, el Diagnóstico Black sale entre {min} y {max}." + alcance + tres rangos (Análisis por planos $300.000 – $500.000 · Con visita técnica $500.000 – $900.000 · Comparativo $900.000 – $1.400.000), el del caso resaltado ("Tu caso") + "Fuera de CABA, los traslados se cotizan aparte." (si aplica) + "Se descuenta entero de los honorarios si después hacés el proyecto o la reforma con Black. Y si en el informe no encontramos ningún argumento para negociar, te lo devolvemos." + "En el caso de Lorena (Devoto), fue una fracción mínima de los USD 40.000 que dejó de pagar." + botón **Hablá con Esteban y empezá a resolver tu propiedad** + "Te responde él, en el día. Si preferís, te escribimos nosotros." + "Cotizar otro caso".
-- **Resultado (reforma):** "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles." + el mismo párrafo y el mismo botón.
+- **Primer paso (intro):** ¿Querés saber cuánto sale el Diagnóstico adaptado a tu caso? Así funciona: 1. Respondés 5 preguntas sobre tu caso. 2. Ves tu cotización estimada en pantalla. 3. La confirmás con Esteban por WhatsApp. · *Menos de un minuto. Sin compromiso.*
+- **Pasos:** momento → cuántas propiedades (compra) o tipo de reforma (reforma) → zona → dudas → urgencia → datos (email opcional, sin nota al pie). "Paso {n} de {total} · Cotizando tu caso".
+- **Carga (~2,6 s, con barra que se llena):** Leyendo tu caso… → Definiendo el alcance… → Armando tu cotización…
+- **Resultado (compra), corto y solo su caso:** "Listo, {nombre}. En tu caso, el Diagnóstico Black sale entre {min} y {max}." + una línea de qué incluye ("Análisis por planos, sin visita." / "Incluye la visita técnica." / "Incluye visitas y revisión documental.", + "Fuera de CABA, los traslados se cotizan aparte." si aplica) + botón **Hablá con Esteban y resolvé tu propiedad** + "Cotizar otro caso". No se muestran los otros rangos.
+- **Resultado (reforma):** "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles." + el mismo botón.
 - **No califica:** sin cambios (Instagram).
 
 ---

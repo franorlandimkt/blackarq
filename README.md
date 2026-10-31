@@ -158,7 +158,7 @@ El formulario pasó de calificar al lead a **cotizar su caso**: 5 preguntas + da
 
 **Formulario (6 pasos en las dos rutas, `form-config.js`):** momento (define la ruta) → cuántas propiedades (compra) o tipo de reforma (reforma; "Puntual" no califica, como la reforma chica de antes) → zona → dudas (varias; "estado real" marca visita, "planos y documentación" marca revisión documental) → urgencia → datos (nombre y WhatsApp obligatorios, **email opcional**). Encabezado: "Paso {n} de {total} · Cotizando tu caso". Presupuesto, plazo de compra, objetivos y "¿visitó?" salieron del formulario: los pregunta Esteban por WhatsApp.
 
-**Bloque `cotizacion` (`form-config.js`):** moneda, vigencia, los tres rangos (nombre, qué incluye, mínimo y máximo en pesos, si incluyen visita y revisión documental), la línea de traslados fuera de CABA y la regla de asignación. `form.js` solo lo lee: para cambiar un monto o la regla no se toca el motor.
+**Bloque `cotizacion` (`form-config.js`):** moneda, vigencia, los tres rangos (nombre, la línea corta de qué incluye que se ve en el resultado, mínimo y máximo en pesos, si incluyen visita y revisión documental), la línea de traslados fuera de CABA y la regla de asignación. `form.js` solo lo lee: para cambiar un monto o la regla no se toca el motor.
 
 | Rango | Monto | Cuándo (ruta compra, en este orden) |
 |---|---|---|
@@ -168,22 +168,24 @@ El formulario pasó de calificar al lead a **cotizar su caso**: 5 preguntas + da
 
 Ruta reforma: no se calcula rango.
 
-**Después de enviar:** el envío a GHL, Sheets, `form_submit` y el `Lead` (o `LeadNoCalifica`) salen igual que antes, en el envío. Si califica: **pantalla de carga** (2 s, barra al 100 %, una planta que se dibuja y tres mensajes; con movimiento reducido, un mensaje fijo) y **pantalla de resultado**:
-- compra: "Listo, {nombre}. Para tu caso, el Diagnóstico Black sale entre {min} y {max}.", alcance (cuántas propiedades · zona · con visita técnica · con revisión documental, solo lo que aplica), las tres tarjetas con la del caso en amarillo ("Tu caso"), traslados si no es CABA, el párrafo de descuento y devolución, el contexto de Lorena y el botón "Hablá con Esteban y empezá a resolver tu propiedad";
-- reforma: "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles." + el mismo párrafo y el mismo botón;
+**Primer paso:** explica el proceso (respondés 5 preguntas → ves tu cotización estimada → la confirmás con Esteban por WhatsApp).
+
+**Después de enviar:** el envío a GHL, Sheets, `form_submit` y el `Lead` (o `LeadNoCalifica`) salen igual que antes, en el envío. Si califica: **pantalla de carga** (~2,6 s: una planta que se dibuja, una barra que se llena y tres mensajes; con movimiento reducido, un mensaje fijo) y **pantalla de resultado**, corta y solo con su caso:
+- compra: "Listo, {nombre}. En tu caso, el Diagnóstico Black sale entre {min} y {max}.", una línea de qué incluye su rango (+ traslados si no es CABA) y el botón "Hablá con Esteban y resolvé tu propiedad". **No se muestran los otros rangos**;
+- reforma: "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles." + el mismo botón;
 - no califica: igual que antes (Instagram).
 
 **Fin del salto automático a WhatsApp.** Solo se va a WhatsApp tocando el botón (misma pestaña, espera a GHL hasta 2,5 s). El mensaje prellenado lleva momento, propiedades (o reforma), zona, dudas, urgencia, rango estimado y la referencia. Si cierra el formulario y lo vuelve a abrir, ve su resultado otra vez; a los 30 minutos, o con "Cotizar otro caso", arranca de cero (y cuenta un inicio nuevo). Un borrador guardado con las preguntas anteriores se descarta.
 
 **Tracking:** nuevos `CotizacionVista` (Píxel + CAPI + GA4 `cotizacion_vista`) y `Contact` (Píxel + CAPI; GA4 `whatsapp_redirect` con `origen: "boton"`). El `Lead` ahora lleva `propiedades`, `rango` y `urgencia` en lugar de `presupuesto` y `plazo`. `meta-capi.js` acepta los dos eventos nuevos.
 
-**Landing:** todos los CTA dicen "Cotizá tu Diagnóstico"; hero "Cotización en 1 minuto · Visita en 72 h · Informe en 7 días"; pasos 1 y 3; inversión ("Cotizalo en un minuto."); FAQ nueva "¿Cuánto sale?" primera (y en el schema `FAQPage`).
+**Landing:** todos los CTA dicen "Quiero saber cuánto sale" (mismos IDs); hero "Cotización en 1 minuto · Visita en 72 h · Informe en 7 días"; pasos 1 y 3; FAQ nueva "¿Cuánto sale?" primera (y en el schema `FAQPage`). **Se sacó la garantía de devolución de toda la página:** la píldora del hero, el sello y el texto de la sección 10 (ahora "Inversión": el valor depende de cuántas propiedades y del alcance + se descuenta de los honorarios; mismo id `#garantia` y mismo `cta_garantia`), la frase de la FAQ "¿Tengo que pagar…?", el "Garantía de devolución" del cierre y el schema.
 
 **Pendiente en GHL y Meta:** ver `docs/cambios-v6-cotizador.md` ("Qué tiene que hacer Franco").
 
 ## 7. Cambios v5 (13/10)
 
-- **Hero:** H1 "¿Estás por comprar una propiedad?" a todo el ancho, sin resaltado (2 líneas en 358–390 px). Bullets y subtítulo nuevos. CTA del hero: "Quiero analizar mi propiedad" (el resto sigue "Quiero mi Diagnóstico Black"). *Desde la v6 todos dicen "Cotizá tu Diagnóstico".* Debajo: "Visita en 72 h · Informe en 7 días" + garantía.
+- **Hero:** H1 "¿Estás por comprar una propiedad?" a todo el ancho, sin resaltado (2 líneas en 358–390 px). Bullets y subtítulo nuevos. CTA del hero: "Quiero analizar mi propiedad" (el resto sigue "Quiero mi Diagnóstico Black"). *Desde la v6 todos dicen "Quiero saber cuánto sale".* Debajo: "Visita en 72 h · Informe en 7 días" + garantía.
 - **Problema:** H2 del auto usado, tarjetas Auto usado vs Propiedad (sin íconos: el "Sí" malo va en amarillo), texto, puente y pregunta 3 nueva ("¿Puede quedar como la querés?").
 - **Idea central:** compra en tres partes + mapa conceptual SVG (COMPRA → Inmobiliario · Constructivo · Arquitectónico) que reemplaza la ilustración de las dos mitades.
 - **Remate** ("Todo esto tiene solución"): panel oscuro con más aire, frase con barra amarilla.
