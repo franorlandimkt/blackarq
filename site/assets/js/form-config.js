@@ -244,6 +244,14 @@ window.BLACK_FORM = {
       titulo: "Listo, {nombre}. En tu caso, el Diagnóstico Black sale entre {min} y {max}.",
       boton: "Hablá con Esteban y resolvé tu propiedad",
     },
+    // Salto automático a WhatsApp (compra y reforma, solo si califica):
+    // después de mostrar el resultado, cuenta estos segundos y abre WhatsApp
+    // solo. {s} = segundos que faltan. segundos: 0 = sin salto (solo botón).
+    // Se pausa si sale de la pestaña y se corta si cierra el formulario.
+    autoWhatsApp: {
+      segundos: 5,
+      texto: "Te llevamos a WhatsApp en {s} s…",
+    },
     // Ruta reforma (califica): sin rango. Mismo botón.
     reforma: {
       titulo: "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles.",

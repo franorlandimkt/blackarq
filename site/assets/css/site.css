@@ -2797,6 +2797,39 @@ h2 + .intro {
 .f-final .btn span {
   text-wrap: balance;
 }
+/* Salto automático a WhatsApp: una línea chica debajo del botón con los
+   segundos que faltan y una barra finita que se llena (form.js la mueve). */
+.f-final .f-auto-wa {
+  margin-top: 0.875rem;
+  font-size: 0.9375rem;
+  color: var(--texto-3);
+  text-align: center;
+}
+.f-auto-wa strong {
+  color: var(--blanco);
+  font-variant-numeric: tabular-nums;
+}
+.f-auto-wa-barra {
+  display: block;
+  height: 2px;
+  margin-top: 0.625rem;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--linea);
+}
+.f-auto-wa-barra i {
+  display: block;
+  height: 100%;
+  background: var(--acento);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .f-auto-wa-barra i {
+    transition: none;
+  }
+}
 @media (max-width: 439px) {
   .f-final .btn {
     gap: 0.625rem;

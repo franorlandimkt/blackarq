@@ -1,6 +1,6 @@
 # Cambios v6: formulario-cotizador del Diagnóstico Black (30–31/10/2026)
 
-El formulario dejó de ser una calificación del lead y pasó a ser un **cotizador**: la persona responde 5 preguntas, ve una carga corta y después **el precio estimado de su caso** con un botón a WhatsApp con Esteban. El lead se captura igual que antes (mismo momento, mismos eventos, mismo envío a GHL). Ya no hay salto automático a WhatsApp.
+El formulario dejó de ser una calificación del lead y pasó a ser un **cotizador**: la persona responde 5 preguntas, ve una carga corta y después **el precio estimado de su caso** con un botón a WhatsApp con Esteban. El lead se captura igual que antes (mismo momento, mismos eventos, mismo envío a GHL). Ya no hay salto automático a WhatsApp. **Actualización 11/11:** el salto automático volvió, con una cuenta de 5 s en la pantalla de resultado (README, sección 7).
 
 - Punto de restauración: commit `64c31fb` (el `main` anterior a cualquier cambio). Se marcó con el tag local `restore-pre-cotizador`, pero el entorno no permite subir tags: si se quiere en GitHub, `git tag restore-pre-cotizador 64c31fb && git push origin restore-pre-cotizador`.
 - `node scripts/verificar-tracking.mjs`: **en verde, 80 comprobaciones**.

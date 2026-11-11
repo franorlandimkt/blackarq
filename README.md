@@ -35,7 +35,7 @@ Claves que llegan al webhook (planas, sin tildes, para mapear en el Workflow):
 - **Cotización:** `rango` ("1"/"2"/"3"; vacío en reforma y en no califica), `rango_nombre`, `cotizacion_min` y `cotizacion_max` (números sin formato, ej. `500000`), `cotizacion_texto` (`$500.000 – $900.000`), `necesita_visita` y `revision_documental` ("Sí"/"No": lo incluye el rango o lo pidió en las dudas).
 - **Claves del formulario anterior, vacías:** `presupuesto`, `plazo`, `visito_propiedad`, `que_busca`, `disposicion_invertir` llegan siempre como `""` para que el Workflow no se rompa si las tenía mapeadas. Se borran de `ghlClavesViejas` en `form-config.js` cuando se actualice el Workflow.
 - **Lead:** `lead_id`, `ref_whatsapp` (la `Ref. BLK-XXXX` del WhatsApp), `ruta`, `califica` ("Sí"/"No"), `motivo_descalificacion`.
-- **Envío:** `fecha_envio` (cuándo completó el formulario) y `reintento` (`no` / `si`). Un `si` es el mismo lead reenviado porque en su momento no se confirmó (mismo `lead_id`): no es un contacto nuevo. El botón de WhatsApp de la pantalla de resultado espera la confirmación de GHL (hasta 2,5 s) antes de salir; los pendientes de más de 7 días se descartan.
+- **Envío:** `fecha_envio` (cuándo completó el formulario) y `reintento` (`no` / `si`). Un `si` es el mismo lead reenviado porque en su momento no se confirmó (mismo `lead_id`): no es un contacto nuevo. El paso a WhatsApp de la pantalla de resultado (botón o salto automático) espera la confirmación de GHL (hasta 2,5 s) antes de salir; los pendientes de más de 7 días se descartan.
 - **Atribución:** `cta_origen`, `ctas_sesion`, `utm_*`, `campaign_id`, `adset_id`, `ad_id`, `placement`, `fbclid`, `fbp`, `fbc`, `external_id` (el mismo que usan Píxel y CAPI), `ft_*` (primer toque), `dispositivo`, `url`, `referrer`.
 
 `fbc`, `fbp`, `external_id`, email y teléfono quedan en el contacto para que los Workflows de etapa (Schedule, ShowUp, Purchase) los manden a Meta.
@@ -111,7 +111,7 @@ Solo fórmulas, sin carga manual: totales; leads, vendidos, tasa de venta y mont
 | `Lead` | envío que **califica** (sale en el envío, antes de la cotización). `eventID` = `lead_id` | `ruta`, `zona`, `propiedades`, `rango`, `urgencia`, `cta_origen` |
 | `LeadNoCalifica` (personalizado) | envío que **no** califica | lo mismo + `motivo` |
 | `CotizacionVista` (personalizado) | se pinta la pantalla con la cotización (ruta compra), una vez por lead. `eventID` = `lead_id` + `-cot` | `rango`, `cotizacion_min`, `cotizacion_max`, `zona`, `propiedades`, `cta_origen` |
-| `Contact` (estándar) | toca el botón de WhatsApp de la pantalla de resultado, una vez por lead. `eventID` = `lead_id` + `-wa` | `ruta`, `rango`, `cta_origen` |
+| `Contact` (estándar) | va a WhatsApp desde la pantalla de resultado (toca el botón o termina la cuenta de 5 s), una vez por lead. `eventID` = `lead_id` + `-wa` | `ruta`, `rango`, `cta_origen` |
 
 Coincidencia de eventos: `external_id` anónimo y estable del visitante en todos los eventos, `_fbp`/`_fbc` (o `fbclid`), IP y user agent por servidor; en el envío, email, teléfono, nombre y apellido (hasheados) por Píxel con coincidencia avanzada y por CAPI.
 
@@ -125,7 +125,7 @@ Píxel: `1638281244623196`. **API de Conversiones:** el `Lead` calificado tambi�
 
 **Microsoft Clarity** (proyecto `z62mevs5ey`, mapas de calor y grabaciones) está en el `<head>` de `index.html`, `obras/` y `estudio/`, async. Recibe los mismos eventos que GA4 (desde `track()` en `site.js`) para armar el embudo del formulario: `cta_click`, `form_start`, `form_step_1` … `form_step_6`, `form_route`, `form_submit`, `cotizacion_vista`, `whatsapp_redirect`, `instagram_redirect`; y etiquetas de sesión `ruta`, `califica` y `rango` para filtrar grabaciones. Clarity enmascara por defecto lo que se escribe en los campos (nombre, WhatsApp, email). Si Clarity no carga, no afecta al resto del tracking.
 
-GA4 (`G-EE9PC274XF`) está en el `<head>` de `index.html`. Eventos: `cta_click`, `form_start`, `form_step`, `form_route`, `form_submit`, `cotizacion_vista` (mismos parámetros que `CotizacionVista`), `whatsapp_redirect` (`origen: "boton"`; el `origen: "auto"` dejó de existir con el salto automático), `instagram_redirect`, `faq_open`, `case_slider_used`, `reviews_more`, `scroll_depth`. (`muro_hotspot` dejó de existir con la sección del corte de muro.)
+GA4 (`G-EE9PC274XF`) está en el `<head>` de `index.html`. Eventos: `cta_click`, `form_start`, `form_step`, `form_route`, `form_submit`, `cotizacion_vista` (mismos parámetros que `CotizacionVista`), `whatsapp_redirect` (`origen: "auto"` si terminó la cuenta del resultado, `"boton"` si tocó el botón; una vez por lead), `instagram_redirect`, `faq_open`, `case_slider_used`, `reviews_more`, `scroll_depth`. (`muro_hotspot` dejó de existir con la sección del corte de muro.)
 
 ---
 
@@ -177,13 +177,23 @@ Ruta reforma: no se calcula rango.
 - reforma: "Listo, {nombre}. Te cotizamos tu caso por WhatsApp en menos de 24 h hábiles." + el mismo botón;
 - no califica: igual que antes (Instagram).
 
-**Fin del salto automático a WhatsApp.** Solo se va a WhatsApp tocando el botón (misma pestaña, espera a GHL hasta 2,5 s). El mensaje prellenado lleva momento, propiedades (o reforma), zona, dudas, urgencia, rango estimado y la referencia. Si cierra el formulario y lo vuelve a abrir, ve su resultado otra vez; no hay opción de cotizar otro caso. A los 30 minutos arranca de cero (y cuenta un inicio nuevo). Un borrador guardado con las preguntas anteriores se descarta.
+**Fin del salto automático a WhatsApp** (volvió el 11/11 con una cuenta de 5 s: ver sección 7). Solo se va a WhatsApp tocando el botón (misma pestaña, espera a GHL hasta 2,5 s). El mensaje prellenado lleva momento, propiedades (o reforma), zona, dudas, urgencia, rango estimado y la referencia. Si cierra el formulario y lo vuelve a abrir, ve su resultado otra vez; no hay opción de cotizar otro caso. A los 30 minutos arranca de cero (y cuenta un inicio nuevo). Un borrador guardado con las preguntas anteriores se descarta.
 
 **Tracking:** nuevos `CotizacionVista` (Píxel + CAPI + GA4 `cotizacion_vista`) y `Contact` (Píxel + CAPI; GA4 `whatsapp_redirect` con `origen: "boton"`). El `Lead` ahora lleva `propiedades`, `rango` y `urgencia` en lugar de `presupuesto` y `plazo`. `meta-capi.js` acepta los dos eventos nuevos.
 
 **Landing:** todos los CTA dicen "Quiero saber cuánto sale" (mismos IDs); hero "Cotización en 1 minuto · Visita en 72 h · Informe en 7 días"; pasos 1 y 3; FAQ nueva "¿Cuánto sale?" primera (y en el schema `FAQPage`). **Se sacó la garantía de devolución de toda la página:** la píldora del hero, el sello y el texto de la sección 10 (ahora "Inversión": el valor depende de cuántas propiedades y del alcance + se descuenta de los honorarios; mismo id `#garantia` y mismo `cta_garantia`), la frase de la FAQ "¿Tengo que pagar…?", el "Garantía de devolución" del cierre y el schema.
 
 **Pendiente en GHL y Meta:** ver `docs/cambios-v6-cotizador.md` ("Qué tiene que hacer Franco").
+
+## 7. Vuelve el salto automático a WhatsApp (11/11)
+
+El dueño avisó que había leads en GHL que nunca escribían por WhatsApp. Causa: desde la v6 solo se iba a WhatsApp tocando el botón, y muchos veían el precio y se iban. Ahora la pantalla de resultado (compra y reforma) muestra debajo del botón "Te llevamos a WhatsApp en 5 s…" con una barra, y al terminar abre WhatsApp sola con el mismo mensaje. Tocar el botón va en el momento. [Captura](docs/cambios-v6-cotizador/salto-whatsapp.jpg)
+
+- Se configura en `form-config.js` → `final.autoWhatsApp` (`segundos`, `texto`). `segundos: 0` vuelve a "solo botón".
+- La cuenta se pausa si sale de la pestaña o de la app, y se corta si cierra el formulario (al volver a abrir arranca de nuevo). Volver de WhatsApp no salta otra vez.
+- No califica: sigue sin ir a WhatsApp (Instagram).
+- `Contact` (Píxel + CAPI, `eventID` `lead_id-wa`) y GA4 `whatsapp_redirect` salen una vez por lead, salte solo (`origen: "auto"`) o toque el botón (`origen: "boton"`). Ojo al comparar con antes del 11/11: `Contact` ahora sube porque cuenta también los saltos automáticos.
+- `verificar-tracking.mjs` suma los casos 16 (salto automático) y 17 (cerrar durante la cuenta y pestaña oculta).
 
 ## 7. Cambios v5 (13/10)
 

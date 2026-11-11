@@ -18,8 +18,9 @@
         acá, antes de mostrar la cotización.
      3. Califica → pantalla de carga (~2 s) → pantalla de resultado con la
         cotización (ruta compra) o sin rango (ruta reforma), con el botón a
-        WhatsApp. No hay salto automático: solo se va a WhatsApp si toca
-        el botón (y ahí espera la confirmación de GHL, hasta 2,5 s).
+        WhatsApp y una cuenta regresiva (final.autoWhatsApp, 5 s): al
+        terminar se va a WhatsApp solo; si toca el botón, va antes. En los
+        dos casos espera la confirmación de GHL (hasta 2,5 s).
         No califica → pantalla final con el Instagram.
    ========================================================================== */
 (function () {
@@ -824,11 +825,16 @@
   }
 
   /** Va a WhatsApp cuando GHL confirmó el lead y GA4 el evento, o a los
-      2,5 s como mucho. Solo con el toque en el botón: no hay salto solo. */
+      2,5 s como mucho. origen: "boton" (lo tocó) o "auto" (terminó la
+      cuenta de la pantalla de resultado). Contact (Píxel + CAPI) y
+      whatsapp_redirect (GA4) salen una vez por lead: si vuelve de WhatsApp
+      y toca el botón, no se suman de nuevo. */
   var yendo = false;
-  function irAWhatsApp(url, crmListo) {
-    if (yendo) return;
+  function irAWhatsApp(origen) {
+    if (yendo || !final) return;
     yendo = true;
+    cortarCuenta();
+    var url = final.url;
     var fue = false, ga = false, crm = false;
     function go() {
       if (fue) return;
@@ -837,14 +843,61 @@
       location.href = url;
     }
     function quizas() { if (ga && crm) go(); }
-    APP.track("whatsapp_redirect", { origen: "boton", event_callback: function () { ga = true; quizas(); }, event_timeout: 300 });
-    setTimeout(function () { ga = true; quizas(); }, 300);
-    (crmListo || Promise.resolve()).then(function () { crm = true; quizas(); }, function () { crm = true; quizas(); });
+    if (!final.contacto) {
+      final.contacto = true;
+      var datos = {
+        content_name: "Diagnóstico Black", ruta: final.ruta,
+        rango: final.cot && final.cot.rango ? String(final.cot.rango.n) : "", cta_origen: final.cta,
+      };
+      var idWa = final.leadId + "-wa";
+      APP.pixel("Contact", datos, { eventID: idWa });
+      mandarACapi("Contact", idWa, datos, final.usuario);
+      APP.track("whatsapp_redirect", { origen: origen, event_callback: function () { ga = true; quizas(); }, event_timeout: 300 });
+      setTimeout(function () { ga = true; quizas(); }, 300);
+    } else {
+      ga = true;
+    }
+    (final.crmListo || Promise.resolve()).then(function () { crm = true; quizas(); }, function () { crm = true; quizas(); });
     setTimeout(go, 2500);
+  }
+
+  /* Cuenta regresiva del salto automático (final.autoWhatsApp en
+     form-config.js). Avanza solo con la pestaña visible (si se fue a otra
+     app, no lo manda a WhatsApp sin que lo vea). Se corta si toca el botón,
+     cierra el formulario o la pantalla cambia; al volver a abrir arranca de
+     nuevo. Una vez que fue a WhatsApp no vuelve a saltar solo. */
+  var cuenta = null;
+  function cortarCuenta() {
+    if (!cuenta) return;
+    clearInterval(cuenta.int);
+    // Fuera el texto y la barra: si vuelve de WhatsApp no queda "en 1 s…".
+    cuenta.nodos.forEach(function (n) { if (n.parentNode) n.parentNode.removeChild(n); });
+    cuenta = null;
+  }
+  function cuentaWhatsApp(cont, cfg) {
+    cortarCuenta();
+    var total = Math.round(cfg.segundos * 1000), resta = total, ultimo = Date.now();
+    var num = h("strong", { text: String(Math.ceil(resta / 1000)) });
+    var partes = String(cfg.texto || "{s}").split("{s}");
+    var texto = h("p", { class: "f-auto-wa" }, [partes[0], num, partes.slice(1).join("")]);
+    var relleno = h("i");
+    var barraCuenta = h("span", { class: "f-auto-wa-barra", "aria-hidden": "true" }, [relleno]);
+    cont.appendChild(texto);
+    cont.appendChild(barraCuenta);
+    cuenta = { nodos: [texto, barraCuenta] };
+    cuenta.int = setInterval(function () {
+      var ahora = Date.now();
+      if (!document.hidden) resta -= ahora - ultimo;
+      ultimo = ahora;
+      num.textContent = String(Math.max(1, Math.ceil(resta / 1000)));
+      relleno.style.transform = "scaleX(" + Math.min(1, 1 - resta / total) + ")";
+      if (resta <= 0) irAWhatsApp("auto");
+    }, 200);
   }
 
   /** Deja el modal listo para una pantalla final (carga o resultado). */
   function limpiarCuerpo() {
+    cortarCuenta();
     barra.style.width = "100%";
     etiquetaPaso.textContent = "";
     cuerpo.innerHTML = "";
@@ -940,18 +993,7 @@
     var btn = h("a", { class: "btn btn-1 btn-lg", href: final.url }, [svgUse("i-wa"), h("span", { text: c.boton || "" })]);
     btn.addEventListener("click", function (e) {
       e.preventDefault();
-      // Contact a Meta: una vez por lead, aunque toque dos veces o vuelva.
-      if (!final.contacto) {
-        final.contacto = true;
-        var datos = {
-          content_name: "Diagnóstico Black", ruta: final.ruta,
-          rango: final.cot && final.cot.rango ? String(final.cot.rango.n) : "", cta_origen: final.cta,
-        };
-        var idWa = final.leadId + "-wa";
-        APP.pixel("Contact", datos, { eventID: idWa });
-        mandarACapi("Contact", idWa, datos, final.usuario);
-      }
-      irAWhatsApp(final.url, final.crmListo);
+      irAWhatsApp("boton");
     });
     return btn;
   }
@@ -997,6 +1039,9 @@
     }
 
     cont.appendChild(botonWhatsApp(c));
+    // Salto automático: solo si todavía no fue a WhatsApp con este lead.
+    var auto = Fz.autoWhatsApp || {};
+    if (auto.segundos > 0 && !final.contacto) cuentaWhatsApp(cont, auto);
     cuerpo.appendChild(cont);
     enfocar(t);
 
@@ -1020,6 +1065,7 @@
       inicio (InitiateCheckout + paso 1). */
   function reiniciar() {
     cortarCarga();
+    cortarCuenta();
     enviado = false;
     final = null;
     S = nuevoEstado();
@@ -1073,6 +1119,7 @@
   function cerrar() {
     if (!abierto) return;
     abierto = false;
+    cortarCuenta();
     modal.hidden = true;
     document.documentElement.classList.remove("modal-abierto");
     document.documentElement.style.overflow = "";

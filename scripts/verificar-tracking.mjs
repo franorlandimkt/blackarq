@@ -23,9 +23,13 @@
        CotizacionVista sale una vez, Píxel y CAPI con el mismo eventID
        (lead_id + "-cot"), con el rango que dice la regla (se prueban las 5
        combinaciones).
-     - Contact sale solo al tocar el botón de WhatsApp, una vez aunque se
-       toque dos veces (eventID lead_id + "-wa"). Nunca se va a wa.me sin
-       ese toque.
+     - Salto automático a WhatsApp: el resultado muestra una cuenta de 5 s
+       y al terminar va solo a wa.me (GA4 whatsapp_redirect origen "auto").
+       Tocar el botón antes va en el momento (origen "boton"). Contact sale
+       una vez por lead, salte solo o toque el botón (aunque toque dos
+       veces; eventID lead_id + "-wa"). Cerrar el formulario corta la
+       cuenta; la cuenta se pausa con la pestaña oculta; volver de WhatsApp
+       no salta de nuevo. No califica: nunca va a WhatsApp.
      - Ruta reforma: Lead sí, CotizacionVista no, la pantalla no muestra
        montos.
      - Email vacío: el envío pasa, GHL recibe email "" y la función de CAPI
@@ -215,12 +219,15 @@ console.log("\n1. Visita desde anuncio → completa → califica → toca WhatsA
   ok(cotPx.length === 1 && cotCapi.length === 1, "CotizacionVista una vez por Píxel y una por CAPI");
   ok(cotPx[0] && cotCapi[0] && cotPx[0].id === cotCapi[0].event_id && cotPx[0].id === leadsPx[0].id + "-cot", "CotizacionVista con el mismo eventID (lead_id-cot)");
   ok(v.crm === 1, "un envío a GoHighLevel");
-  await v.page.waitForTimeout(3000);
-  ok(v.wa === 0 && !/wa\.me/.test(v.page.url()), "no va a WhatsApp sin tocar el botón");
-  ok(n(await v.fbq(), "Contact").length === 0 && n(v.capi, "Contact").length === 0, "sin Contact antes del toque");
+  await v.page.waitForTimeout(2000);
+  ok(/Te llevamos a WhatsApp en [1-5] s/.test(await v.page.locator(".f-auto-wa").innerText().catch(() => "")), "muestra la cuenta regresiva a WhatsApp");
+  ok(v.wa === 0 && !/wa\.me/.test(v.page.url()), "durante la cuenta todavía no va a WhatsApp");
+  ok(n(await v.fbq(), "Contact").length === 0 && n(v.capi, "Contact").length === 0, "sin Contact antes de ir a WhatsApp");
 
   await v.page.locator(".f-final a.btn").click();
   const cl = await v.clarity().catch(() => []); // antes de que salga a WhatsApp
+  const waGa = n(await v.ga().catch(() => []), "whatsapp_redirect");
+  ok(waGa.length === 1 && waGa[0].p.origen === "boton", "GA4 whatsapp_redirect con origen boton");
   await v.page.waitForURL(/wa\.me/, { timeout: 4000 }).catch(() => {});
   ok(["event:cta_click", "event:form_start", "event:form_step_1", "event:form_step_6", "event:form_submit", "event:cotizacion_vista", "event:whatsapp_redirect", "set:rango:2", "set:califica:si"].every((e) => cl.includes(e)),
     "Clarity recibe el embudo del formulario (inicio, pasos 1–6, envío, cotización, WhatsApp) y las etiquetas");
@@ -273,6 +280,9 @@ console.log("\n3. No califica");
   ok(n(fbq, "CotizacionVista").length === 0, "sin CotizacionVista");
   ok(v.crm === 1, "igual va a GoHighLevel");
   ok(await v.page.locator(".f-final a[href*='instagram']").count() === 1, "pantalla con Instagram");
+  ok(await v.page.locator(".f-auto-wa").count() === 0, "sin cuenta regresiva");
+  await v.page.waitForTimeout(6000);
+  ok(v.wa === 0 && n(v.capi, "Contact").length === 0, "nunca va a WhatsApp");
   await v.ctx.close();
 }
 
@@ -429,6 +439,7 @@ console.log("\n10. Ruta reforma");
   ok(n(fbq, "CotizacionVista").length === 0 && n(v.capi, "CotizacionVista").length === 0, "sin CotizacionVista");
   const txt = await v.page.locator(".modal-body").innerText();
   ok(!/\$\s?\d/.test(txt) && (await v.page.locator(".f-incluye").count()) === 0, "la pantalla no muestra montos");
+  ok(await v.page.locator(".f-auto-wa").count() === 1, "también tiene la cuenta regresiva a WhatsApp");
   const f = (v.crmBodies[0] || {}).fields || {};
   ok(f.rango === "" && f.cotizacion_texto === "" && f["Tipo de reforma"] === "Integral o ampliación", "GHL: rango vacío y tipo de reforma");
   await v.page.locator(".f-final a.btn").click();
@@ -493,6 +504,7 @@ console.log("\n12. Cerrar y volver a abrir después de enviar");
   await abrirDesdeCta(v.page);
   await v.page.waitForTimeout(300);
   ok(await v.page.locator(".f-incluye").count() === 1, "vuelve a ver su cotización");
+  ok(await v.page.locator(".f-auto-wa").count() === 1, "la cuenta a WhatsApp arranca de nuevo");
   ok((await v.fbq()).length === antes && v.capi.length === antesCapi, "sin eventos nuevos (ni InitiateCheckout ni CotizacionVista)");
   ok(!/otro caso/i.test(await v.page.locator(".modal-body").innerText()) && (await v.page.locator(".f-final button").count()) === 0,
     "no hay opción de cotizar otro caso");
@@ -557,6 +569,79 @@ console.log("\n15. Landing: CTA de atribución y sin garantía de devolución");
   await v.page.waitForSelector("#modal:not([hidden])");
   const ic = n(v.capi, "InitiateCheckout")[0];
   ok(ic && ic.custom_data.cta_origen === "cta_garantia", "un CTA intermedio abre el formulario con su cta_origen");
+  await v.ctx.close();
+}
+
+// ---------------------------------------------------------------- 16
+console.log("\n16. Salto automático a WhatsApp");
+{
+  const v = await visita();
+  await v.page.goto(BASE);
+  await abrirDesdeCta(v.page);
+  await completar(v.page);
+  await esperarResultado(v.page);
+  const leadId = (n(v.capi, "Lead")[0] || {}).event_id;
+  await v.page.waitForTimeout(3500);
+  ok(v.wa === 0, "a los 3,5 s sigue en el resultado (le da tiempo a leer el precio)");
+  const ga = await v.ga();
+  await v.page.waitForURL(/wa\.me/, { timeout: 4000 }).catch(() => {});
+  ok(/wa\.me/.test(v.page.url()) && v.wa === 1, "a los 5 s va solo a WhatsApp");
+  const waUrl = decodeURIComponent(v.page.url());
+  ok(/Rango estimado: \$500\.000 – \$900\.000/.test(waUrl) && /Ref\. BLK-/.test(waUrl), "con el mismo mensaje que el botón");
+  const contact = n(v.capi, "Contact");
+  ok(contact.length === 1 && contact[0].event_id === leadId + "-wa", "Contact por CAPI una vez, eventID lead_id-wa");
+  ok(n(ga, "whatsapp_redirect").length === 0, "sin whatsapp_redirect antes del salto");
+  const antes = v.capi.length;
+  await v.page.goBack();
+  await v.page.waitForTimeout(7000);
+  ok(v.wa === 1 && !/wa\.me/.test(v.page.url()), "volver de WhatsApp no salta de nuevo");
+  ok(v.capi.length === antes, "volver de WhatsApp no repite eventos");
+  await v.ctx.close();
+}
+{
+  // GA4: el salto automático se marca origen "auto". El dataLayer se pierde
+  // al salir a wa.me, así que cada whatsapp_redirect se avisa acá al momento.
+  const v = await visita();
+  const waGa = [];
+  await v.page.exposeFunction("__waGa", (origen) => waGa.push(origen));
+  await v.page.addInitScript(() => {
+    const dl = window.dataLayer = window.dataLayer || [];
+    const push = dl.push;
+    dl.push = function () {
+      for (const a of arguments) if (a && a[0] === "event" && a[1] === "whatsapp_redirect") window.__waGa((a[2] || {}).origen);
+      return push.apply(this, arguments);
+    };
+  });
+  await v.page.goto(BASE);
+  await abrirDesdeCta(v.page);
+  await completar(v.page);
+  await esperarResultado(v.page);
+  await v.page.waitForURL(/wa\.me/, { timeout: 9000 }).catch(() => {});
+  ok(waGa.length === 1 && waGa[0] === "auto", "GA4 whatsapp_redirect con origen auto");
+  await v.ctx.close();
+}
+
+// ---------------------------------------------------------------- 17
+console.log("\n17. Cerrar durante la cuenta y pestaña oculta");
+{
+  const v = await visita();
+  await v.page.goto(BASE);
+  await abrirDesdeCta(v.page);
+  await completar(v.page);
+  await esperarResultado(v.page);
+  await v.page.waitForTimeout(1000);
+  await v.page.locator(".modal-x").click();
+  await v.page.waitForTimeout(6000);
+  ok(v.wa === 0 && n(v.capi, "Contact").length === 0, "cerrar el formulario corta el salto");
+  await abrirDesdeCta(v.page);
+  // Pestaña oculta: la cuenta no avanza.
+  await v.page.evaluate(() => Object.defineProperty(document, "hidden", { configurable: true, get: () => true }));
+  await v.page.waitForTimeout(6500);
+  ok(v.wa === 0, "con la pestaña oculta la cuenta se pausa");
+  await v.page.evaluate(() => Object.defineProperty(document, "hidden", { configurable: true, get: () => false }));
+  await v.page.waitForURL(/wa\.me/, { timeout: 8000 }).catch(() => {});
+  ok(v.wa === 1, "al volver a la pestaña termina la cuenta y va a WhatsApp");
+  ok(n(v.capi, "Contact").length === 1, "un solo Contact");
   await v.ctx.close();
 }
 
